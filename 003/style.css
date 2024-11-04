@@ -1,0 +1,82 @@
+body {
+    margin: 50px;
+}
+
+h1 {
+    color: salmon;
+    font-family: monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.nr1 {
+    width: 300px;
+
+    border: 10px dashed lightcoral;
+    margin: 0 0 10px 0;
+    padding: 10px 20px;
+    text-align: center;
+    background-color: mediumpurple;
+    color: white;
+    box-sizing: border-box;
+}
+
+.nr2 {
+    border: 10px dashed lightcoral;
+    padding: 40px 20px;
+    text-align: right;
+    border-radius: 20px;
+    margin-bottom: 100px;
+}
+.nr3 {
+    font-size: 0;
+}
+
+.nr3 div {
+    display: inline-block;
+    width: calc(33.3333% - 20px);
+    background-color: lightcoral;
+    font-size: 20px;
+    text-align: center;
+    margin: 0 10px;
+}
+
+.nr3 span {
+    color: white;
+}
+
+
+.bebras {
+    text-align: center;
+    color:darkorchid;
+}
+
+.bebras.rudas {
+    color: brown;
+}
+
+#taip.kuku.zebras {
+    text-align: center;
+    color:crimson;
+}
+
+#taip {
+    color:darkgreen;
+}
+
+.ona, .petras {
+    color: darkblue;
+}
+
+.nr4 > div {
+    color: tomato;
+}
+
+.gyvate ~ p {
+    background-color: yellow;
+}
+
+.gyvate + p {
+    background-color: orangered;
+}
+
