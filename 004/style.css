@@ -1,0 +1,50 @@
+h2 a {
+    color: darkred;
+    text-decoration: none;
+    padding:  0 200px;
+    background-color: lightgrey;
+    transition: all 0.3s;
+}
+
+h2 a:hover {
+    color: seagreen;
+    background-color: lightblue;
+}
+
+ul li:nth-child(3) a {
+    color:brown;
+}
+
+ul li {
+    border-bottom: 1px solid black;
+    text-decoration: none;
+}
+
+ul li:last-child {
+    border-bottom: none;
+}
+
+.ps {
+    background-color: limegreen;
+    color: brown;
+    width: 200px;
+    padding: 10px;
+}
+
+.ps:before {
+    content: '';
+    color: white;
+    background-color: black;
+    padding: 5px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.ps:after {
+    content: '';
+    color: white;
+    background-color: black;
+    padding: 5px;
+    margin-bottom: 10px;
+    display: block;
+}
