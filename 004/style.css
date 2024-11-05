@@ -32,7 +32,7 @@ ul li:last-child {
 }
 
 .ps:before {
-    content: '';
+    content: 'UP';
     color: white;
     background-color: black;
     padding: 5px;
@@ -41,10 +41,78 @@ ul li:last-child {
 }
 
 .ps:after {
-    content: '';
+    content: 'DW';
     color: white;
     background-color: black;
     padding: 5px;
     margin-bottom: 10px;
     display: block;
 }
+
+.sq {
+    position: relative;
+    margin-top: 50px;
+    border: 1px solid darkslateblue;
+    padding: 10px;
+
+}
+
+.sq .mini {
+    position: relative;
+    background-color: #add8e677;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 50px;
+    margin: 5px 0;
+    transition: all 1s cubic-bezier(.77,-0.58,.58,1.59);
+    z-index: 50;
+}
+
+.sq .mini:nth-child(2) {
+    position: absolute;
+    background-color: lightpink;
+    z-index: 51;
+    
+}
+
+.sq:hover .mini:nth-child(2) {
+    top: 60px;
+    left: 0;
+}
+
+.fix {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: lightblue;
+}
+
+.hamburger {
+    position: relative;
+    width: 50px;
+    height: 5px;
+    background-color: black;
+}
+
+.hamburger:before {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 5px;
+    background-color: black;
+    top: 10px;
+}
+
+.hamburger:after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 5px;
+    background-color: black;
+    top: 20px;
+}
+
