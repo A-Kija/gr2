@@ -65,8 +65,17 @@ header .header-bin nav .logo a {
     color: var(--accent-color1);
     font-family: var(--fancy-font);
     padding: 0 10px;
-    font-size: 18px;
     transition: var(--tc);
+    position: relative;
+    width: 100px;
+}
+
+header .header-bin nav .logo a span {
+    font-size: 14px;
+    position: absolute;
+    bottom: -10px;
+    transform: rotate(-3deg);
+
 }
 
 header .header-bin nav .logo a:hover {
@@ -78,6 +87,9 @@ header .header-bin nav .logo a svg {
     height: 50px;
     fill: var(--accent-color1);
     transition: var(--ta);
+    position: relative;
+    top: -8px;
+    transform: rotate(5deg);
 }
 
 header .header-bin nav .logo a:hover svg {
@@ -97,16 +109,47 @@ header .header-bin nav ul li {
 }
 
 header .header-bin nav ul li a {
-    color: var(--accent-color1);
-    font-size: 30px;
+    color: var(--white);
+    font-size: 20px;
     font-weight: 200;
     letter-spacing: 3px;
     transition: var(--tc);
     line-height: 1.5;
     position: relative;
     top: -5px;
+    border-bottom: 1px solid var(--accent-color1);
+}
+
+header .header-bin nav ul li a::before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 3px;
+    bottom: -2px;
+    right: 0;
+    background-color: var(--accent-color1);
+    transition: var(--ta);
+}
+
+header .header-bin nav ul li a::after {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 3px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--accent-color1);
+    transition: var(--ta);
 }
 
 header .header-bin nav ul li a:hover {
-    color: var(--accent-color2);
+    color: var(--accent-color1);
+}
+
+header .header-bin nav ul li a:hover::before {
+    right: calc(100% - 5px);
+}
+
+header .header-bin nav ul li a:hover::after {
+    left: calc(100% - 5px);
 }
