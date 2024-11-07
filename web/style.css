@@ -167,7 +167,6 @@ header .header-bin nav ul li a:hover::after {
     width: 100%;
     display: flex;
     justify-content: center;
-    height: 100vh;
 }
 
 .hero .hero-bin {
@@ -175,21 +174,96 @@ header .header-bin nav ul li a:hover::after {
     font-size: 0;
     position: relative;
     z-index: -1;
-
+    height: 100vh;
+    width: 100%;
 }
 
 .hero .hero-bin img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transform: scale(1);
+    filter: brightness(1);
+    animation-name: fly;
+    animation-duration: 60s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes fly {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    94% {
+        filter: brightness(1);
+    }
+    99% {
+        transform: scale(2);
+        filter: brightness(0.05);
+    }
+    99.5% {
+        transform: scale(1);
+        filter: brightness(0.05);
+    }
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
 }
 
 .hero .hero-bin-content {
     position: absolute;
-    font-size: 2rem;
+    display: flex;
     width: 100%;
     max-width: var(--lg);
     bottom: 20vh;
+}
 
+.hero .hero-bin-content .box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 500px;
+    padding: 60px;
+    background-color: #04438977;
+    color: var(--white);
+    border: 5px solid var(--accent-color2);
+    margin: 0 30px;
+}
 
+.hero .hero-bin-content .box::before {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: -20px;
+    right: -20px;
+    background-color: var(--accent-color2);
+    z-index: -1;
+}
+
+.hero .hero-bin-content .box::after {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    bottom: -20px;
+    left: -20px;
+    background-color: var(--accent-color2);
+    z-index: -1;
+}
+
+.hero .hero-bin-content .box h1 {
+    font-size: 40px;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.hero .hero-bin-content .box p {
+    font-size: 20px;
+    font-weight: 200;
+    color: var(--gray);
 }
