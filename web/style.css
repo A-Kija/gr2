@@ -8,7 +8,7 @@
     --gray: #D8DBE2;
     --white: #FFFFFF;
     --black: #000000;
-    --xl: 1980px;
+    --xl: 1920px;
     --lg: 1280px;
     --md: 960px;
     --sm: 600px;
@@ -52,6 +52,16 @@ header .header-bin {
     background-color: var(--primary-color);
 }
 
+
+header.landing {
+    position: absolute;
+}
+
+header.landing .header-bin {
+    background-color: transparent;
+}
+
+
 header .header-bin nav {
     width: 100%;
     display: flex;
@@ -75,7 +85,6 @@ header .header-bin nav .logo a span {
     position: absolute;
     bottom: -10px;
     transform: rotate(-3deg);
-
 }
 
 header .header-bin nav .logo a:hover {
@@ -105,7 +114,6 @@ header .header-bin nav ul {
 header .header-bin nav ul li {
     display: flex;
     align-items: center;
-
 }
 
 header .header-bin nav ul li a {
@@ -152,4 +160,36 @@ header .header-bin nav ul li a:hover::before {
 
 header .header-bin nav ul li a:hover::after {
     left: calc(100% - 5px);
+}
+
+
+.hero {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+
+.hero .hero-bin {
+    overflow: hidden;
+    font-size: 0;
+    position: relative;
+    z-index: -1;
+
+}
+
+.hero .hero-bin img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero .hero-bin-content {
+    position: absolute;
+    font-size: 2rem;
+    width: 100%;
+    max-width: var(--lg);
+    bottom: 20vh;
+
+
 }
