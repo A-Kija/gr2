@@ -183,7 +183,7 @@ header .header-bin nav ul li a:hover::after {
     height: 100%;
     object-fit: cover;
     transform: scale(1);
-    filter: brightness(1);
+    filter: blur(0) brightness(1);
     animation-name: fly;
     animation-duration: 60s;
     animation-iteration-count: infinite;
@@ -193,22 +193,22 @@ header .header-bin nav ul li a:hover::after {
 @keyframes fly {
     0% {
         transform: scale(1);
-        filter: brightness(1);
+        filter: blur(0) brightness(1);
     }
     94% {
-        filter: brightness(1);
+        filter: blur(0) brightness(1);
     }
     99% {
-        transform: scale(2);
-        filter: brightness(0.05);
+        transform: scale(2.5);
+        filter: blur(20px) brightness(0.5);
     }
     99.5% {
         transform: scale(1);
-        filter: brightness(0.05);
+        filter: blur(20px) brightness(1);
     }
     100% {
         transform: scale(1);
-        filter: brightness(1);
+        filter: blur(0) brightness(1);
     }
 }
 
@@ -266,4 +266,56 @@ header .header-bin nav ul li a:hover::after {
     font-size: 20px;
     font-weight: 200;
     color: var(--gray);
+}
+
+
+.blocks {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 300px;
+}
+
+.blocks .blocks-bin {
+    width: 100%;
+    max-width: var(--lg);
+}
+
+.blocks .blocks-bin .blocks-holder {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 70px 0 0 0;
+    justify-content: center;
+    column-gap: 50px;
+    row-gap: 100px;
+
+}
+
+.blocks .blocks-bin .blocks-holder .block {
+    flex: 1;
+    position: relative;
+    max-width: 400px;
+    min-width: 300px;
+    padding: 20px;
+    background-color: var(--primary-color);
+
+}
+
+.blocks .blocks-bin .blocks-holder .block img {
+    position: absolute;
+    max-width: 100px;
+    max-height: 100px;
+    top: -50px;
+    left: -50px;
+}
+
+.blocks .blocks-bin .blocks-holder .block .block-content h2 {
+    color: var(--accent-color1);
+    font-size: 30px;
+    margin: 0 0 10px 0;
+}
+
+.blocks .blocks-bin .blocks-holder .block .block-content p {
+    color: var(--white);
 }
