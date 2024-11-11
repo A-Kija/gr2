@@ -1,5 +1,5 @@
 :root {
-    --fancy-font: "Indie Flower", cursive; /* 400 */
+    --fancy-font: "Edu AU VIC WA NT Hand", cursive; /* 400 - 700 & i */
     --main-font: "Crimson Pro", serif; /* 200 - 900 & i */
     --primary-color: #044389;
     --secondary-color: #5995ED;
@@ -176,6 +176,7 @@ header .header-bin nav ul li a:hover::after {
     z-index: -1;
     height: 100vh;
     width: 100%;
+    max-width: var(--xl);
 }
 
 .hero .hero-bin img {
@@ -273,12 +274,22 @@ header .header-bin nav ul li a:hover::after {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: 300px;
+    background-color: var(--gray);
+    padding-bottom: 100px;
 }
 
 .blocks .blocks-bin {
     width: 100%;
     max-width: var(--lg);
+    padding: 0 10px 0 60px;
+}
+
+.blocks .blocks-bin h2.header {
+    font-size: 60px;
+    font-family: var(--fancy-font);
+    margin: 50px 0;
+    color: var(--secondary-color);
+    text-align: center;
 }
 
 .blocks .blocks-bin .blocks-holder {
@@ -308,6 +319,12 @@ header .header-bin nav ul li a:hover::after {
     max-height: 100px;
     top: -50px;
     left: -50px;
+    z-index: 1;
+}
+
+.blocks .blocks-bin .blocks-holder .block .block-content {
+    position: relative;
+    z-index: 2;
 }
 
 .blocks .blocks-bin .blocks-holder .block .block-content h2 {
@@ -318,4 +335,21 @@ header .header-bin nav ul li a:hover::after {
 
 .blocks .blocks-bin .blocks-holder .block .block-content p {
     color: var(--white);
+}
+
+
+.block-deep {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+
+    margin-bottom: 300px;
+}
+
+.block-deep .block-deep-bin {
+    width: 100%;
+    max-width: var(--xl);
+    padding-left: calc((100% - var(--lg)) / 2);
+
 }
