@@ -1,6 +1,8 @@
 :root {
-    --fancy-font: "Edu AU VIC WA NT Hand", cursive; /* 400 - 700 & i */
-    --main-font: "Crimson Pro", serif; /* 200 - 900 & i */
+    --fancy-font: "Edu AU VIC WA NT Hand", cursive;
+    /* 400 - 700 & i */
+    --main-font: "Crimson Pro", serif;
+    /* 200 - 900 & i */
     --primary-color: #044389;
     --secondary-color: #5995ED;
     --accent-color1: #FCFF4B;
@@ -18,7 +20,17 @@
 }
 
 
-h1, h2, h3, h4, h5, h6, p, ul, ol, li, a {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+a {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -105,18 +117,24 @@ header .header-bin nav .logo a:hover svg {
     fill: var(--accent-color2);
 }
 
-header .header-bin nav ul {
+header .header-bin nav ul.desktop-menu {
     display: flex;
     justify-content: center;
     column-gap: 30px;
 }
 
-header .header-bin nav ul li {
+@media screen and (max-width: 700px) {
+    header .header-bin nav ul.desktop-menu {
+        display: none;
+    }
+}
+
+header .header-bin nav ul.desktop-menu li {
     display: flex;
     align-items: center;
 }
 
-header .header-bin nav ul li a {
+header .header-bin nav ul.desktop-menu li a {
     color: var(--white);
     font-size: 20px;
     font-weight: 200;
@@ -128,7 +146,7 @@ header .header-bin nav ul li a {
     border-bottom: 1px solid var(--accent-color1);
 }
 
-header .header-bin nav ul li a::before {
+header .header-bin nav ul.desktop-menu li a::before {
     content: "";
     position: absolute;
     width: 5px;
@@ -139,7 +157,7 @@ header .header-bin nav ul li a::before {
     transition: var(--ta);
 }
 
-header .header-bin nav ul li a::after {
+header .header-bin nav ul.desktop-menu li a::after {
     content: "";
     position: absolute;
     width: 5px;
@@ -150,16 +168,28 @@ header .header-bin nav ul li a::after {
     transition: var(--ta);
 }
 
-header .header-bin nav ul li a:hover {
+header .header-bin nav ul.desktop-menu li a:hover {
     color: var(--accent-color1);
 }
 
-header .header-bin nav ul li a:hover::before {
+header .header-bin nav ul.desktop-menu li a:hover::before {
     right: calc(100% - 5px);
 }
 
-header .header-bin nav ul li a:hover::after {
+header .header-bin nav ul.desktop-menu li a:hover::after {
     left: calc(100% - 5px);
+}
+
+
+
+header .header-bin nav .right .mobile-menu {
+    display: none;
+}
+
+@media screen and (max-width: 700px) {
+    header .header-bin nav .right .mobile-menu {
+        display: flex;
+    }
 }
 
 
@@ -196,17 +226,21 @@ header .header-bin nav ul li a:hover::after {
         transform: scale(1);
         filter: blur(0) brightness(1);
     }
+
     94% {
         filter: blur(0) brightness(1);
     }
+
     99% {
         transform: scale(2.5);
         filter: blur(20px) brightness(0.5);
     }
+
     99.5% {
         transform: scale(1);
         filter: blur(20px) brightness(1);
     }
+
     100% {
         transform: scale(1);
         filter: blur(0) brightness(1);
@@ -343,13 +377,41 @@ header .header-bin nav ul li a:hover::after {
     display: flex;
     justify-content: center;
     padding-top: 100px;
-
     margin-bottom: 300px;
 }
 
 .block-deep .block-deep-bin {
     width: 100%;
     max-width: var(--xl);
-    padding-left: calc((100% - var(--lg)) / 2);
+    margin-left: calc((100% - var(--lg)) / 2);
+    background-color: var(--gray);
+    padding: 50px 10px;
+}
 
+.block-deep .block-deep-bin .block-deep-content {
+    margin-right: calc((100vw - var(--lg)) / 2);
+}
+
+@media screen and (max-width: 1290px) {
+
+    .block-deep .block-deep-bin {
+        margin-left: 0;
+    }
+
+    .block-deep .block-deep-bin .block-deep-content {
+        margin-right: 0;
+    }
+}
+
+.block-deep .block-deep-bin .block-deep-content h2 {
+    font-size: 40px;
+    font-family: var(--fancy-font);
+    margin: 50px 0;
+    color: var(--secondary-color);
+}
+
+
+.block-deep .block-deep-bin .block-deep-content p {
+    text-align: justify;
+    max-width: 700px;
 }
