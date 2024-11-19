@@ -55,4 +55,61 @@ for (let i = 0; i < zodis.length; i++) {
 
 console.log(barsukoHtml);
 
-document.querySelector('section').innerHTML = barsukoHtml;
+document.querySelector('.bar').innerHTML = barsukoHtml;
+
+// Susumuoti skaičius iš sekcijos numbers ir rezultatą išspausdinti į console
+// Naudojam for, querySelectorAll ir innerText bei parseInt
+
+let suma1 = 0;
+
+const secNumbers = document.querySelectorAll('.numbers span');
+
+console.log(secNumbers);
+
+for (let i = 0; i < secNumbers.length; i++) {
+    suma1 += parseInt(secNumbers[i].innerText);
+    // suma1 = suma1 + parseInt(secNumbers[i].innerText);
+}
+
+console.log(suma1);
+
+// Suskaičiuoti kiek yra A raidžių div'e letters
+// Naudojam for, querySelectorAll ir innerText bei if
+
+let kiekisA = 0;
+
+const divoRaides = document.querySelectorAll('.letters span');
+
+for (let i = 0; i < divoRaides.length; i++) {
+    if (divoRaides[i].innerText === 'A') {
+        kiekisA++;
+    }
+}
+
+console.log(kiekisA);
+
+// Suskaičiuoti kiek yra raidžių div'e gyvuliai
+
+let sumaG = 0;
+const gyvLetters = document.querySelectorAll('.gyvuliai span');
+for (let i = 0; i < gyvLetters.length; i++) {
+    sumaG += gyvLetters[i].innerText.length;
+}
+console.log(sumaG);
+
+// Suskaičiuoti kiek yra gyvulių yra dive'e gyvuliai
+
+const gyvuliuSkaicius = document.querySelectorAll('.gyvuliai span').length;
+
+console.log(gyvuliuSkaicius);
+
+// Suskaičiuoti kiek yra vardų div'e vardai, kurie prasideda raide A
+
+let kiekisVardu = 0;
+const vardai = document.querySelectorAll('.vardai span');
+for (let i = 0; i < vardai.length; i++) {
+    if (vardai[i].innerText[0] === 'A') {
+        kiekisVardu++;
+    }
+}
+console.log(kiekisVardu);
