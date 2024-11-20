@@ -1,0 +1,20 @@
+section {
+    display: flex;
+    column-gap: 10px;
+    border: 1px solid lightgreen;
+    padding: 10px;
+    margin: 30px;
+}
+section div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    background-color: lightgreen;
+    border-radius: 50%;
+    color: darkgreen;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: monospace;
+}
