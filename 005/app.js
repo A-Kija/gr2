@@ -61,3 +61,80 @@ for (let i = 0; i < masyvas.length; i++) {
 }
 
 nr7.innerHTML = divs7;
+
+console.clear();
+
+
+function fun1() {
+    console.log('Funkcija 1');
+    return 5;
+}
+
+const fun2 = function () {
+    console.log('Funkcija 2');
+    return 7;
+}
+
+const fun3 = function(skaicius, skaicius2, skaicius3 = 5) {
+    const kaDaro = skaicius * skaicius2 + skaicius3;
+    return kaDaro;
+}
+
+const fun4 = (skaicius, skaicius2, skaicius3 = 5) => {
+    const kaDaro = skaicius * skaicius2 + skaicius3;
+    return kaDaro;
+}
+
+
+
+console.log('Pradžia');
+
+
+console.log('Vidurys');
+
+
+const kaGrazina = fun3(15, 4);
+
+
+console.log('Pabaiga', kaGrazina);
+
+console.clear();
+
+
+const fun5 = function (sk) {
+    return sk * 2;
+}
+
+const fun6 = (sk) =>  {
+    return sk * 2;
+}
+
+const fun7 = (sk) => sk * 2;
+
+const fun8 = sk => sk * 2;
+
+const fun9 = () => 5 * 2;
+
+const fun10 = _ => 5 * 2;
+
+const suma = (a, b) => a + b;  
+
+console.log(suma(4, 5));
+
+
+
+const calc = (a, b, bilekas) => bilekas(a, b);
+
+
+
+const sum = (a, b) => a + b;
+const diff = (a, b) => a - b;
+
+const sumaKita = sum;
+
+const keturi = 4;
+
+
+console.log(calc(keturi, 5, sumaKita));
+console.log(calc(4, 5, diff));
+
