@@ -1,0 +1,123 @@
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+ body.light {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+ body.dark {
+    background-color: #333;
+    color: #f0f0f0;
+}
+
+section {
+    margin: 40px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+}
+
+section div.a {
+    font-size: 30px;
+    font-family: monospace;
+}
+
+.light input[type="text"],
+.light textarea {
+    width: 50%;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid skyblue;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    outline: none;
+}
+
+.dark input[type="text"],
+.dark textarea {
+    width: 50%;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid crimson;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    outline: none;
+}
+
+textarea {
+    height: 100px;
+}
+
+select {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid skyblue;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    outline: none;
+}
+
+.light button {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid skyblue;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: skyblue;
+    color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+.dark button {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid crimson;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: crimson;
+    color: yellow;
+    cursor: pointer;
+    outline: none;
+}
+
+
+.switch {
+    position: relative;
+    display: block;
+    width: 60px;
+    height: 34px;
+    border: 1px solid goldenrod;
+    border-radius: 34px;
+}
+
+.switch .handle {
+    position: absolute;
+    top: 2px;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    background-color: goldenrod;
+    transition: left 0.3s;
+    cursor: pointer;
+}
+
+.switch[data-pos="off"] .handle {
+    left: 2px;
+}
+
+.switch[data-pos="on"] .handle {
+    left: 28px;
+}
