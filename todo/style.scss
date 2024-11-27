@@ -1,0 +1,130 @@
+body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+ul, li {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-top: 50px;
+}
+
+h2 {
+    color: darkcyan;
+    text-align: center;
+    margin: 0 0 20px;
+}
+
+#app {
+    display: flex;
+    width: 100%;
+    padding: 50px;
+
+    .enter {
+        display: flex;
+        width: 100%;
+        max-width: 500px;
+
+        .box {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid skyblue;
+            padding: 35px;
+            border-radius: 5px;
+            background-color: #fff;
+            row-gap: 20px;
+
+            input, select {
+                padding: 10px;
+                margin-bottom: 10px;
+                border: 2px solid cadetblue;
+                border-radius: 5px;
+                font-size: 16px;
+                outline: none;
+            }
+
+            button {
+                padding: 10px;
+                background-color: darkcyan;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+        }
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 500px;
+        margin-left: 50px;
+        row-gap: 10px;
+
+        .task {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 2px solid skyblue;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background-color: #fff;
+
+            &[data-task-view-priority="1"] {
+                border-color: crimson;
+            }
+            &[data-task-view-priority="2"] {
+                border-color: darkorange;
+            }
+            &[data-task-view-priority="3"] {
+                border-color: darkseagreen;
+            }
+
+            .text {
+                font-size: 16px;
+            }
+
+            .actions {
+                display: flex;
+                column-gap: 10px;
+                button {
+                    padding: 10px;
+                    color: #fff;
+                    border: none;
+                    border-radius: 5px;
+                    font-size: 12px;
+                    cursor: pointer;
+
+                    &.done {
+                        background-color: grey;
+                        &:disabled {
+                            background-color: lightseagreen;
+                            cursor: not-allowed;
+                        }
+                    }
+
+                    &.delete {
+                        background-color: crimson;
+                    }
+                }
+            }
+        }
+    }
+}
