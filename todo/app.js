@@ -11,13 +11,26 @@ const prioritySelectorDataEN = [
     { value: 3, label: 'Whenever' }
 ];
 
-const TASKS = [];
+let TASKS;
 
 function getRandomIntInclusive(min, max) {
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
     return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
-  }
+}
+
+const init = _ => {
+    const addButton = document.querySelector('[data-task-add]');
+    addButton.addEventListener('click', addTask);
+    renderPrioritySelector(prioritySelectorDataLT);
+
+
+    TASKS = JSON.parse(localStorage.getItem('tasks')) || [];
+
+
+    renderTasks();
+
+}
 
 
 const renderPrioritySelector = selectorData => {
@@ -46,6 +59,8 @@ const addTask = _ => {
 
     TASKS.unshift(task);
 
+    localStorage.setItem('tasks', JSON.stringify(TASKS));
+
     renderTasks();
 
 
@@ -67,7 +82,7 @@ const renderTasks = _ => {
                     <div class="task" data-task-view-priority="${priority}">
                         <div class="content">${task}</div>
                         <div class="actions">
-                            <button class="done" disabled="${done}" data-task-done>Atlikta</button>
+                            <button class="done" ${done ? 'disabled' : ''} data-task-done>Atlikta</button>
                             <button class="delete" data-task-delete>Pašalinti</button>
                         </div>
                     </div>
@@ -79,15 +94,26 @@ const renderTasks = _ => {
 
     const taskList = document.querySelector('[data-task-list]');
     taskList.innerHTML = html;
+    addDeleteListener();
+}
+
+
+const addDeleteListener = _ => {
+
+    const lis = document.querySelectorAll('[data-task-list] li');
+
+    lis.forEach(li => {
+        const deleteButton = li.querySelector('[data-task-delete]');
+        deleteButton.addEventListener('click', _ => {
+            const id = parseInt(li.dataset.id);
+            TASKS = TASKS.filter(task => task.id !== id);
+            localStorage.setItem('tasks', JSON.stringify(TASKS));
+            renderTasks();
+        });
+    });
+
 }
 
 
 
-
-const addButton = document.querySelector('[data-task-add]');
-
-addButton.addEventListener('click', addTask);
-
-renderPrioritySelector(prioritySelectorDataLT);
-
-renderTasks();
+init();
