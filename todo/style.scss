@@ -96,8 +96,11 @@ h2 {
                 border-color: darkseagreen;
             }
 
-            .text {
+            .content {
                 font-size: 16px;
+                padding: 5px 10px;
+                max-height: 30px;
+                overflow: hidden;
             }
 
             .actions {
@@ -113,17 +116,60 @@ h2 {
 
                     &.done {
                         background-color: grey;
-                        &:disabled {
+                        &.ok {
                             background-color: lightseagreen;
-                            cursor: not-allowed;
                         }
                     }
 
                     &.delete {
                         background-color: crimson;
                     }
+
+                    &.save {
+                        background-color: darkcyan;
+                    }
                 }
             }
+        }
+    }
+}
+
+.toast {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    flex-direction: column;
+    row-gap: 10px;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .message {
+        padding: 10px 20px;
+        color: #fff;
+        border-radius: 5px;
+        width: 300px;
+        text-align: center;
+
+        &.ok {
+            background-color: lightseagreen;
+        }
+
+        &.add {
+            background-color: darkcyan;
+        }
+
+        &.no {
+            background-color: crimson;
+        }
+
+        &.delete {
+            background-color: darkred;
+        }
+
+        &.edit {
+            background-color: darkorange;
         }
     }
 }

@@ -12,6 +12,7 @@ const prioritySelectorDataEN = [
 ];
 
 let TASKS;
+let Toasts = [];
 
 function getRandomIntInclusive(min, max) {
     const minCeiled = Math.ceil(min);
@@ -63,6 +64,8 @@ const addTask = _ => {
 
     renderTasks();
 
+    addToast('Užduotis pridėta', 'add');
+
 
 }
 
@@ -80,10 +83,11 @@ const renderTasks = _ => {
         let li = `
                 <li data-id="${id}">
                     <div class="task" data-task-view-priority="${priority}">
-                        <div class="content">${task}</div>
+                        <div class="content" data-task-content contenteditable="true">${task}</div>
                         <div class="actions">
-                            <button class="done" ${done ? 'disabled' : ''} data-task-done>Atlikta</button>
+                            <button class="done ${done ? 'ok' : 'no'}" data-task-done>Atlikta</button>
                             <button class="delete" data-task-delete>Pašalinti</button>
+                            <button class="save" data-task-save>Užsaugoti</button>
                         </div>
                     </div>
                 </li>
@@ -95,6 +99,38 @@ const renderTasks = _ => {
     const taskList = document.querySelector('[data-task-list]');
     taskList.innerHTML = html;
     addDeleteListener();
+    addDoneListener();
+    addSaveListener();
+}
+
+const renderToast = _ => {
+    
+    let html = '';
+
+    Toasts.forEach(t => {
+        const { id, message, type } = t;
+        const li = `<li data-id="${id}" class="message ${type}">${message}</li>`;
+        html += li;
+    });
+
+    const toastList = document.querySelector('[data-toast-bin]');
+    toastList.innerHTML = html;
+
+}
+
+const addToast = (message, type) => {
+    const id = getRandomIntInclusive(100000000, 999999999);
+    const toast = {
+        id,
+        message,
+        type
+    }
+    Toasts.unshift(toast);
+    renderToast();
+    setTimeout(_ => {
+        Toasts = Toasts.filter(t => t.id !== id);
+        renderToast();
+    }, 5000);
 }
 
 
@@ -109,9 +145,57 @@ const addDeleteListener = _ => {
             TASKS = TASKS.filter(task => task.id !== id);
             localStorage.setItem('tasks', JSON.stringify(TASKS));
             renderTasks();
+            addToast('Užduotis pašalinta', 'delete');
         });
     });
 
+}
+
+const addDoneListener = _ => {
+
+    const lis = document.querySelectorAll('[data-task-list] li');
+
+    lis.forEach(li => {
+        const doneButton = li.querySelector('[data-task-done]');
+        doneButton.addEventListener('click', _ => {
+            const id = parseInt(li.dataset.id);
+            TASKS = TASKS.map(task => {
+                if (task.id === id) {
+                    task.done = !task.done;
+                }
+                return task;
+            });
+            localStorage.setItem('tasks', JSON.stringify(TASKS));
+            renderTasks();
+            if (TASKS.find(task => task.id === id).done) {
+                addToast('Užduotis atlikta', 'ok');
+            } else {
+                addToast('Užduotis atšaukta', 'no');
+            }
+        });
+    });
+}
+
+
+const addSaveListener = _ => {
+
+    const lis = document.querySelectorAll('[data-task-list] li');
+
+    lis.forEach(li => {
+        const saveButton = li.querySelector('[data-task-save]');
+        saveButton.addEventListener('click', _ => {
+            const id = parseInt(li.dataset.id);
+            const content = li.querySelector('[data-task-content]').innerText;
+            TASKS = TASKS.map(task => {
+                if (task.id === id) {
+                    task.task = content;
+                }
+                return task;
+            });
+            localStorage.setItem('tasks', JSON.stringify(TASKS));
+            addToast('Užduotis išsaugota', 'edit');
+        });
+    });
 }
 
 
