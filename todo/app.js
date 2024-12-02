@@ -97,7 +97,8 @@ const renderTasks = _ => {
     });
 
     const taskList = document.querySelector('[data-task-list]');
-    taskList.innerHTML = html;
+    const tasksDone = TASKS.reduce((acc, task) => task.done ? acc + 1 : acc, 0);
+    taskList.innerHTML = html  + `<li>Jau padaryta: ${tasksDone}</li>`;
     addDeleteListener();
     addDoneListener();
     addSaveListener();
@@ -136,7 +137,7 @@ const addToast = (message, type) => {
 
 const addDeleteListener = _ => {
 
-    const lis = document.querySelectorAll('[data-task-list] li');
+    const lis = document.querySelectorAll('[data-task-list] li[data-id]');
 
     lis.forEach(li => {
         const deleteButton = li.querySelector('[data-task-delete]');
@@ -153,7 +154,7 @@ const addDeleteListener = _ => {
 
 const addDoneListener = _ => {
 
-    const lis = document.querySelectorAll('[data-task-list] li');
+    const lis = document.querySelectorAll('[data-task-list] li[data-id]');
 
     lis.forEach(li => {
         const doneButton = li.querySelector('[data-task-done]');
@@ -179,7 +180,7 @@ const addDoneListener = _ => {
 
 const addSaveListener = _ => {
 
-    const lis = document.querySelectorAll('[data-task-list] li');
+    const lis = document.querySelectorAll('[data-task-list] li[data-id]');
 
     lis.forEach(li => {
         const saveButton = li.querySelector('[data-task-save]');
