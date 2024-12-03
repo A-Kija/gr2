@@ -173,3 +173,20 @@ h2 {
         }
     }
 }
+
+.sort {
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+    margin-top: 20px;
+
+    button {
+        padding: 10px;
+        background-color: darkcyan;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+}

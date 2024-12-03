@@ -25,12 +25,27 @@ const init = _ => {
     addButton.addEventListener('click', addTask);
     renderPrioritySelector(prioritySelectorDataLT);
 
+    const sortPriority = document.querySelector('[data-sort-priority]');
+    const sortCompleted = document.querySelector('[data-sort-completion]');
+
+    sortPriority.addEventListener('click', _ => taskSort('priority'));
+    sortCompleted.addEventListener('click', _ => taskSort('done'));
+
 
     TASKS = JSON.parse(localStorage.getItem('tasks')) || [];
 
 
     renderTasks();
 
+}
+
+const taskSort = key => {
+    TASKS.sort((a, b) => {
+        if (a[key] > b[key]) return 1;
+        if (a[key] < b[key]) return -1;
+        return 0;
+    });
+    renderTasks();
 }
 
 
