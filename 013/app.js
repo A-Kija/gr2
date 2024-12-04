@@ -52,6 +52,8 @@ televizorius1.perjungtiKanala(8);
 
 
 
-televizorius1.rodytiKanala();
-televizorius2.rodytiKanala();
-televizorius3.rodytiKanala();
+// televizorius1.rodytiKanala();
+// televizorius2.rodytiKanala();
+// televizorius3.rodytiKanala();
+
+TV.televizoriai.forEach(tv => tv.rodytiKanala());
