@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+    <title>Mini Cart</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand">Mažasis knygų krepšelis</a>
+            <div class="cart">
+                <svg id="Layer_25" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"
+                    data-name="Layer 25">
+                    <rect fill="#f4abc4" height="20" rx="3" width="20" x="6" y="2" />
+                    <g fill="#ffffff">
+                        <path
+                            d="m30 25h-26a1 1 0 0 1 0-2h20.271a3.065 3.065 0 0 0 2.939-2.107l3.667-10.059a2.918 2.918 0 0 0 -.467-2.6 3.076 3.076 0 0 0 -2.491-1.234h-21.072l-.861-5.165a1 1 0 0 0 -.986-.835h-3a1 1 0 0 0 0 2h2.153l.709 4.253a3.061 3.061 0 0 0 -1.14.818 2.96 2.96 0 0 0 -.685 2.387l1.777 9.973a2.886 2.886 0 0 0 .149.569h-.963a3 3 0 0 0 0 6h1.184a2.965 2.965 0 0 0 -.184 1 3 3 0 0 0 6 0 2.965 2.965 0 0 0 -.184-1h10.368a2.965 2.965 0 0 0 -.184 1 3 3 0 0 0 6 0 2.965 2.965 0 0 0 -.184-1h3.184a1 1 0 0 0 0-2zm-23.212-4.893-1.777-9.971a.936.936 0 0 1 .226-.759 1.109 1.109 0 0 1 .844-.377h21.838a1.093 1.093 0 0 1 .889.433.9.9 0 0 1 .172.774l-3.667 10.059a1.073 1.073 0 0 1 -1.042.734h-16.408a1.067 1.067 0 0 1 -1.075-.893zm2.212 7.893a1 1 0 1 1 -1-1 1 1 0 0 1 1 1zm16 0a1 1 0 1 1 -1-1 1 1 0 0 1 1 1z" />
+                        <path d="m16 19a1 1 0 0 0 1-1v-6a1 1 0 0 0 -2 0v6a1 1 0 0 0 1 1z" />
+                        <path d="m21 19a1 1 0 0 0 1-1v-6a1 1 0 0 0 -2 0v6a1 1 0 0 0 1 1z" />
+                        <path d="m11 19a1 1 0 0 0 1-1v-6a1 1 0 0 0 -2 0v6a1 1 0 0 0 1 1z" />
+                    </g>
+                </svg>
+                <ul class="list-group cart-list" data-cart>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row mt-5" data-books>
+            <div class="all-spinners">
+                <div class="spinner-grow text-primary" role="status">
+                </div>
+                <div class="spinner-grow text-secondary" role="status">
+                </div>
+                <div class="spinner-grow text-success" role="status">
+                </div>
+                <div class="spinner-grow text-danger" role="status">
+                </div>
+                <div class="spinner-grow text-warning" role="status">
+                </div>
+                <div class="spinner-grow text-info" role="status">
+                </div>
+                <div class="spinner-grow text-light" role="status">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <template data-book>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-img">
+                    <img data-image>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title" data-author></h4>
+                    <h5 class="card-title title" data-title></h5>
+                    <p class="card-text">Kaina: <span data-price></span> EUR</p>
+                    <div class="add">
+                        <button class="btn btn-primary" data-add-button>Į krepšelį</button>
+                        <input type="number" class="form-control" value="0" data-count>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template data-cart-item>
+        <li class="list-group-item cart-item">
+            <div class="cart-item-img">
+                <img data-image>
+            </div>
+            <div class="cart-item-info">
+                <div class="cart-item-title" data-title></div>
+                <div class="cart-item-price"><span data-price></span> EUR</div>
+                <div class="cart-item-count"><i>x</i> <span data-count>2</span> VNT</div>
+            </div>
+            <div class="cart-item-remove">
+                <svg height="512" viewBox="0 0 24 24" width="512" xmlns="http://www.w3.org/2000/svg"><g id="Layer_2" data-name="Layer 2"><path d="m18 1.25h-12a4.756 4.756 0 0 0 -4.75 4.75v12a4.756 4.756 0 0 0 4.75 4.75h12a4.756 4.756 0 0 0 4.75-4.75v-12a4.756 4.756 0 0 0 -4.75-4.75zm-2.293 13.043a1 1 0 1 1 -1.414 1.414l-2.293-2.293-2.293 2.293a1 1 0 1 1 -1.414-1.414l2.293-2.293-2.293-2.293a1 1 0 1 1 1.414-1.414l2.293 2.293 2.293-2.293a1 1 0 1 1 1.414 1.414l-2.293 2.293z"/></g></svg>
+            </div>
+        </li>
+    </template>
+
+</body>
+
+</html>
