@@ -64,9 +64,9 @@
                     <h4 class="card-title" data-author></h4>
                     <h5 class="card-title title" data-title></h5>
                     <p class="card-text">Kaina: <span data-price></span> EUR</p>
-                    <div class="add">
+                    <div class="add" data-actions>
                         <button class="btn btn-primary" data-add-button>Į krepšelį</button>
-                        <input type="number" class="form-control" value="0" data-count>
+                        <input type="number" class="form-control" value="1" data-count>
                     </div>
                 </div>
             </div>
@@ -74,14 +74,17 @@
     </template>
 
     <template data-cart-item>
-        <li class="list-group-item cart-item">
+        <li class="list-group-item cart-item" data-cart-li>
             <div class="cart-item-img">
                 <img data-image>
             </div>
             <div class="cart-item-info">
                 <div class="cart-item-title" data-title></div>
-                <div class="cart-item-price"><span data-price></span> EUR</div>
-                <div class="cart-item-count"><i>x</i> <span data-count>2</span> VNT</div>
+                <div class="cart-item-price">
+                    <span data-price></span> EUR
+                    <div class="cart-item-count"><i>x</i> <span data-count></span> VNT</div>
+                </div>
+                <div class="cart-item-total"><span data-item-total></span> EUR</div>
             </div>
             <div class="cart-item-remove">
                 <svg height="512" viewBox="0 0 24 24" width="512" xmlns="http://www.w3.org/2000/svg"><g id="Layer_2" data-name="Layer 2"><path d="m18 1.25h-12a4.756 4.756 0 0 0 -4.75 4.75v12a4.756 4.756 0 0 0 4.75 4.75h12a4.756 4.756 0 0 0 4.75-4.75v-12a4.756 4.756 0 0 0 -4.75-4.75zm-2.293 13.043a1 1 0 1 1 -1.414 1.414l-2.293-2.293-2.293 2.293a1 1 0 1 1 -1.414-1.414l2.293-2.293-2.293-2.293a1 1 0 1 1 1.414-1.414l2.293 2.293 2.293-2.293a1 1 0 1 1 1.414 1.414l-2.293 2.293z"/></g></svg>
@@ -90,5 +93,4 @@
     </template>
 
 </body>
-
 </html>
