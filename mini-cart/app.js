@@ -1,10 +1,18 @@
-const API_URL ='https://in3.dev/knygos/';
+const API_URL = 'https://in3.dev/knygos/';
 const booksHtml = document.querySelector('[data-books]');
 const bookTemplate = document.querySelector('template[data-book]');
 const cartItemTemplate = document.querySelector('template[data-cart-item]');
+const cartHtml = document.querySelector('[data-cart]');
+const cartCountHtml = document.querySelector('[data-cart-count]');
 let books;
-const cart = [];
+let cart;
 
+
+const init = _ => {
+    cart = JSON.parse(localStorage.getItem('cart')) || [];
+    renderCart();
+    cartCount();
+}
 
 fetch(API_URL)
     .then(response => response.json())
@@ -22,7 +30,22 @@ fetch(API_URL)
             booksHtml.appendChild(bookElement);
         });
         addButtonsEvents();
+        syncCartPrices();
     });
+
+const syncCartPrices = _ => {
+    cart = cart.map(book => {
+        const foundBook = books.find(b => b.id == book.id);
+        return { ...book, price: foundBook.price };
+    });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+}
+
+const cartCount = _ => {
+    const count = cart.reduce((count, book) => count + book.count, 0);
+    cartCountHtml.textContent = count;
+}
 
 
 
@@ -47,14 +70,30 @@ const addToCart = (book, count) => {
     } else {
         cart.push({ ...book, count });
     }
+    localStorage.setItem('cart', JSON.stringify(cart));
     renderCart();
+    cartCount();
+}
 
-    console.log(cart);
+const removeButtonsEvents = _ => {
+    const buttons = cartHtml.querySelectorAll('[data-remove]');
+    buttons.forEach(button => {
+        button.addEventListener('click', _ => {
+            const id = parseInt(button.dataset.id);
+            removeFromCart(id);
+        });
+    });
+}
+
+const removeFromCart = id => {
+    cart = cart.filter(book => book.id != id);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+    cartCount();
 }
 
 
 const renderCart = _ => {
-    const cartHtml = document.querySelector('[data-cart]');
     cartHtml.innerHTML = '';
     cart.forEach(cartBook => {
         const cartElement = cartItemTemplate.content.cloneNode(true);
@@ -63,11 +102,19 @@ const renderCart = _ => {
         cartElement.querySelector('[data-count]').textContent = cartBook.count;
         cartElement.querySelector('[data-item-total]').textContent = (cartBook.price * cartBook.count).toFixed(2);
         cartElement.querySelector('[data-image]').src = cartBook.img;
+        cartElement.querySelector('[data-remove]').dataset.id = cartBook.id;
         cartHtml.appendChild(cartElement);
     });
     const total = cart.reduce((total, book) => total + book.price * book.count, 0);
     const totalElement = document.createElement('li');
-    totalElement.classList.add('list-group-item', 'd-flex', 'justify-content-between');
-    totalElement.innerHTML = `<strong>Total:</strong> <span>${total.toFixed(2)} EUR</span>`;
+    totalElement.classList.add('cart-total', 'list-group-item');
+    if (cart.length === 0) {
+        totalElement.textContent = 'Krepšelis tuščias';
+    } else {
+        totalElement.innerHTML = `<strong>Viso:</strong> <span>${total.toFixed(2)} EUR</span>`;
+    }
     cartHtml.appendChild(totalElement);
+    removeButtonsEvents();
 }
+
+init();
