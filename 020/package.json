@@ -1,0 +1,20 @@
+{
+  "name": "020",
+  "version": "1.0.0",
+  "description": "Mano pirmas projektas",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --watch app.js"
+  },
+  "keywords": [
+    "pirmas",
+    "mano",
+    "bebras"
+  ],
+  "author": "Bebras",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
