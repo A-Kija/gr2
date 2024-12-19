@@ -1,0 +1,16 @@
+{
+  "name": "022",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --watch server.js"
+  },
+  "keywords": [],
+  "author": "Barsukas",
+  "license": "ISC",
+  "description": "Failų naudojimas",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
