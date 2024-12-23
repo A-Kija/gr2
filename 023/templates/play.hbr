@@ -1,0 +1,8 @@
+<h1>{{manoKintamasis}}</h1>
+
+{{#if yraArbaNe}}
+<h2>Jis: {{yraArbaNe}}</h2>
+{{else}}
+<h3>Nieko nėra ir nebus</h3>
+{{/if}}
+
