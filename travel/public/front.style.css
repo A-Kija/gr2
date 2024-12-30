@@ -1,0 +1,84 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Noto Serif", serif;
+}
+
+header {
+  background-color: #121111;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-family: "Inter", sans-serif;
+}
+header nav {
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+header nav .logo {
+  color: #f5f5f5;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+header nav ul {
+  display: flex;
+  list-style: none;
+}
+header nav ul li {
+  margin-left: 1rem;
+}
+header nav ul li a {
+  color: #f5f5f5;
+  text-decoration: none;
+}
+header nav ul li a:hover {
+  color: #e0e0e0;
+}
+
+main {
+  width: 100%;
+  background-color: #121111;
+  color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+}
+main section.hero {
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+main section.hero .hero-text h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+main section.hero .hero-text p {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+main section.hero .hero-text button {
+  padding: 10px 20px;
+  background-color: #f5f5f5;
+  color: #121111;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+main section.hero .hero-text button:hover {
+  background-color: #e0e0e0;
+}
+main section.hero .hero-img img {
+  width: 100%;
+  max-width: 500px;
+}
