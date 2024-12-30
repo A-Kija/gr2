@@ -1,16 +1,21 @@
 $black: #121111;
 $white: #f5f5f5;
 $grey: #e0e0e0;
+$green: #40E6E4;
 
 $font-noto: "Noto Serif", serif;
 $font-inter: "Inter", sans-serif;
 
-$l: 1280px;
+$l: 1200px;
 
 body {
     margin: 0;
     padding: 0;
     font-family: $font-noto;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 
@@ -20,6 +25,7 @@ header {
     display: flex;
     justify-content: center;
     font-family: $font-inter;
+
     nav {
         width: 100%;
         max-width: $l;
@@ -27,21 +33,50 @@ header {
         justify-content: space-between;
         align-items: center;
         padding: 20px;
+        border-bottom: 1px solid $green;
+
         .logo {
             color: $white;
             font-size: 20px;
             font-weight: 700;
             text-transform: uppercase;
             text-decoration: none;
+            img {
+                width: 70px;
+                height: auto;
+            }
         }
+
+        .login {
+            a {
+                color: $white;
+                text-decoration: none;
+                font-size: 12px;
+                font-weight: 700;
+                text-transform: uppercase;
+                border: 1px solid $green;
+                padding: 7px 20px;
+                border-radius: 5px;
+                transition: all 0.3s;
+
+                &:hover {
+                    background-color: $green;
+                    color: $black;
+                }
+            }
+        }
+
         ul {
             display: flex;
             list-style: none;
+
             li {
                 margin-left: 1rem;
+
                 a {
                     color: $white;
                     text-decoration: none;
+
                     &:hover {
                         color: $grey;
                     }
@@ -56,7 +91,8 @@ main {
     background-color: $black;
     color: $white;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 
     section.hero {
         width: 100%;
@@ -65,36 +101,105 @@ main {
         justify-content: space-between;
         align-items: center;
         padding: 20px;
-        .hero-text {
+
+        .hero-content {
             h1 {
-                font-size: 3rem;
+                font-size: 60px;
                 font-weight: 700;
-                margin-bottom: 1rem;
+                margin-bottom: 20px;
+                color: $green;
             }
+
             p {
-                font-size: 1.5rem;
-                margin-bottom: 1rem;
+                font-size: 20px;
+                margin-bottom: 30px;
             }
-            button {
-                padding: 10px 20px;
-                background-color: $white;
-                color: $black;
-                border: none;
-                border-radius: 5px;
-                font-size: 1rem;
-                font-weight: 700;
-                cursor: pointer;
-                &:hover {
-                    background-color: $grey;
+
+            .img-bin {
+                display: flex;
+                width: 100%;
+
+                img {
+                    width: 100%;
+                    height: auto;
                 }
             }
+
         }
-        .hero-img {
-            img {
-                width: 100%;
-                max-width: 500px;
+    }
+
+    section.intro {
+        width: 100%;
+        max-width: $l;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+
+        .intro-content {
+            h2 {
+                font-size: 22px;
+                font-weight: 700;
+                margin-bottom: 20px;
+            }
+
+            p {
+                font-size: 15px;
+                margin-bottom: 20px;
             }
         }
     }
-    
+
+    section.list {
+        width: 100%;
+        max-width: $l;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+
+        .list-content {
+            list-style: none;
+            padding: 0;
+
+            li {
+                border-left: 5px solid $green;
+                padding-left: 20px;
+                margin-bottom: 50px;
+
+                h3 {
+                    font-size: 18px;
+                    font-weight: 700;
+                    margin-bottom: 20px;
+                    font-family: $font-inter;
+                }
+
+                p {
+                    font-size: 11px;
+                    margin-bottom: 20px;
+                    max-width: 700px;
+                }
+            }
+        }
+    }
+
+}
+
+footer {
+    background-color: $black;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-family: $font-inter;
+
+    p {
+        width: 100%;
+        max-width: $l;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        color: $white;
+        border-top: 1px solid $grey;
+    }
 }
