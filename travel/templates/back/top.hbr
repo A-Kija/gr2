@@ -1,9 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="http://localhost:3000/back.style.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="{{url}}back.style.css">
+    <title>{{pageTitle}}</title>
 </head>
+
 <body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{{url}}admin">Pradinis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url}}admin/page-list">Pirmo puslapio viršus</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url}}admin/page-list">Pirmo puslapio sąrašas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>

@@ -1,1 +1,20 @@
-ldfkjhgidshifgudhiudfgs
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+        </div>
+        <div class="col-6">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h5 class="card-title">Puslapio TVS pagrindinis</h5>
+                    <p class="card-text">
+                        Čia yra turinio valdymo sistemos pradinis puslapis. Čia galite redaguoti, trinti arba kurti naujus puslapius.
+                    </p>
+                    <a href="{{url}}admin/page-top" class="card-link">Pirmo puslapio viršus</a>
+                    <a href="{{url}}admin/page-list" class="card-link">Pirmo puslapio sąrašas</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+        </div>
+    </div>
+</div>
