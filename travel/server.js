@@ -49,6 +49,7 @@ app.post('/admin/page-top', (req, res) => {
 
     const { main_title, sub_title, page_text } = req.body;
     // will be validated later
+    
 
     let mainTopData = {
         main_title,
@@ -62,6 +63,25 @@ app.post('/admin/page-top', (req, res) => {
 
     res.redirect(URL + 'admin/page-top');
 
+});
+
+
+
+app.get('/', (req, res) => {
+
+    let mainTopData = fs.readFileSync('./data/main-top.json', 'utf8');
+    mainTopData = JSON.parse(mainTopData);
+
+    mainTopData.page_text = mainTopData.page_text.split('\n');
+
+    const data = {
+        pageTitle: 'Pirmasis puslapis',
+        mainTopData
+    };
+
+    const html = makeHtml(data, 'landing', false);
+
+    res.send(html);
 });
 
 

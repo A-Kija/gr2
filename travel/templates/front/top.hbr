@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://localhost:3000/front.style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Serif:ital,wdth,wght@0,62.5,100..900;1,62.5,100..900&display=swap" rel="stylesheet">
+    <title>{{pageTitle}}</title>
+</head>
+<body>
+        <header>
+        <nav>
+            <div class="logo">
+                <a href="http://localhost:3000">
+                    <img src="http://localhost:3000/images/logo.webp" alt="logo">
+                </a>
+            </div>
+            <ul>
+                <li><a href="http://localhost:3000">Home</a></li>
+                <li><a href="http://localhost:3000/about">About</a></li>
+                <li><a href="http://localhost:3000/contact">Contact</a></li>
+            </ul>
+            <div class="login">
+                <a href="http://localhost:3000/login">Login</a>
+            </div>
+        </nav>
+    </header>
