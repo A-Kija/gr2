@@ -30,3 +30,17 @@
             </div>
         </div>
     </div>
+
+    {{#if message}}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <div class="alert alert-{{message.type}}" role="alert">
+                    {{message.text}}
+                </div>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+    {{/if}}
