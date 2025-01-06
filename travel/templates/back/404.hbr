@@ -1,0 +1,10 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="error-404">
+                <h1>404</h1>
+                <h2>Tokio puslapio nėra ir nebus</h2>
+            </div>
+        </div>
+    </div>
+</div>

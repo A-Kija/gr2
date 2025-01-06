@@ -1,1 +1,27 @@
 @import "~bootstrap/scss/bootstrap";
+
+.list-element {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+        font-size: 20px;
+        font-weight: 700;
+    }
+}
+
+.error-404 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 30px;
+    font-weight: 700;
+    flex-direction: column;
+    h1 {
+        font-size: 100px;
+    }
+    h2 {
+        font-size: 50px;
+    }
+}

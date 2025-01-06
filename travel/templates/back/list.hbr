@@ -11,14 +11,16 @@
                     <div class="card-body">
                         <ul class="list-group">
                             {{#list}}
-                                <li class="list-group-item">
+                            <li class="list-group-item">
+                                <div class="list-element">
                                     <div class="title">{{title}}</div>
                                     <div class="buttons">
-                                        <a href="{{url}}admin/list/show/{{id}}" class="btn btn-info">Peržiūrėti</a>
-                                        <a href="{{url}}admin/list/edit/{{id}}" class="btn btn-primary">Redaguoti</a>
-                                        <a href="{{url}}admin/list/delete/{{id}}" class="btn btn-danger">Ištrinti</a>
+                                        <a href="{{../url}}admin/list/show/{{id}}" class="btn btn-info">Peržiūrėti</a>
+                                        <a href="{{../url}}admin/list/edit/{{id}}" class="btn btn-primary">Redaguoti</a>
+                                        <a href="{{../url}}admin/list/delete/{{id}}" class="btn btn-danger">Ištrinti</a>
                                     </div>
-                                </li>
+                                </div>
+                            </li>
                             {{/list}}
                         </ul>
                     </div>

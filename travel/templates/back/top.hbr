@@ -4,13 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{#if metaRedirect}}
+    <meta http-equiv="refresh" content="2;url={{url}}admin">
+    {{/if}}
     <link rel="stylesheet" href="{{url}}back.style.css">
     <script src="{{url}}back.app.js" defer></script>
     <title>{{pageTitle}}</title>
 </head>
 
 <body>
-
+    {{#if noMenu}}
+    {{else}}
     <div class="container">
         <div class="row">
             <div class="col">
@@ -31,6 +35,7 @@
             </div>
         </div>
     </div>
+    {{/if}}
 
     {{#if message}}
     <div class="container mt-5" data-msg>

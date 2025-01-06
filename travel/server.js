@@ -112,6 +112,7 @@ app.get('/admin/list/create', (req, res) => {
 
     const data = {
         pageTitle: 'Pridėti naują įrašą',
+        message: req.user.message || null
     };
 
     const html = makeHtml(data, 'create');
@@ -139,6 +140,78 @@ app.post('/admin/list/store', (req, res) => {
     updateSession(req, 'message', {text: 'Įrašas pridėtas', type: 'success'});
 
     res.redirect(URL + 'admin/list');
+});
+
+//EDIT
+app.get('/admin/list/edit/:id', (req, res) => {
+    
+    let list = fs.readFileSync('./data/list.json', 'utf8');
+    list = JSON.parse(list);
+
+    const item = list.find(i => i.id === req.params.id);
+
+    if (!item) {
+        const data = {
+            pageTitle: 'Puslapis nerastas',
+            noMenu: true,
+            metaRedirect: true,
+        };
+        const html = makeHtml(data, '404');
+        res.status(404).send(html);
+        return;
+    }
+
+    const data = {
+        pageTitle: 'Redaguoti įrašą',
+        item,
+        message: req.user.message || null
+    };
+
+    const html = makeHtml(data, 'edit');
+    res.send(html);
+
+});
+
+//UPDATE
+app.post('/admin/list/update/:id', (req, res) => {
+    
+    const { title, text } = req.body;
+
+    if (!title || !text) {
+        updateSession(req, 'message', {text: 'Užpildykite visus laukus', type: 'danger'});
+        res.redirect(URL + 'admin/list/edit/' + req.params.id);
+        return;
+    }
+
+
+
+
+    let list = fs.readFileSync('./data/list.json', 'utf8');
+    list = JSON.parse(list);
+
+    const item = list.find(i => i.id === req.params.id);
+
+    if (!item) {
+        const data = {
+            pageTitle: 'Puslapis nerastas',
+            noMenu: true,
+            metaRedirect: true,
+        };
+        const html = makeHtml(data, '404');
+        res.status(404).send(html);
+        return;
+    }
+
+    item.title = title;
+    item.text = text;
+
+    list = JSON.stringify(list);
+    fs.writeFileSync('./data/list.json', list);
+
+    updateSession(req, 'message', {text: 'Įrašas atnaujintas', type: 'success'});
+
+    res.redirect(URL + 'admin/list');
+
 });
 
 
