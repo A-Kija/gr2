@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+        </div>
+        <div class="col-8">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <div class="card-header">
+                        <h1>Pirmo puslapio sąrašas</h1>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {{#list}}
+                                <li class="list-group-item">
+                                    <div class="title">{{title}}</div>
+                                    <div class="buttons">
+                                        <a href="{{url}}admin/list/show/{{id}}" class="btn btn-info">Peržiūrėti</a>
+                                        <a href="{{url}}admin/list/edit/{{id}}" class="btn btn-primary">Redaguoti</a>
+                                        <a href="{{url}}admin/list/delete/{{id}}" class="btn btn-danger">Ištrinti</a>
+                                    </div>
+                                </li>
+                            {{/list}}
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+        </div>
+    </div>
+</div>

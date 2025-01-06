@@ -80,6 +80,7 @@ const messagesMiddleware = (req, res, next) => {
 };
 
 
+
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -88,6 +89,61 @@ app.use(sessionMiddleware);
 app.use(messagesMiddleware);
 
 // Routes
+
+//READ
+app.get('/admin/list', (req, res) => {
+
+    let list = fs.readFileSync('./data/list.json', 'utf8');
+    list = JSON.parse(list);
+
+    const data = {
+        pageTitle: 'Sąrašas',
+        list,
+        message: req.user.message || null
+    };
+
+    const html = makeHtml(data, 'list');
+    res.send(html);
+
+});
+
+//CREATE
+app.get('/admin/list/create', (req, res) => {
+
+    const data = {
+        pageTitle: 'Pridėti naują įrašą',
+    };
+
+    const html = makeHtml(data, 'create');
+    res.send(html);
+
+});
+//STORE
+app.post('/admin/list/store', (req, res) => {
+
+    const { title, text } = req.body;
+    const id = uuidv4();
+
+    let list = fs.readFileSync('./data/list.json', 'utf8');
+    list = JSON.parse(list);
+
+    list.push({
+        id,
+        title,
+        text
+    });
+
+    list = JSON.stringify(list);
+    fs.writeFileSync('./data/list.json', list);
+
+    updateSession(req, 'message', {text: 'Įrašas pridėtas', type: 'success'});
+
+    res.redirect(URL + 'admin/list');
+});
+
+
+
+
 app.get('/admin', (req, res) => {
 
     const data = {
