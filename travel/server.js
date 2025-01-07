@@ -3,6 +3,12 @@ const app = express();
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const handlebars = require('handlebars');
+
+handlebars.registerHelper('isdefined', function (value) {
+    return value !== undefined && value !== null;
+});
+
+
 const cookieParser = require('cookie-parser');
 const { v4: uuidv4 } = require('uuid');
 const md5 = require('md5');
@@ -26,7 +32,7 @@ const updateSession = (req, prop, data) => {
     let sessions = fs.readFileSync('./data/session.json', 'utf8');
     sessions = JSON.parse(sessions);
     let session = sessions.find(s => s.sessionId === sessionId);
-    if (!session){
+    if (!session) {
         return;
     }
     if (null === data) {
@@ -79,6 +85,19 @@ const messagesMiddleware = (req, res, next) => {
     next();
 };
 
+// Old data middleware
+
+const oldDataMiddleware = (req, res, next) => {
+    if (req.method === 'POST') {
+        const oldData = req.body;
+        updateSession(req, 'oldData', oldData);
+    }
+    if (req.method === 'GET') {
+        updateSession(req, 'oldData', null);
+    }
+    next();
+};
+
 
 
 app.use(express.static('public'));
@@ -87,6 +106,7 @@ app.use(cookieParser());
 app.use(cookieMiddleware);
 app.use(sessionMiddleware);
 app.use(messagesMiddleware);
+app.use(oldDataMiddleware);
 
 // Routes
 
@@ -112,7 +132,8 @@ app.get('/admin/list/create', (req, res) => {
 
     const data = {
         pageTitle: 'Pridėti naują įrašą',
-        message: req.user.message || null
+        message: req.user.message || null,
+        oldData: req.user.oldData || null
     };
 
     const html = makeHtml(data, 'create');
@@ -123,6 +144,15 @@ app.get('/admin/list/create', (req, res) => {
 app.post('/admin/list/store', (req, res) => {
 
     const { title, text } = req.body;
+
+    if (!title || !text) {
+        updateSession(req, 'message', { text: 'Užpildykite visus laukus', type: 'danger' });
+        res.redirect(URL + 'admin/list/create');
+        return;
+    }
+
+
+
     const id = uuidv4();
 
     let list = fs.readFileSync('./data/list.json', 'utf8');
@@ -137,14 +167,14 @@ app.post('/admin/list/store', (req, res) => {
     list = JSON.stringify(list);
     fs.writeFileSync('./data/list.json', list);
 
-    updateSession(req, 'message', {text: 'Įrašas pridėtas', type: 'success'});
+    updateSession(req, 'message', { text: 'Įrašas pridėtas', type: 'success' });
 
     res.redirect(URL + 'admin/list');
 });
 
 //EDIT
 app.get('/admin/list/edit/:id', (req, res) => {
-    
+
     let list = fs.readFileSync('./data/list.json', 'utf8');
     list = JSON.parse(list);
 
@@ -161,10 +191,12 @@ app.get('/admin/list/edit/:id', (req, res) => {
         return;
     }
 
+
     const data = {
         pageTitle: 'Redaguoti įrašą',
         item,
-        message: req.user.message || null
+        message: req.user.message || null,
+        oldData: req.user.oldData || null
     };
 
     const html = makeHtml(data, 'edit');
@@ -174,11 +206,11 @@ app.get('/admin/list/edit/:id', (req, res) => {
 
 //UPDATE
 app.post('/admin/list/update/:id', (req, res) => {
-    
+
     const { title, text } = req.body;
 
     if (!title || !text) {
-        updateSession(req, 'message', {text: 'Užpildykite visus laukus', type: 'danger'});
+        updateSession(req, 'message', { text: 'Užpildykite visus laukus', type: 'danger' });
         res.redirect(URL + 'admin/list/edit/' + req.params.id);
         return;
     }
@@ -208,7 +240,7 @@ app.post('/admin/list/update/:id', (req, res) => {
     list = JSON.stringify(list);
     fs.writeFileSync('./data/list.json', list);
 
-    updateSession(req, 'message', {text: 'Įrašas atnaujintas', type: 'success'});
+    updateSession(req, 'message', { text: 'Įrašas atnaujintas', type: 'success' });
 
     res.redirect(URL + 'admin/list');
 
@@ -248,7 +280,7 @@ app.post('/admin/page-top', (req, res) => {
 
     const { main_title, sub_title, page_text } = req.body;
     // will be validated later
-    
+
 
     let mainTopData = {
         main_title,
@@ -260,7 +292,7 @@ app.post('/admin/page-top', (req, res) => {
 
     fs.writeFileSync('./data/main-top.json', mainTopData);
 
-    updateSession(req, 'message', {text: 'Puslapis atnaujintas', type: 'success'});
+    updateSession(req, 'message', { text: 'Puslapis atnaujintas', type: 'success' });
 
     res.redirect(URL + 'admin/page-top');
 

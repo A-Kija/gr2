@@ -12,11 +12,11 @@
                     <form class="mt-5" action="{{url}}admin/list/update/{{item.id}}" method="post">
                         <div class="mb-3">
                             <label class="form-label">Pavadinimas</label>
-                            <input type="text" class="form-control" name="title" value="{{item.title}}">
+                            <input type="text" class="form-control" name="title" value="{{#if (isdefined oldData.title)}}{{oldData.title}}{{else}}{{item.title}}{{/if}}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tekstas</label>
-                            <textarea class="form-control" name="text" rows="10">{{item.text}}</textarea>
+                            <textarea class="form-control" name="text" rows="10">{{#if (isdefined oldData.text)}}{{oldData.text}}{{else}}{{item.text}}{{/if}}</textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Išsaugoti</button>
                         <a href="{{url}}admin" class="btn btn-secondary">Atšaukti</a>
