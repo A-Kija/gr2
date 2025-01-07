@@ -25,3 +25,20 @@
         font-size: 50px;
     }
 }
+
+.delete-card {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .card {
+        h5 {
+            color: crimson;
+            margin-bottom: 30px;
+            i {
+                color: black;
+            }
+        }
+    }
+}

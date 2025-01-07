@@ -204,6 +204,48 @@ app.get('/admin/list/edit/:id', (req, res) => {
 
 });
 
+//DELETE
+app.get('/admin/list/delete/:id', (req, res) => {
+    let list = fs.readFileSync('./data/list.json', 'utf8');
+    list = JSON.parse(list);
+    const item = list.find(i => i.id === req.params.id);
+    if (!item) {
+        const data = {
+            pageTitle: 'Puslapis nerastas',
+            noMenu: true,
+            metaRedirect: true,
+        };
+        const html = makeHtml(data, '404');
+        res.status(404).send(html);
+        return;
+    }
+    const data = {
+        pageTitle: 'Patvirtinimas',
+        item,
+        noMenu: true,
+    };
+    const html = makeHtml(data, 'delete');
+    res.send(html);
+});
+
+//DESTROY
+app.post('/admin/list/destroy/:id', (req, res) => {
+
+    let list = fs.readFileSync('./data/list.json', 'utf8');
+    list = JSON.parse(list);
+
+    list = list.filter(i => i.id !== req.params.id);
+
+    list = JSON.stringify(list);
+    fs.writeFileSync('./data/list.json', list);
+
+    updateSession(req, 'message', { text: 'Įrašas ištrintas', type: 'success' });
+
+    res.redirect(URL + 'admin/list');
+
+});
+
+
 //UPDATE
 app.post('/admin/list/update/:id', (req, res) => {
 
@@ -280,6 +322,22 @@ app.get('/admin/list/show/:id', (req, res) => {
 
 });
 
+app.post('/admin/list/sort', (req, res) => {
+    const order = req.body.order;
+    let list = fs.readFileSync('./data/list.json', 'utf8');
+    list = JSON.parse(list);
+
+    //sort list by order
+    list.sort((a, b) => {
+        return order.indexOf(a.id) - order.indexOf(b.id);
+    });
+
+    list = JSON.stringify(list);
+    fs.writeFileSync('./data/list.json', list);
+    updateSession(req, 'message', { text: 'Sąrašas atnaujintas', type: 'success' });
+    res.redirect(URL + 'admin/list');
+});
+
 
 app.get('/admin', (req, res) => {
 
@@ -332,16 +390,22 @@ app.post('/admin/page-top', (req, res) => {
 
 
 
+
+
 app.get('/', (req, res) => {
 
     let mainTopData = fs.readFileSync('./data/main-top.json', 'utf8');
     mainTopData = JSON.parse(mainTopData);
 
+    let list = fs.readFileSync('./data/list.json', 'utf8');
+    list = JSON.parse(list);
+
     mainTopData.page_text = mainTopData.page_text.split('\n');
 
     const data = {
         pageTitle: 'Pirmasis puslapis',
-        mainTopData
+        mainTopData,
+        list
     };
 
     const html = makeHtml(data, 'landing', false);

@@ -11990,3 +11990,18 @@ textarea.form-control-lg {
 .error-404 h2, .error-404 .h2 {
   font-size: 50px;
 }
+
+.delete-card {
+  height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.delete-card .card h5, .delete-card .card .h5 {
+  color: crimson;
+  margin-bottom: 30px;
+}
+.delete-card .card h5 i, .delete-card .card .h5 i {
+  color: black;
+}

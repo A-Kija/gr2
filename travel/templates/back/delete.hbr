@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4 delete-card">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Ar tikrai norite pašalinti <i>{{item.title}}</i></h5>
+                    <form action="{{url}}admin/list/destroy/{{item.id}}" method="post">
+                        <button type="submit" class="btn btn-danger">Taip</button>
+                        <a href="{{url}}admin/list" class="btn btn-secondary">Ne</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-4"></div>
+    </div>
+</div>

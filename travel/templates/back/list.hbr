@@ -8,8 +8,8 @@
                     <div class="card-header">
                         <h1>Pirmo puslapio sąrašas</h1>
                     </div>
-                    <div class="card-body">
-                        <ul class="list-group">
+                    <form class="card-body" action="{{url}}admin/list/sort/" method="post">
+                        <ul class="list-group" id="list">
                             {{#list}}
                             <li class="list-group-item">
                                 <div class="list-element">
@@ -20,11 +20,12 @@
                                         <a href="{{../url}}admin/list/delete/{{id}}" class="btn btn-danger">Ištrinti</a>
                                     </div>
                                 </div>
+                                <input type="hidden" name="order[]" value="{{id}}">
                             </li>
                             {{/list}}
                         </ul>
-                    </div>
-
+                        <button type="submit" class="btn btn-primary mt-3">Išsaugoti</button>
+                    </form>
                 </div>
             </div>
         </div>
