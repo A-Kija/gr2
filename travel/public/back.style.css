@@ -12005,3 +12005,23 @@ textarea.form-control-lg {
 .delete-card .card h5 i, .delete-card .card .h5 i {
   color: black;
 }
+
+.with-img {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  -moz-column-gap: 20px;
+       column-gap: 20px;
+}
+.with-img .img-bin {
+  width: 25%;
+}
+.with-img .img-bin img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.with-img .form-bin {
+  width: calc(75% - 20px);
+}

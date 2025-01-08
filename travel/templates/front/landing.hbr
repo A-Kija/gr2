@@ -3,7 +3,11 @@
         <div class="hero-content">
             <h1>{{mainTopData.main_title}}</h1>
             <div class="img-bin">
+                {{#if mainTopData.top_image}}
                 <img src="{{url}}images/{{mainTopData.top_image}}" alt="hero">
+                {{else}}
+                <img src="{{url}}images/no-image.jpg" alt="hero">
+                {{/if}}
             </div>
         </div>
     </section>

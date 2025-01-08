@@ -42,3 +42,21 @@
         }
     }
 }
+
+.with-img {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 20px;
+    .img-bin {
+        width: 25%;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    .form-bin {
+        width: calc(75% - 20px);
+    }
+}
