@@ -8,11 +8,13 @@
                     <h1>Pagrindinio puslapio viršus</h1>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Čia galite redaguoti pagrindinio puslapio pavadinimus, tekstus ir paveiksliuką</h5>
-                    <form class="mt-5" action="{{url}}admin/page-top" method="post">
+                    <h5 class="card-title">Čia galite redaguoti pagrindinio puslapio pavadinimus, tekstus ir
+                        paveiksliuką</h5>
+                    <form class="mt-5" action="{{url}}admin/page-top" method="post" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label class="form-label">Puslapio pagrindinis pavadinimas</label>
-                            <input type="text" class="form-control" name="main_title" value="{{mainTopData.main_title}}">
+                            <input type="text" class="form-control" name="main_title"
+                                value="{{#if (isdefined oldData.main_title)}}{{oldData.main_title}}{{else}}{{mainTopData.main_title}}{{/if}}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Puslapio sub pavadinimas</label>
@@ -20,14 +22,19 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Puslapio tekstas</label>
-                            <textarea class="form-control" name="page_text" rows="10">{{mainTopData.page_text}}</textarea>
+                            <textarea class="form-control" name="page_text"
+                                rows="10">{{mainTopData.page_text}}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Paveiksliukas</label>
+                            <input class="form-control" type="file" id="formFile" name="top_image">
                         </div>
 
                         <button type="submit" class="btn btn-primary">Išsaugoti</button>
                     </form>
-                    
-                    
-                    
+
+
+
 
                 </div>
             </div>

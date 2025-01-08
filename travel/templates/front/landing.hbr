@@ -3,7 +3,7 @@
         <div class="hero-content">
             <h1>{{mainTopData.main_title}}</h1>
             <div class="img-bin">
-                <img src="http://localhost:3000/images/hero.webp" alt="hero">
+                <img src="{{url}}images/{{mainTopData.top_image}}" alt="hero">
             </div>
         </div>
     </section>

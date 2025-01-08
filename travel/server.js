@@ -3,9 +3,22 @@ const app = express();
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const handlebars = require('handlebars');
+const multer = require('multer');
 
 handlebars.registerHelper('isdefined', function (value) {
     return value !== undefined && value !== null;
+});
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/images/');
+    },
+    filename: function (req, file, cb) {
+        const randomName = uuidv4();
+        const extension = file.originalname.split('.').pop();
+        const filename = `${randomName}.${extension}`;
+        cb(null, filename);
+    }
 });
 
 
@@ -98,11 +111,24 @@ const oldDataMiddleware = (req, res, next) => {
     next();
 };
 
+const upload = multer({
+    storage: storage,
+    fileFilter: function (req, file, cb) {
+        if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png' && file.mimetype !== 'image/webp') {
+            cb(null, false);
+            req.fileValidationError = true;
+        } else {
+            cb(null, true);
+        }
+    }
+});
+
 
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(upload.single('top_image'));
 app.use(cookieMiddleware);
 app.use(sessionMiddleware);
 app.use(messagesMiddleware);
@@ -359,7 +385,8 @@ app.get('/admin/page-top', (req, res) => {
     const data = {
         pageTitle: 'Pagrindinio puslapio viršus',
         mainTopData,
-        message: req.user.message || null
+        message: req.user.message || null,
+        oldData: req.user.oldData || null
     };
 
     const html = makeHtml(data, 'pageTop');
@@ -371,11 +398,27 @@ app.post('/admin/page-top', (req, res) => {
     const { main_title, sub_title, page_text } = req.body;
     // will be validated later
 
+    if (req.fileValidationError){
+        updateSession(req, 'message', { text: 'Netinkamas paveiksliukas', type: 'danger' });
+        res.redirect(URL + 'admin/page-top');
+        return;
+    }
 
-    let mainTopData = {
+
+    let mainTopData = fs.readFileSync('./data/main-top.json', 'utf8');
+    mainTopData = JSON.parse(mainTopData);
+    let fileName = req.file?.filename;
+    if (!fileName) {
+        fileName = mainTopData.top_image;
+    } else {
+        fs.unlinkSync('./public/images/' + mainTopData.top_image);
+    }
+
+    mainTopData = {
         main_title,
         sub_title,
         page_text,
+        top_image: fileName
     };
 
     mainTopData = JSON.stringify(mainTopData);

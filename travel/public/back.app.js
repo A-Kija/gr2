@@ -1185,7 +1185,9 @@ var __webpack_exports__ = {};
   \*************************/
 var Sortable = __webpack_require__(/*! sortablejs */ "./node_modules/sortablejs/Sortable.js");
 var el = document.querySelector('#list');
-var sortable = Sortable.create(el);
+if (el) {
+  var sortable = Sortable.create(el);
+}
 if (document.querySelector('[data-msg]')) {
   var msg = document.querySelector('[data-msg]');
   setTimeout(function (_) {

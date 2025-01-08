@@ -1,7 +1,9 @@
 const Sortable = require('sortablejs');
 
 const el = document.querySelector('#list');
-const sortable = Sortable.create(el);
+if (el) {
+    const sortable = Sortable.create(el);
+}
 
 
 
