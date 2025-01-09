@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4 login-form">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Prisijungimas</h5>
+                    <form action="{{url}}login" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Vardas</label>
+                            <input type="text" class="form-control" name="name" value="{{oldData.name}}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Slaptažodis</label>
+                            <input type="password" class="form-control" name="psw">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Prisijungti</button>
+                        <a href="{{url}}" class="btn btn-secondary">Atšaukti</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-4"></div>
+    </div>
+</div>

@@ -60,3 +60,14 @@
         width: calc(75% - 20px);
     }
 }
+
+.login-form {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .card {
+        min-width: 500px;
+    }
+}

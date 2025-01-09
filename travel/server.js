@@ -99,7 +99,6 @@ const messagesMiddleware = (req, res, next) => {
 };
 
 // Old data middleware
-
 const oldDataMiddleware = (req, res, next) => {
     if (req.method === 'POST') {
         const oldData = req.body;
@@ -110,6 +109,21 @@ const oldDataMiddleware = (req, res, next) => {
     }
     next();
 };
+
+//Auth middleware
+const auth = (req, res, next) => {
+    const isAdmin = req.url.includes('/admin');
+    if (!isAdmin) {
+        next();
+        return;
+    }
+
+    if (req.user?.user?.role === 'admin' || req.user?.user?.role === 'editor') {
+        next();
+    } else {
+        res.redirect(URL + 'login');
+    }
+}
 
 const upload = multer({
     storage: storage,
@@ -133,6 +147,7 @@ app.use(cookieMiddleware);
 app.use(sessionMiddleware);
 app.use(messagesMiddleware);
 app.use(oldDataMiddleware);
+app.use(auth);
 
 // Routes
 
@@ -431,6 +446,33 @@ app.post('/admin/page-top', (req, res) => {
 
     res.redirect(URL + 'admin/page-top');
 
+});
+
+//LOGIN
+app.get('/login', (req, res) => {
+    const data = {
+        pageTitle: 'Prisijungimas',
+        message: req.user.message || null,
+        oldData: req.user.oldData || null,
+        noMenu: true,
+    };
+    const html = makeHtml(data, 'login');
+    res.send(html);
+});
+
+app.post('/login', (req, res) => {
+    const { name, psw } = req.body;
+    let users = fs.readFileSync('./data/users.json', 'utf8');
+    users = JSON.parse(users);
+    const user = users.find(u => u.name === name && u.psw === md5(psw));
+    if (!user) {
+        updateSession(req, 'message', { text: 'Neteisingi prisijungimo duomenys', type: 'danger' });
+        res.redirect(URL + 'login');
+        return;
+    }
+    updateSession(req, 'message', { text: 'Sėkmingai prisijungta', type: 'success' });
+    updateSession(req, 'user', user);
+    res.redirect(URL + 'admin');
 });
 
 
