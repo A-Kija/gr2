@@ -22,8 +22,16 @@
                 <li><a href="{{url}}about">About</a></li>
                 <li><a href="{{url}}contact">Contact</a></li>
             </ul>
-            <div class="login">
-                <a href="{{url}}login">Login</a>
+            <div>
+
+                        {{#if user}}
+                        <form action="{{url}}login?logout" method="post">
+                            <span class="login-name">{{user.name}}, </span><button class="login" type="submit" class="btn btn-link">Atsijungti</button>
+                        </form>
+                        {{else}}
+                            <a class="login" href="{{url}}login">Prisijungti</a>
+                        {{/if}}
+      
             </div>
         </nav>
     </header>

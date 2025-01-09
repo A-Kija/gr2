@@ -71,3 +71,9 @@
         min-width: 500px;
     }
 }
+
+.menu-holder {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}

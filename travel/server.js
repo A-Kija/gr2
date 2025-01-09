@@ -112,6 +112,13 @@ const oldDataMiddleware = (req, res, next) => {
 
 //Auth middleware
 const auth = (req, res, next) => {
+
+    const isLogin = req.url.includes('/login') && req.method === 'GET';
+    if (isLogin && req.user?.user) {
+        res.redirect(URL);
+        return;
+    }
+
     const isAdmin = req.url.includes('/admin');
     if (!isAdmin) {
         next();
@@ -160,7 +167,8 @@ app.get('/admin/list', (req, res) => {
     const data = {
         pageTitle: 'Sąrašas',
         list,
-        message: req.user.message || null
+        message: req.user.message || null,
+        user: req.user.user || null
     };
 
     const html = makeHtml(data, 'list');
@@ -174,7 +182,8 @@ app.get('/admin/list/create', (req, res) => {
     const data = {
         pageTitle: 'Pridėti naują įrašą',
         message: req.user.message || null,
-        oldData: req.user.oldData || null
+        oldData: req.user.oldData || null,
+        user: req.user.user || null
     };
 
     const html = makeHtml(data, 'create');
@@ -237,7 +246,8 @@ app.get('/admin/list/edit/:id', (req, res) => {
         pageTitle: 'Redaguoti įrašą',
         item,
         message: req.user.message || null,
-        oldData: req.user.oldData || null
+        oldData: req.user.oldData || null,
+        user: req.user.user || null
     };
 
     const html = makeHtml(data, 'edit');
@@ -356,6 +366,7 @@ app.get('/admin/list/show/:id', (req, res) => {
         item,
         lettersInText,
         message: req.user.message || null,
+        user: req.user.user || null
     };
 
     const html = makeHtml(data, 'show');
@@ -384,6 +395,7 @@ app.get('/admin', (req, res) => {
 
     const data = {
         pageTitle: 'Administravimas Pagrindinis',
+        user: req.user.user || null
     };
 
     const html = makeHtml(data, 'main');
@@ -401,7 +413,8 @@ app.get('/admin/page-top', (req, res) => {
         pageTitle: 'Pagrindinio puslapio viršus',
         mainTopData,
         message: req.user.message || null,
-        oldData: req.user.oldData || null
+        oldData: req.user.oldData || null,
+        user: req.user.user || null
     };
 
     const html = makeHtml(data, 'pageTop');
@@ -461,6 +474,14 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
+    const isLogout = req.query.hasOwnProperty('logout');
+    if (isLogout) {
+        updateSession(req, 'user', null);
+        updateSession(req, 'message', { text: 'Sėkmingai atsijungta', type: 'success' });
+        res.redirect(URL + 'login');
+        return;
+    }
+
     const { name, psw } = req.body;
     let users = fs.readFileSync('./data/users.json', 'utf8');
     users = JSON.parse(users);
@@ -472,7 +493,11 @@ app.post('/login', (req, res) => {
     }
     updateSession(req, 'message', { text: 'Sėkmingai prisijungta', type: 'success' });
     updateSession(req, 'user', user);
-    res.redirect(URL + 'admin');
+    if (user.role === 'admin' || user.role === 'editor') {
+        res.redirect(URL + 'admin');
+    } else {
+        res.redirect(URL);
+    }
 });
 
 
@@ -492,7 +517,8 @@ app.get('/', (req, res) => {
     const data = {
         pageTitle: 'Pirmasis puslapis',
         mainTopData,
-        list
+        list,
+        user: req.user.user || null
     };
 
     const html = makeHtml(data, 'landing', false);

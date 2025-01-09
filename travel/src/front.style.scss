@@ -41,6 +41,7 @@ header {
             font-weight: 700;
             text-transform: uppercase;
             text-decoration: none;
+
             img {
                 width: 70px;
                 height: auto;
@@ -48,22 +49,32 @@ header {
         }
 
         .login {
-            a {
-                color: $white;
-                text-decoration: none;
-                font-size: 12px;
-                font-weight: 700;
-                text-transform: uppercase;
-                border: 1px solid $green;
-                padding: 7px 20px;
-                border-radius: 5px;
-                transition: all 0.3s;
+            color: $white;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 1px solid $green;
+            padding: 7px 20px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            background-color: transparent;
+            cursor: pointer;
 
-                &:hover {
-                    background-color: $green;
-                    color: $black;
-                }
+            &:hover {
+                background-color: $green;
+                color: $black;
             }
+
+        }
+        .login-name {
+            color: $white;
+            font-size: 18px;
+            font-weight: 700;
+            position: relative;
+            top: 3px;
+            margin-right: 10px;
+
         }
 
         ul {
