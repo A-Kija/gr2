@@ -1,1 +1,77 @@
+body {
+  background-color: #f0f0f0;
+  font-family: monospace;
+  margin: 0;
+  padding: 0;
+}
 
+* {
+  box-sizing: border-box;
+}
+
+.app {
+  display: flex;
+  width: 100%;
+  -moz-column-gap: 20px;
+       column-gap: 20px;
+  padding: 50px;
+}
+.app .list, .app .form {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+.app .list h2, .app .form h2 {
+  margin: 0 0 20px 0;
+  color: cadetblue;
+  text-align: center;
+}
+.app .list ul, .app .form ul {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+.app .list ul li, .app .form ul li {
+  margin-bottom: 5px;
+  border-bottom: 1px solid #cccccc;
+  padding-bottom: 5px;
+}
+.app .list ul li:last-child, .app .form ul li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.app .list ul li .id, .app .form ul li .id {
+  padding-right: 10px;
+  color: darkorange;
+}
+.app .list ul li .name, .app .form ul li .name {
+  display: inline-block;
+  font-weight: bold;
+  width: 100px;
+}
+.app .list ul li .height, .app .form ul li .height {
+  display: inline-block;
+  width: 80px;
+  font-style: italic;
+}
+.app .form {
+  width: 300px;
+}
+.app .form input, .app .form button, .app .form select {
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  width: 100%;
+}
+.app .form button {
+  background-color: cadetblue;
+  color: #fff;
+  cursor: pointer;
+}
+.app .form button.cut {
+  background-color: darkred;
+}

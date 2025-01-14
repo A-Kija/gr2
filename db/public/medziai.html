@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://localhost:3000/style.css">
+    <script src="http://localhost:3000/app.js" defer></script>
+    <title>Medžiai</title>
+</head>
+
+<body>
+
+    <div class="app">
+
+        <div class="list">
+            <h2>Medžiai</h2>
+            <ul data-list>
+            </ul>
+        </div>
+
+        <div class="form" data-form-create>
+            <h2>Pasodinti medį</h2>
+            <input type="text" name="name" placeholder="Pavadinimas">
+            <input type="text" name="height" placeholder="Aukštis">
+            <select name="type">
+                <option value="">Pasirinkite</option>
+                <option value="Lapuotis">Lapuotis</option>
+                <option value="Spygliuotis">Spygliuotis</option>
+                <option value="Palmė">Palmė</option>
+            </select>
+            <button>Sodinti</button>
+        </div>
+
+        <div class="form" data-form-delete>
+            <h2>Nukirsti medį</h2>
+            <input type="text" name="id" placeholder="medžio id">
+            <button class="cut">Nukirsti</button>
+        </div>
+
+
+    </div>
+    <template data-list>
+        <li>
+            <span data-list-id class="id"></span>
+            <span data-list-name class="name"></span>
+            <span data-list-height class="height"></span>
+            <span data-list-type class="type"></span>
+        </li>
+    </template>
+
+</body>
+
+</html>
