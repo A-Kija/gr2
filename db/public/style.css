@@ -103,3 +103,9 @@ body {
   background-color: darkorange;
   color: #fff;
 }
+
+.search {
+  padding: 10px 0;
+  position: relative;
+  top: -20px;
+}

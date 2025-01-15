@@ -13,7 +13,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var URL = 'http://localhost:3000/';
 var init = function init(_) {
-  getTrees(2);
+  getTrees();
+  doSearch();
   var createForm = document.querySelector('[data-form-create]');
   var deleteForm = document.querySelector('[data-form-delete]');
   var editForm = document.querySelector('[data-form-edit]');
@@ -58,12 +59,25 @@ var init = function init(_) {
     });
   });
 };
+var doSearch = function doSearch(_) {
+  var searchField = document.querySelector('[data-search]');
+  searchField.addEventListener('input', function (_) {
+    var q = searchField.value;
+    if (q.length < 2) {
+      getTrees(1);
+      return;
+    }
+    getTrees(1, q);
+  });
+};
 var getTrees = function getTrees() {
   var ap = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-  axios__WEBPACK_IMPORTED_MODULE_0__["default"].get(URL + 'medziu-sarasas/' + ap).then(function (res) {
+  var q = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var qurl = q ? '?q=' + q : '';
+  axios__WEBPACK_IMPORTED_MODULE_0__["default"].get(URL + 'medziu-sarasas/' + ap + qurl).then(function (res) {
     console.log(res.data);
     renderTrees(res.data);
-    getPaginator(ap);
+    getPaginator(ap, q);
   })["catch"](function (error) {
     console.log('Klaida gaunant duomenis iš DB');
   });
@@ -82,14 +96,16 @@ var renderTrees = function renderTrees(trees) {
   });
 };
 var getPaginator = function getPaginator(ap) {
-  axios__WEBPACK_IMPORTED_MODULE_0__["default"].get(URL + 'medziu-skaicius').then(function (res) {
+  var q = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var qurl = q ? '?q=' + q : '';
+  axios__WEBPACK_IMPORTED_MODULE_0__["default"].get(URL + 'medziu-skaicius' + qurl).then(function (res) {
     console.log(res.data);
-    renderPaginator(res.data.pages, ap);
+    renderPaginator(res.data.pages, ap, q);
   })["catch"](function (error) {
     console.log('Klaida gaunant duomenis iš DB');
   });
 };
-var renderPaginator = function renderPaginator(pages, activPage) {
+var renderPaginator = function renderPaginator(pages, activPage, q) {
   var paginator = document.querySelector('div[data-paginator]');
   paginator.innerHTML = '';
   var span;
@@ -98,7 +114,7 @@ var renderPaginator = function renderPaginator(pages, activPage) {
   if (activPage !== 1) {
     span.classList.add('active');
     span.addEventListener('click', function (_) {
-      getTrees(activPage - 1);
+      getTrees(activPage - 1, q);
     });
   }
   paginator.appendChild(span);
@@ -108,7 +124,7 @@ var renderPaginator = function renderPaginator(pages, activPage) {
     if (i !== activPage) {
       span.classList.add('active');
       span.addEventListener('click', function (_) {
-        getTrees(i);
+        getTrees(i, q);
       });
     } else {
       span.classList.add('current');
@@ -123,7 +139,7 @@ var renderPaginator = function renderPaginator(pages, activPage) {
   if (activPage !== pages) {
     span.classList.add('active');
     span.addEventListener('click', function (_) {
-      getTrees(activPage + 1);
+      getTrees(activPage + 1, q);
     });
   }
   paginator.appendChild(span);

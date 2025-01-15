@@ -28,21 +28,40 @@ app.get('/medziu-sarasas/:page', (req, res) => {
     // SELECT column1, column2, ...
     // FROM table_name;
 
+    // SELECT column1, column2, ...
+    // FROM table_name
+    // WHERE columnN LIKE pattern;
+
+    let sql;
+    let params;
     const page = parseInt(req.params.page) || 1;
     const perPage = 3;
     const limit = (page - 1) * perPage;
+    const q = req.query.q || '';
 
-    const sql = `
-        SELECT id, name, height, type
-        FROM trees
-        -- WHERE type = 'Lapuotis' AND height > 10
-        -- ORDER BY type DESC, height
-        ORDER BY name
-        LIMIT ?, ?
-    
-    `;
 
-    con.query(sql, [limit, perPage], (err, result) => {
+    if (!q) {
+        sql = `
+            SELECT id, name, height, type
+            FROM trees
+            -- WHERE type = 'Lapuotis' AND height > 10
+            -- ORDER BY type DESC, height
+            ORDER BY name
+            LIMIT ?, ?
+        `;
+        params = [limit, perPage];
+    } else {
+        sql = `
+            SELECT id, name, height, type
+            FROM trees
+            WHERE name LIKE ?
+            ORDER BY name
+            LIMIT ?, ?
+        `;
+        params = [`%${q}%`, limit, perPage];
+    }
+
+    con.query(sql, params, (err, result) => {
         if (err) {
             console.log('Klaida gaunant duomenis iš DB');
             res.status(400).json({ error: 'Klaida gaunant duomenis iš DB' });
@@ -53,16 +72,30 @@ app.get('/medziu-sarasas/:page', (req, res) => {
 });
 
 app.get('/medziu-skaicius', (req, res) => {
-    
+
     // SELECT COUNT(column_name)
     // FROM table_name;
 
-    const sql = `
+    let sql;
+    let params;
+    const q = req.query.q || '';
+
+    if (!q) {
+        sql = `
         SELECT COUNT(id) AS total
         FROM trees
     `;
+        params = [];
+    } else {
+        sql = `
+        SELECT COUNT(id) AS total
+        FROM trees
+        WHERE name LIKE ?
+    `;
+        params = [`%${q}%`];
+    }
 
-    con.query(sql, (err, result) => {
+    con.query(sql, params, (err, result) => {
         if (err) {
             console.log('Klaida gaunant duomenis iš DB');
             res.status(400).json({ error: 'Klaida gaunant duomenis iš DB' });
@@ -92,7 +125,7 @@ app.post('/sodinti-medi', (req, res) => {
     con.query(sql, (err, result) => {
         if (err) {
             console.log('Klaida įrašant duomenis į DB', err);
-            res.status(400).json({ error: 'Klaida įrašant duomenis į DB'});
+            res.status(400).json({ error: 'Klaida įrašant duomenis į DB' });
             return;
         }
         res.json({ success: 'Medis sėkmingai įrašytas į DB', result });
@@ -120,7 +153,7 @@ app.delete('/iskasti-medi/:id', (req, res) => {
     con.query(sql, [id], (err, result) => {
         if (err) {
             console.log('Klaida trinant duomenis iš DB', err);
-            res.status(400).json({ error: 'Klaida trinant duomenis iš DB'});
+            res.status(400).json({ error: 'Klaida trinant duomenis iš DB' });
             return;
         }
         res.json({ success: 'Medis sėkmingai iškastas iš DB', result });
@@ -146,7 +179,7 @@ app.put('/persodinti-medi/:id', (req, res) => {
     con.query(sql, [name, height, type, id], (err, result) => {
         if (err) {
             console.log('Klaida atnaujinant duomenis DB', err);
-            res.status(400).json({ error: 'Klaida atnaujinant duomenis DB'});
+            res.status(400).json({ error: 'Klaida atnaujinant duomenis DB' });
             return;
         }
         res.json({ success: 'Medis sėkmingai persodintas DB', result });

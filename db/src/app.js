@@ -5,7 +5,8 @@ const URL = 'http://localhost:3000/';
 
 
 const init = _ => {
-    getTrees(2);
+    getTrees();
+    doSearch();
 
 
 
@@ -69,17 +70,31 @@ const init = _ => {
                 console.log('Klaida siunčiant duomenis į DB');
             });
     });
+}
+
+const doSearch = _ => {
+    const searchField = document.querySelector('[data-search]');
+
+    searchField.addEventListener('input', _ => {
+        const q = searchField.value;
+        if (q.length < 2) {
+            getTrees(1);
+            return;
+        }
+        getTrees(1, q);
+    });
 
 
 }
 
 
-const getTrees = (ap = 1) => {
-    axios.get(URL + 'medziu-sarasas/' + ap)
+const getTrees = (ap = 1, q = '') => {
+    const qurl = q ? '?q=' + q : '';
+    axios.get(URL + 'medziu-sarasas/' + ap + qurl)
         .then(res => {
             console.log(res.data);
             renderTrees(res.data);
-            getPaginator(ap);
+            getPaginator(ap, q);
         })
         .catch(error => {
             console.log('Klaida gaunant duomenis iš DB');
@@ -102,18 +117,19 @@ const renderTrees = trees => {
     });
 }
 
-const getPaginator = ap => {
-    axios.get(URL + 'medziu-skaicius')
+const getPaginator = (ap, q = '') => {
+    const qurl = q ? '?q=' + q : '';
+    axios.get(URL + 'medziu-skaicius' + qurl)
         .then(res => {
             console.log(res.data);
-            renderPaginator(res.data.pages, ap);
+            renderPaginator(res.data.pages, ap, q);
         })
         .catch(error => {
             console.log('Klaida gaunant duomenis iš DB');
         });
 }
 
-const renderPaginator = (pages, activPage) => {
+const renderPaginator = (pages, activPage, q) => {
     const paginator = document.querySelector('div[data-paginator]');
     paginator.innerHTML = '';
     let span;
@@ -122,7 +138,7 @@ const renderPaginator = (pages, activPage) => {
     if (activPage !== 1) {
         span.classList.add('active');
         span.addEventListener('click', _ => {
-            getTrees(activPage - 1);
+            getTrees(activPage - 1, q);
         });
     }
     paginator.appendChild(span);
@@ -133,7 +149,7 @@ const renderPaginator = (pages, activPage) => {
         if (i !== activPage) {
             span.classList.add('active');
             span.addEventListener('click', _ => {
-                getTrees(i);
+                getTrees(i, q);
             });
         } else {
             span.classList.add('current');
@@ -146,7 +162,7 @@ const renderPaginator = (pages, activPage) => {
     if (activPage !== pages) {
         span.classList.add('active');
         span.addEventListener('click', _ => {
-            getTrees(activPage + 1);
+            getTrees(activPage + 1, q);
         });
     }
     paginator.appendChild(span);
