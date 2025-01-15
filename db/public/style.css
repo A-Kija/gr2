@@ -75,3 +75,31 @@ body {
 .app .form button.cut {
   background-color: darkred;
 }
+.app .form button.re {
+  background-color: darkorange;
+}
+
+.paginator {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.paginator span {
+  margin: 0 2px;
+  padding: 5px 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  background-color: #fff;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.paginator span.active {
+  background-color: cadetblue;
+  color: #fff;
+  cursor: pointer;
+}
+.paginator span.current {
+  background-color: darkorange;
+  color: #fff;
+}

@@ -15,8 +15,8 @@
 
         <div class="list">
             <h2>Medžiai</h2>
-            <ul data-list>
-            </ul>
+            <ul data-list></ul>
+            <div data-paginator class="paginator"></div>
         </div>
 
         <div class="form" data-form-create>
@@ -38,6 +38,20 @@
             <button class="cut">Nukirsti</button>
         </div>
 
+        <div class="form" data-form-edit>
+            <h2>Persodinti medį</h2>
+            <input type="text" name="id" placeholder="medžio id">
+            <input type="text" name="name" placeholder="Pavadinimas">
+            <input type="text" name="height" placeholder="Aukštis">
+            <select name="type">
+                <option value="">Pasirinkite</option>
+                <option value="Lapuotis">Lapuotis</option>
+                <option value="Spygliuotis">Spygliuotis</option>
+                <option value="Palmė">Palmė</option>
+            </select>
+            <button class="re">Persodinti</button>
+        </div>
+
 
     </div>
     <template data-list>
@@ -48,6 +62,8 @@
             <span data-list-type class="type"></span>
         </li>
     </template>
+
+
 
 </body>
 
