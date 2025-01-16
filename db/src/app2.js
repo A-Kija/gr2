@@ -8,13 +8,14 @@ const init = _ => {
     getClients('inner');
     getClients('left');
     getClients('right');
+    getClients('left', true);
 }
 
-const getClients = t => {
+const getClients = (t, nice = false) => {
     axios.get(URL + 'klientai/' + t)
         .then(res => {
             console.log(res.data);
-            renderClients(res.data, t);
+            renderClients(res.data, t, nice);
         })
         .catch(error => {
             console.log('Klaida gaunant duomenis iš DB');
@@ -23,12 +24,27 @@ const getClients = t => {
 
 
 
-const renderClients = (clients, list) => {
+const renderClients = (clients, list, nice) => {
+
+    if (nice) {
+        list = 'nice';
+        const niceClients = [];
+        clients.forEach(client => {
+            if (!niceClients.find(c => c.id === client.id)) {
+                niceClients.push(client);
+            } else {
+                const nc = niceClients.find(c => c.id === client.id);
+                nc.number += ', ' + client.number;
+            }
+        });
+        clients = niceClients;
+    }
 
     const lists = {
         inner: document.querySelector('ul[data-list-inner]'),
         left: document.querySelector('ul[data-list-left]'),
-        right: document.querySelector('ul[data-list-right]')
+        right: document.querySelector('ul[data-list-right]'),
+        nice: document.querySelector('ul[data-list-left-nice]')
     };
 
     const listTemplate = document.querySelector('template[data-list]');
@@ -53,7 +69,7 @@ const renderClients = (clients, list) => {
         li.querySelector('[data-list-cid]').innerText = client.id + '.';
         li.querySelector('[data-list-name]').innerText = client.name;
 
-        li.querySelector('[data-list-pid]').innerText = client.id + '.';
+        li.querySelector('[data-list-pid]').innerText = client.pid + '.';
         li.querySelector('[data-list-number]').innerText = client.number;
         li.querySelector('[data-list-cpid]').innerText = client.client_id + '.';
         listUL.appendChild(li);

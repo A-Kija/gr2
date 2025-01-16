@@ -24,17 +24,33 @@ con.connect(err => {
 });
 
 
-app.get('/klientai/inner', (req, res) => {
+app.get('/klientai/:type', (req, res) => {
 
     // SELECT *
     // FROM Clients
     // INNER JOIN Phones
     // ON Clients.id = Phones.client_id;
 
+    let jt = '';
+
+    switch (req.params.type) {
+        case 'inner':
+            jt = 'INNER';
+            break;
+        case 'left':
+            jt = 'LEFT';
+            break;
+        case 'right':
+            jt = 'RIGHT';
+            break;
+        default:
+            jt = 'INNER';
+    }
+
     const sql = `
-        SELECT *
+        SELECT c.id, name, p.id AS pid, number, client_id
         FROM clients AS c
-        INNER JOIN phones AS p
+        ${jt} JOIN phones AS p
         ON c.id = p.client_id
     `;
 

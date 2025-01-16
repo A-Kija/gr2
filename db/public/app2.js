@@ -7105,20 +7105,40 @@ var init = function init(_) {
   getClients('inner');
   getClients('left');
   getClients('right');
+  getClients('left', true);
 };
 var getClients = function getClients(t) {
+  var nice = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   axios__WEBPACK_IMPORTED_MODULE_0__["default"].get(URL + 'klientai/' + t).then(function (res) {
     console.log(res.data);
-    renderClients(res.data, t);
+    renderClients(res.data, t, nice);
   })["catch"](function (error) {
     console.log('Klaida gaunant duomenis iš DB');
   });
 };
-var renderClients = function renderClients(clients, list) {
+var renderClients = function renderClients(clients, list, nice) {
+  if (nice) {
+    list = 'nice';
+    var niceClients = [];
+    clients.forEach(function (client) {
+      if (!niceClients.find(function (c) {
+        return c.id === client.id;
+      })) {
+        niceClients.push(client);
+      } else {
+        var nc = niceClients.find(function (c) {
+          return c.id === client.id;
+        });
+        nc.number += ', ' + client.number;
+      }
+    });
+    clients = niceClients;
+  }
   var lists = {
     inner: document.querySelector('ul[data-list-inner]'),
     left: document.querySelector('ul[data-list-left]'),
-    right: document.querySelector('ul[data-list-right]')
+    right: document.querySelector('ul[data-list-right]'),
+    nice: document.querySelector('ul[data-list-left-nice]')
   };
   var listTemplate = document.querySelector('template[data-list]');
   var listUL = lists[list];
@@ -7131,7 +7151,7 @@ var renderClients = function renderClients(clients, list) {
     var li = document.importNode(listTemplate.content, true);
     li.querySelector('[data-list-cid]').innerText = client.id + '.';
     li.querySelector('[data-list-name]').innerText = client.name;
-    li.querySelector('[data-list-pid]').innerText = client.id + '.';
+    li.querySelector('[data-list-pid]').innerText = client.pid + '.';
     li.querySelector('[data-list-number]').innerText = client.number;
     li.querySelector('[data-list-cpid]').innerText = client.client_id + '.';
     listUL.appendChild(li);
