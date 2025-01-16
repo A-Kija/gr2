@@ -45,6 +45,9 @@ body {
                 .id {
                     padding-right: 10px;
                     color: darkorange;
+                    width: 50px;
+                    overflow: hidden;
+                    display: inline-block;
                 }
                 .name {
                     display: inline-block;
@@ -54,6 +57,11 @@ body {
                 .height {
                     display: inline-block;
                     width: 80px;
+                    font-style: italic;
+                }
+                .number {
+                    display: inline-block;
+                    width: 150px;
                     font-style: italic;
                 }
             }

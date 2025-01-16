@@ -23,6 +23,35 @@ con.connect(err => {
     console.log('Prisijungimas prie DB buvo sėkmingas');
 });
 
+
+app.get('/klientai/inner', (req, res) => {
+
+    // SELECT *
+    // FROM Clients
+    // INNER JOIN Phones
+    // ON Clients.id = Phones.client_id;
+
+    const sql = `
+        SELECT *
+        FROM clients AS c
+        INNER JOIN phones AS p
+        ON c.id = p.client_id
+    `;
+
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.log('Klaida gaunant duomenis iš DB');
+            res.status(400).json({ error: 'Klaida gaunant duomenis iš DB' });
+            return;
+        }
+        res.json(result);
+    });
+
+});
+
+
+
+
 app.get('/medziu-sarasas/:page', (req, res) => {
 
     // SELECT column1, column2, ...

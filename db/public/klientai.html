@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://localhost:3000/style.css">
+    <script src="http://localhost:3000/app2.js" defer></script>
+    <title>Klientai</title>
+</head>
+
+<body>
+
+    <div class="app">
+
+        <div class="list">
+            <h2>Inner Join</h2>
+            <ul data-list-inner></ul>
+        </div>
+
+        <div class="list">
+            <h2>Left Join</h2>
+            <ul data-list-left></ul>
+        </div>
+
+        <div class="list">
+            <h2>Right Join</h2>
+            <ul data-list-right></ul>
+        </div>
+
+    </div>
+    <template data-list>
+        <li>
+            <span data-list-cid class="id"></span>
+            <span data-list-name class="name"></span>
+
+            <span data-list-pid class="id"></span>
+            <span data-list-number class="number"></span>
+            <span data-list-cpid class="id"></span>
+        </li>
+    </template>
+
+</body>
+
+</html>

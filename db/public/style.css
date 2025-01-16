@@ -46,6 +46,9 @@ body {
 .app .list ul li .id, .app .form ul li .id {
   padding-right: 10px;
   color: darkorange;
+  width: 50px;
+  overflow: hidden;
+  display: inline-block;
 }
 .app .list ul li .name, .app .form ul li .name {
   display: inline-block;
@@ -55,6 +58,11 @@ body {
 .app .list ul li .height, .app .form ul li .height {
   display: inline-block;
   width: 80px;
+  font-style: italic;
+}
+.app .list ul li .number, .app .form ul li .number {
+  display: inline-block;
+  width: 150px;
   font-style: italic;
 }
 .app .form {
