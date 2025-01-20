@@ -1,7 +1,9 @@
 class Request {
 
-    constructor() {
-        this.url = URL;
+    constructor(page) {
+        this.url = URL + page;
     }
 
 }
+
+export default Request;

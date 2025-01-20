@@ -12,21 +12,21 @@
 
 <body>
 
-    <div class="container">
+    <div id="main" class="container" data-page="genres">
         <div class="row">
             <div class="col-4">
-                <div class="card mt-5">
+                <div class="card mt-5" data-form="create">
                     <div class="card-header">
                         <h2>New genre</h2>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
                             <label class="form-label">Title</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="title">
                           </div>
                     </div>
                     <div class="card-footer text-body-secondary">
-                        <button class="btn btn-primary">Add</button>
+                        <button class="btn btn-primary" data-type="submit">Add</button>
                     </div>
                 </div>
             </div>
