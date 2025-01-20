@@ -23,7 +23,7 @@ const read = page => {
 
     pageHtml = pageHtml.replaceAll('{{URL}}', URL);
     pageHtml = pageHtml.replaceAll('{{URL_API}}', URL_API);
-    
+
     return pageHtml;
 }
 
@@ -35,6 +35,28 @@ app.get('/', (req, res) => {
 app.get('/genres', (req, res) => {
     res.send(read('genres'));
 });
+
+
+app.post('/api/genres', (req, res) => {
+    
+    const sql = `
+        INSERT INTO genres
+        (title) 
+        VALUES (?)
+    `;
+
+    con.query(sql, [req.body.title], (err, result) => {
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
+        res.status(201).send({
+            success: true,
+            id: result.insertId
+        });
+    });
+});
+            
 
 con.connect(err => {
     if (err) {

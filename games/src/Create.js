@@ -9,11 +9,21 @@ class Create extends Request {
         this.form.querySelector('[data-type=submit]')
         .addEventListener('click', this.submitCreate.bind(this));
 
-        console.log(this.form);
+
     }
 
     submitCreate() {
-        console.log('Submit create');
+        this.create(this.collectData());
+    }
+
+    collectData() {
+        const data = {};
+        this.form.querySelectorAll('[name]')
+        .forEach(input => {
+            data[input.name] = input.value;
+        });
+
+        return data;
     }
 
 }
