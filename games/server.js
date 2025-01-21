@@ -18,6 +18,7 @@ const con = mysql.createConnection({
     database: 'play'
 });
 
+
 const read = page => {
     let pageHtml = fs.readFileSync(`./html/${page}.html`, 'utf8');
 
@@ -34,6 +35,18 @@ app.get('/', (req, res) => {
 
 app.get('/genres', (req, res) => {
     res.send(read('genres'));
+});
+
+app.get('/api/genres', (req, res) => {
+    const sql = 'SELECT * FROM genres';
+
+    con.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
+        res.send(result);
+    });
 });
 
 

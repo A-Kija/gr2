@@ -2,14 +2,19 @@ import Request from './Request.js';
 
 class Create extends Request {
 
-    constructor(page) {
+    constructor(page, Read) {
         super(page);
         this.form = document.querySelector('[data-form=create]');
 
         this.form.querySelector('[data-type=submit]')
         .addEventListener('click', this.submitCreate.bind(this));
+        this.Read = Read;
 
 
+    }
+
+    response(response) {
+        this.Read.read();
     }
 
     submitCreate() {

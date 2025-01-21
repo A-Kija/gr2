@@ -10,6 +10,17 @@ class Request {
         axios.post(this.url, data)
         .then(res => {
             console.log(res);
+            this.response(res);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    read() {
+        axios.get(this.url)
+        .then(res => {
+            this.response(res);
         })
         .catch(err => {
             console.log(err);

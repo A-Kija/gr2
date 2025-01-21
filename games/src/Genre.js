@@ -1,10 +1,13 @@
 import Create from './Create.js';
+import Read from './Read.js';
 
 
 class Genre {
 
     constructor() {
-        this.create = new Create('genres');
+        this.Read = new Read('genres');
+        new Create('genres', this.Read);
+        
     }
 
 

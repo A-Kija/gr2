@@ -11965,3 +11965,12 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.list-group-item h4, .list-group-item .h4 {
+  margin: 0;
+  font-size: 16px;
+}

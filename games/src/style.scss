@@ -1,1 +1,12 @@
 @import "~bootstrap/scss/bootstrap";
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h4 {
+        margin: 0;
+        font-size: 16px;
+    }
+}
