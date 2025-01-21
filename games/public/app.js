@@ -47,6 +47,9 @@ var Create = /*#__PURE__*/function (_Request) {
     key: "submitCreate",
     value: function submitCreate() {
       this.create(this.collectData());
+      this.form.querySelectorAll('[name]').forEach(function (input) {
+        input.value = '';
+      });
     }
   }, {
     key: "collectData",
