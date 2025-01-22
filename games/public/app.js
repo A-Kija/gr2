@@ -28,20 +28,20 @@ function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new T
 function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
 
 var Create = /*#__PURE__*/function (_Request) {
-  function Create(page, Read) {
+  function Create(Page) {
     var _this;
     _classCallCheck(this, Create);
-    _this = _callSuper(this, Create, [page]);
+    _this = _callSuper(this, Create, [Page.page]);
     _this.form = document.querySelector('[data-form=create]');
+    _this.Page = Page;
     _this.form.querySelector('[data-type=submit]').addEventListener('click', _this.submitCreate.bind(_this));
-    _this.Read = Read;
     return _this;
   }
   _inherits(Create, _Request);
   return _createClass(Create, [{
     key: "response",
     value: function response(_response) {
-      this.Read.read();
+      this.Page.Read.read();
     }
   }, {
     key: "submitCreate",
@@ -66,6 +66,62 @@ var Create = /*#__PURE__*/function (_Request) {
 
 /***/ }),
 
+/***/ "./src/Edit.js":
+/*!*********************!*\
+  !*** ./src/Edit.js ***!
+  \*********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Request_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Request.js */ "./src/Request.js");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
+
+var Edit = /*#__PURE__*/function (_Request) {
+  function Edit(Page) {
+    var _this;
+    _classCallCheck(this, Edit);
+    _this = _callSuper(this, Edit, [Page.page]);
+    _this.Page = Page;
+    _this.form = document.querySelector('[data-form=edit]');
+    _this.modal = document.querySelector('[data-modal=edit]');
+
+    // this.form.querySelector('[data-type=submit]')
+    // .addEventListener('click', this.submitCreate.bind(this));
+    return _this;
+  }
+  _inherits(Edit, _Request);
+  return _createClass(Edit, [{
+    key: "showModal",
+    value: function showModal() {
+      this.modal.style.display = 'block';
+    }
+  }, {
+    key: "hideModal",
+    value: function hideModal() {
+      this.modal.style.display = 'none';
+    }
+  }]);
+}(_Request_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Edit);
+
+/***/ }),
+
 /***/ "./src/Genre.js":
 /*!**********************!*\
   !*** ./src/Genre.js ***!
@@ -79,6 +135,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Create_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Create.js */ "./src/Create.js");
 /* harmony import */ var _Read_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Read.js */ "./src/Read.js");
+/* harmony import */ var _Edit_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Edit.js */ "./src/Edit.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
@@ -87,10 +144,13 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
 
 
+
 var Genre = /*#__PURE__*/_createClass(function Genre() {
   _classCallCheck(this, Genre);
-  this.Read = new _Read_js__WEBPACK_IMPORTED_MODULE_1__["default"]('genres');
-  new _Create_js__WEBPACK_IMPORTED_MODULE_0__["default"]('genres', this.Read);
+  this.page = 'genres';
+  this.Read = new _Read_js__WEBPACK_IMPORTED_MODULE_1__["default"](this);
+  this.Create = new _Create_js__WEBPACK_IMPORTED_MODULE_0__["default"](this);
+  this.Edit = new _Edit_js__WEBPACK_IMPORTED_MODULE_2__["default"](this);
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Genre);
 
@@ -123,13 +183,14 @@ function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new T
 function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
 
 var Read = /*#__PURE__*/function (_Request) {
-  function Read(page) {
+  function Read(Page) {
     var _this;
     _classCallCheck(this, Read);
-    _this = _callSuper(this, Read, [page]);
+    _this = _callSuper(this, Read, [Page.page]);
     _this.list = document.querySelector('[data-list]');
     _this.template = document.querySelector('[data-list-template]');
     _this.listBin = document.querySelector('[data-list-bin]');
+    _this.Page = Page;
 
     // this.form.querySelector('[data-type=submit]')
     // .addEventListener('click', this.submitCreate.bind(this));
@@ -151,6 +212,14 @@ var Read = /*#__PURE__*/function (_Request) {
           if (clone.querySelector("[data-key=".concat(key, "]"))) {
             clone.querySelector("[data-key=".concat(key, "]")).innerText = item[key];
           }
+        });
+        var editButton = clone.querySelector('[data-button-type=edit]');
+        editButton.addEventListener('click', function () {
+          _this2.Page.Edit.showModal();
+          // this.Page.Edit.form.querySelectorAll('[name]')
+          // .forEach(input => {
+          //     input.value = item[input.name];
+          // });
         });
         _this2.listBin.appendChild(clone);
       });
