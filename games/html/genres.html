@@ -72,6 +72,25 @@
         </div>
     </div>
 
+    <div class="modal" data-modal="delete">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" data-form="delete">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete genre</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this genre?</p>
+                    <p class="text-danger">This action cannot be undone.</p>
+                    <strong data-key="title"></strong>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-type="cancel">Cancel</button>
+                    <button type="button" class="btn btn-danger" data-type="submit">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <template data-list-template>
         <li class="list-group-item" data-item-bin>

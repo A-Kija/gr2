@@ -69,6 +69,35 @@ app.post('/api/genres', (req, res) => {
         });
     });
 });
+
+app.put('/api/genres/:id', (req, res) => {
+
+    const sql = `
+        UPDATE genres
+        SET title = ?
+        WHERE id = ?
+    `;
+
+    con.query(sql, [req.body.title, req.params.id], (err, result) => {
+        if (err) {
+            res.status
+            (500).send(err);
+            return;
+        }
+
+        if (result.affectedRows === 0) {
+            res.status(404).send({
+                success: false,
+                message: 'Genre not found'
+            });
+            return;
+        }
+
+        res.send({
+            success: true
+        });
+    });
+});
             
 
 con.connect(err => {

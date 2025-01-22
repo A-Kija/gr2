@@ -29,13 +29,14 @@ class Read extends Request {
                 }
             });
             const editButton = clone.querySelector('[data-button-type=edit]');
-            editButton.addEventListener('click', () => {
-                this.Page.Edit.showModal();
-                // this.Page.Edit.form.querySelectorAll('[name]')
-                // .forEach(input => {
-                //     input.value = item[input.name];
-                // });
+            editButton.addEventListener('click', _ => {
+                this.Page.Edit.showModal(item);
             });
+            const deleteButton = clone.querySelector('[data-button-type=delete]');
+            deleteButton.addEventListener('click', _ => {
+                this.Page.Delete.showModal(item);
+            });
+
 
             this.listBin.appendChild(clone);
         });

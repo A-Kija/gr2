@@ -11,9 +11,7 @@ class Create extends Request {
         .addEventListener('click', this.submitCreate.bind(this));
     }
 
-    response(response) {
-        this.Page.Read.read();
-    }
+
 
     submitCreate() {
         this.create(this.collectData());
@@ -23,15 +21,7 @@ class Create extends Request {
         });
     }
 
-    collectData() {
-        const data = {};
-        this.form.querySelectorAll('[name]')
-        .forEach(input => {
-            data[input.name] = input.value;
-        });
 
-        return data;
-    }
 
 }
 

@@ -1,6 +1,7 @@
 import Create from './Create.js';
 import Read from './Read.js';
 import Edit from './Edit.js';
+import Delete from './Delete.js';
 
 
 class Genre {
@@ -10,6 +11,7 @@ class Genre {
         this.Read = new Read(this);
         this.Create = new Create(this);
         this.Edit = new Edit(this);
+        this.Delete = new Delete(this);
 
 
         
