@@ -39,8 +39,6 @@ class Edit extends Request {
                     }
                 }
 
-
-
             }
         });
         this.form.dataset.id = item.id;
