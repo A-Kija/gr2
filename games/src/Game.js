@@ -2,6 +2,7 @@ import Create from './Create.js';
 import Read from './Read.js';
 import Edit from './Edit.js';
 import Delete from './Delete.js';
+import Select from './Select.js';
 
 
 class Game {
@@ -15,7 +16,7 @@ class Game {
 
         this.rangeHelper(document);
 
-
+        new Select('genres', 'data-select-genres', 'genre_id');
         
     }
 

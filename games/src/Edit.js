@@ -31,7 +31,16 @@ class Edit extends Request {
         const keys = Object.keys(item); //[id, title, ...]
         keys.forEach(key => {
             if (this.form.querySelector(`[name=${key}]`)) {
-                this.form.querySelector(`[name=${key}]`).value = item[key];
+                const i = this.form.querySelector(`[name=${key}]`);
+                if (['text','range'].includes(i.type)) {
+                    i.value = item[key];
+                    if (i.type === 'range') {
+                        i.dispatchEvent(new Event('input'));
+                    }
+                }
+
+
+
             }
         });
         this.form.dataset.id = item.id;

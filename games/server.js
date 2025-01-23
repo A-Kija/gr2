@@ -49,6 +49,23 @@ app.get('/api/genres', (req, res) => {
     });
 });
 
+app.get('/api/games', (req, res) => {
+    const sql = `
+        SELECT games.id, games.title, age, genres.title AS genre
+        FROM games
+        LEFT JOIN genres 
+        ON games.genre_id = genres.id
+    `;
+
+    con.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
+        res.send(result);
+    });
+});
+
 
 app.post('/api/genres', (req, res) => {
     
@@ -68,6 +85,28 @@ app.post('/api/genres', (req, res) => {
             id: result.insertId
         });
     });
+});
+
+app.post('/api/games', (req, res) => {
+
+    const sql = `
+        INSERT INTO games
+        (title, age, genre_id)
+        VALUES (?, ?, ?)
+    `;
+
+    con.query(sql, [req.body.title, req.body.age, req.body.genre_id], (err, result) => {
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
+        res.status(201).send({
+            success: true,
+            id: result.insertId
+        });
+    });
+
+    
 });
 
 app.put('/api/genres/:id', (req, res) => {
