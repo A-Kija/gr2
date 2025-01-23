@@ -89,19 +89,18 @@ var Delete = /*#__PURE__*/function (_Request) {
     _this.modal.querySelectorAll('[data-type="cancel"]').forEach(function (button) {
       button.addEventListener('click', _this.hideModal.bind(_this));
     });
-
-    // this.form.querySelector('[data-type=submit]')
-    // .addEventListener('click', this.submitEdit.bind(this));
+    _this.form.querySelector('[data-type=submit]').addEventListener('click', _this.submitDelete.bind(_this));
     return _this;
   }
-
-  // submitEdit() {
-  //     const id = this.form.dataset.id;
-  //     this.edit(this.collectData(), id);
-  //     this.hideModal();
-  // }
   _inherits(Delete, _Request);
   return _createClass(Delete, [{
+    key: "submitDelete",
+    value: function submitDelete() {
+      var id = this.form.dataset.id;
+      this["delete"](id);
+      this.hideModal();
+    }
+  }, {
     key: "showModal",
     value: function showModal(item) {
       var _this2 = this;
@@ -195,6 +194,58 @@ var Edit = /*#__PURE__*/function (_Request) {
   }]);
 }(_Request_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Edit);
+
+/***/ }),
+
+/***/ "./src/Game.js":
+/*!*********************!*\
+  !*** ./src/Game.js ***!
+  \*********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Create_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Create.js */ "./src/Create.js");
+/* harmony import */ var _Read_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Read.js */ "./src/Read.js");
+/* harmony import */ var _Edit_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Edit.js */ "./src/Edit.js");
+/* harmony import */ var _Delete_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Delete.js */ "./src/Delete.js");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
+
+
+
+var Game = /*#__PURE__*/function () {
+  function Game() {
+    _classCallCheck(this, Game);
+    this.page = 'games';
+    this.Read = new _Read_js__WEBPACK_IMPORTED_MODULE_1__["default"](this);
+    this.Create = new _Create_js__WEBPACK_IMPORTED_MODULE_0__["default"](this);
+    this.Edit = new _Edit_js__WEBPACK_IMPORTED_MODULE_2__["default"](this);
+    this.Delete = new _Delete_js__WEBPACK_IMPORTED_MODULE_3__["default"](this);
+    this.rangeHelper(document);
+  }
+  return _createClass(Game, [{
+    key: "rangeHelper",
+    value: function rangeHelper(el) {
+      el.querySelectorAll('[type=range]').forEach(function (range) {
+        var output = range.closest('div').querySelector('label span');
+        output.innerText = range.value;
+        range.addEventListener('input', function (_) {
+          output.innerText = range.value;
+        });
+      });
+    }
+  }]);
+}();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Game);
 
 /***/ }),
 
@@ -356,11 +407,22 @@ var Request = /*#__PURE__*/function () {
       });
     }
   }, {
+    key: "delete",
+    value: function _delete(id) {
+      var _this3 = this;
+      axios__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"](this.url + '/' + id).then(function (res) {
+        console.log(res);
+        _this3.response(res);
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    }
+  }, {
     key: "read",
     value: function read() {
-      var _this3 = this;
+      var _this4 = this;
       axios__WEBPACK_IMPORTED_MODULE_0__["default"].get(this.url).then(function (res) {
-        _this3.response(res);
+        _this4.response(res);
       })["catch"](function (err) {
         console.log(err);
       });
@@ -394,11 +456,14 @@ var Request = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Genre__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Genre */ "./src/Genre.js");
+/* harmony import */ var _Game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Game */ "./src/Game.js");
 var _main$dataset;
+
 
 var main = document.querySelector('#main');
 switch (main === null || main === void 0 || (_main$dataset = main.dataset) === null || _main$dataset === void 0 ? void 0 : _main$dataset.page) {
   case 'games':
+    new _Game__WEBPACK_IMPORTED_MODULE_1__["default"]();
     break;
   case 'genres':
     new _Genre__WEBPACK_IMPORTED_MODULE_0__["default"]();

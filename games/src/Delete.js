@@ -15,16 +15,16 @@ class Delete extends Request {
         });
         
 
-        // this.form.querySelector('[data-type=submit]')
-        // .addEventListener('click', this.submitEdit.bind(this));
+        this.form.querySelector('[data-type=submit]')
+        .addEventListener('click', this.submitDelete.bind(this));
     }
 
 
-    // submitEdit() {
-    //     const id = this.form.dataset.id;
-    //     this.edit(this.collectData(), id);
-    //     this.hideModal();
-    // }
+    submitDelete() {
+        const id = this.form.dataset.id;
+        this.delete(id);
+        this.hideModal();
+    }
 
     showModal(item) {
         this.modal.style.display = 'block';

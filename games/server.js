@@ -98,6 +98,33 @@ app.put('/api/genres/:id', (req, res) => {
         });
     });
 });
+
+app.delete('/api/genres/:id', (req, res) => {
+    const sql = `
+        DELETE FROM genres
+        WHERE id = ?
+    `;
+
+    con.query(sql, [req.params.id], (err, result) => {
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
+
+        if (result.affectedRows === 0) {
+            res.status(404).send({
+                success: false,
+                message: 'Genre not found'
+            });
+            return;
+        }
+
+        res.send({
+            success: true
+        });
+    });
+
+});
             
 
 con.connect(err => {

@@ -28,6 +28,17 @@ class Request {
         });
     }
 
+    delete(id) {
+        axios.delete(this.url + '/' + id)
+        .then(res => {
+            console.log(res);
+            this.response(res);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
     read() {
         axios.get(this.url)
         .then(res => {
