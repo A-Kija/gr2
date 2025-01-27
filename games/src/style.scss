@@ -14,3 +14,15 @@
 .modal {
     background-color: #00000080;
 }
+
+.msg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    margin: 30px;
+}

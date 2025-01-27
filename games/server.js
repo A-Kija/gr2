@@ -98,7 +98,13 @@ app.post('/api/games', (req, res) => {
 
     con.query(sql, [req.body.title, req.body.age, req.body.genre_id], (err, result) => {
         if (err) {
-            res.status(500).send(err);
+            res.status(500).send({
+                err,
+                msg: {
+                    text: 'Error creating new game',
+                    type: 'danger'
+                }
+            });
             return;
         }
         res.status(201).send({
@@ -165,7 +171,11 @@ app.put('/api/games/:id', (req, res) => {
         }
 
         res.send({
-            success: true
+            success: true,
+            msg: {
+                text: 'Game updated',
+                type: 'success'
+            }
         });
     });
 });
@@ -218,7 +228,11 @@ app.delete('/api/games/:id', (req, res) => {
         }
 
         res.send({
-            success: true
+            success: true,
+            msg: {
+                text: 'Game deleted',
+                type: 'info'
+            }
         });
     });
 

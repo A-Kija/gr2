@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Messages from './Messages';
 
 class Request {
 
@@ -9,8 +10,8 @@ class Request {
     edit(data, id) {
         axios.put(this.url + '/' + id, data)
         .then(res => {
-            console.log(res);
             this.response(res);
+            Messages.addMessage(res);
         })
         .catch(err => {
             console.log(err);
@@ -20,19 +21,20 @@ class Request {
     create(data) {
         axios.post(this.url, data)
         .then(res => {
-            console.log(res);
             this.response(res);
+            Messages.addMessage(res);
         })
         .catch(err => {
             console.log(err);
+            Messages.addMessage(err?.response);
         });
     }
 
     delete(id) {
         axios.delete(this.url + '/' + id)
         .then(res => {
-            console.log(res);
             this.response(res);
+            Messages.addMessage(res);
         })
         .catch(err => {
             console.log(err);

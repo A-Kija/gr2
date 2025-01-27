@@ -11978,3 +11978,15 @@ textarea.form-control-lg {
 .modal {
   background-color: rgba(0, 0, 0, 0.5019607843);
 }
+
+.msg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 400px;
+  margin: 30px;
+}
