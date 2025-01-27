@@ -187,6 +187,9 @@ var Edit = /*#__PURE__*/function (_Request) {
               i.dispatchEvent(new Event('input'));
             }
           }
+          if (i.tagName === 'SELECT') {
+            i.value = item[key];
+          }
         }
       });
       this.form.dataset.id = item.id;

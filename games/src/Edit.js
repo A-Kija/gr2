@@ -38,6 +38,9 @@ class Edit extends Request {
                         i.dispatchEvent(new Event('input'));
                     }
                 }
+                if (i.tagName === 'SELECT') {
+                    i.value = item[key];
+                }
 
             }
         });

@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const fs = require('fs');
+const { type } = require('os');
 
 
 const URL = 'http://localhost:3000/';
@@ -51,7 +52,7 @@ app.get('/api/genres', (req, res) => {
 
 app.get('/api/games', (req, res) => {
     const sql = `
-        SELECT games.id, games.title, age, genres.title AS genre
+        SELECT games.id, games.title, age, genre_id, genres.title AS genre
         FROM games
         LEFT JOIN genres 
         ON games.genre_id = genres.id
@@ -102,7 +103,11 @@ app.post('/api/games', (req, res) => {
         }
         res.status(201).send({
             success: true,
-            id: result.insertId
+            id: result.insertId,
+            msg: {
+                text: 'New game created',
+                type: 'success'
+            }
         });
     });
 
@@ -138,6 +143,33 @@ app.put('/api/genres/:id', (req, res) => {
     });
 });
 
+app.put('/api/games/:id', (req, res) => {
+    const sql = `
+        UPDATE games
+        SET title = ?, age = ?, genre_id = ?
+        WHERE id = ?
+    `;
+
+    con.query(sql, [req.body.title, req.body.age, req.body.genre_id, req.params.id], (err, result) => {
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
+
+        if (result.affectedRows === 0) {
+            res.status(404).send({
+                success: false,
+                message: 'Game not found'
+            });
+            return;
+        }
+
+        res.send({
+            success: true
+        });
+    });
+});
+
 app.delete('/api/genres/:id', (req, res) => {
     const sql = `
         DELETE FROM genres
@@ -154,6 +186,33 @@ app.delete('/api/genres/:id', (req, res) => {
             res.status(404).send({
                 success: false,
                 message: 'Genre not found'
+            });
+            return;
+        }
+
+        res.send({
+            success: true
+        });
+    });
+
+});
+
+app.delete('/api/games/:id', (req, res) => {
+    const sql = `
+        DELETE FROM games
+        WHERE id = ?
+    `;
+
+    con.query(sql, [req.params.id], (err, result) => {
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
+
+        if (result.affectedRows === 0) {
+            res.status(404).send({
+                success: false,
+                message: 'Game not found'
             });
             return;
         }
