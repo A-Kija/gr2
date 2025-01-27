@@ -9,16 +9,44 @@ class Read extends Request {
         this.listBin = document.querySelector('[data-list-bin]');
         this.Page = Page;
 
-        // this.form.querySelector('[data-type=submit]')
-        // .addEventListener('click', this.submitCreate.bind(this));
+        
+
+        this.list.querySelector('[data-type=submit]')
+        .addEventListener('click', this.sortList.bind(this));
+
+        this.list.querySelector('[data-type=search]')
+        .addEventListener('input', this.findList.bind(this));
 
         this.read();
 
 
     }
 
+    sortList() {
+        this.listData.sort((a, b) => a.age - b.age);
+        this.render({data: this.listData});
+    }
+
+    findList() {
+        const search = this.list.querySelector('[data-type=search]').value;
+        const data = this.listData.filter(item => {
+            const keys = Object.keys(item);
+            for (let i = 0; i < keys.length; i++) {
+                if (item[keys[i]].toString().toLowerCase().includes(search.toLowerCase())) {
+                    return true;
+                }
+            }
+            return false;
+        });
+        this.render({data});
+    }
+
     response(response) {
-        console.log(response.data);
+        this.listData = response.data;
+        this.render(response);
+    }
+
+    render(response) {
         this.listBin.innerHTML = '';
         response.data.forEach(item => {
             const clone = this.template.content.cloneNode(true);

@@ -413,21 +413,51 @@ var Read = /*#__PURE__*/function (_Request) {
     _this.template = document.querySelector('[data-list-template]');
     _this.listBin = document.querySelector('[data-list-bin]');
     _this.Page = Page;
-
-    // this.form.querySelector('[data-type=submit]')
-    // .addEventListener('click', this.submitCreate.bind(this));
-
+    _this.list.querySelector('[data-type=submit]').addEventListener('click', _this.sortList.bind(_this));
+    _this.list.querySelector('[data-type=search]').addEventListener('input', _this.findList.bind(_this));
     _this.read();
     return _this;
   }
   _inherits(Read, _Request);
   return _createClass(Read, [{
+    key: "sortList",
+    value: function sortList() {
+      this.listData.sort(function (a, b) {
+        return a.age - b.age;
+      });
+      this.render({
+        data: this.listData
+      });
+    }
+  }, {
+    key: "findList",
+    value: function findList() {
+      var search = this.list.querySelector('[data-type=search]').value;
+      var data = this.listData.filter(function (item) {
+        var keys = Object.keys(item);
+        for (var i = 0; i < keys.length; i++) {
+          if (item[keys[i]].toString().toLowerCase().includes(search.toLowerCase())) {
+            return true;
+          }
+        }
+        return false;
+      });
+      this.render({
+        data: data
+      });
+    }
+  }, {
     key: "response",
     value: function response(_response) {
+      this.listData = _response.data;
+      this.render(_response);
+    }
+  }, {
+    key: "render",
+    value: function render(response) {
       var _this2 = this;
-      console.log(_response.data);
       this.listBin.innerHTML = '';
-      _response.data.forEach(function (item) {
+      response.data.forEach(function (item) {
         var clone = _this2.template.content.cloneNode(true);
         var keys = Object.keys(item); //[id, title, ...]
         keys.forEach(function (key) {
