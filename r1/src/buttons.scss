@@ -1,0 +1,95 @@
+$red: #B74F6F;
+$gray: #ADBDFF;
+$blue: #3185FC;
+$green: #80CFA9;
+$yellow: #F18F01;
+
+button {
+    appearance: none;
+    backface-visibility: hidden;
+    background-color: $gray;
+    border-radius: 10px;
+    border-style: none;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Inter, -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    height: 50px;
+    letter-spacing: normal;
+    line-height: 1.5;
+    outline: none;
+    overflow: hidden;
+    padding: 14px 30px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transform: translate3d(0, 0, 0);
+    transition: all .3s;
+    user-select: none;
+    touch-action: manipulation;
+    vertical-align: top;
+    white-space: nowrap;
+    margin: 10px;
+
+    &:hover {
+        background-color: darken($gray, 5%);
+        box-shadow: rgba(0, 0, 0, .05) 0 5px 30px, rgba(0, 0, 0, .05) 0 1px 4px;
+        opacity: 1;
+        transform: translateY(0);
+        transition-duration: .35s;
+
+        &:after {
+            opacity: .5;
+        }
+    }
+
+    &:active {
+        box-shadow: rgba(0, 0, 0, .1) 0 3px 6px 0, rgba(0, 0, 0, .1) 0 0 10px 0, rgba(0, 0, 0, .1) 0 1px 4px -1px;
+        transform: translateY(2px);
+        transition-duration: .35s;
+
+        &:after {
+            opacity: 1;
+        }
+    }
+    &.red {
+        background-color: $red;
+
+        &:hover {
+            background-color: darken($red, 5%);
+        }
+    }
+    &.blue {
+        background-color: $blue;
+
+        &:hover {
+            background-color: darken($blue, 5%);
+        }
+    }
+    &.green {
+        background-color: $green;
+
+        &:hover {
+            background-color: darken($green, 5%);
+        }
+    }
+    &.yellow {
+        background-color: $yellow;
+
+        &:hover {
+            background-color: darken($yellow, 5%);
+        }
+    }
+    &:disabled {
+        background-color: gray;
+        cursor: default;
+        opacity: .5;
+        &:hover {
+            background-color: gray;
+        }
+    }
+}

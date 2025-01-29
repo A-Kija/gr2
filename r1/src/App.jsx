@@ -1,12 +1,34 @@
 import './app.css';
+import './buttons.scss';
 import RandomNumber from './Components/042/RandomNumber';
 import randColor from './Functions/randColor';
 import rand from './Functions/rand';
-import Bebras from './Components/042/Bebras';
+// import Bebras from './Components/042/Bebras';
+// import A from './Components/042/A';
 
 
 export default function App() {
 
+    const goGreen = _ => {
+        console.log('Go Green!');
+    }
+
+    const goBlue = nr => {
+        console.log('Go Blue!', nr);
+    }
+
+    const goRed = e => {
+        console.log('Go Red!', e.target);
+    }
+
+    const goYellow = (e, nr) => {
+        console.log('Go Yellow!', nr, e.target);
+    }
+ 
+
+    const pvz = _ => goBlue(3);
+
+    
     return (
         <div className="App">
             <header className="App-header">
@@ -16,9 +38,17 @@ export default function App() {
                     marginBottom: rand(1, 3) * 20 + 'px'
                 }}>Random number:</h2>
                 <RandomNumber />
-                <Bebras spalva="crimson" dydis="10px" />
-                <Bebras spalva="green" dydis="20px" />
-                <Bebras spalva="purple" dydis="31px" />
+                {/* <Bebras spalva="crimson" dydis={rand} />
+                <Bebras spalva="green" dydis={rand} />
+                <Bebras spalva="purple" dydis={rand} />
+                <A kasNors="Hello Africa!" /> */}
+                <button className="green" onClick={goGreen}>Green</button>
+                <button className="blue" onClick={_ => goBlue(1)}>Blue 1</button>
+                <button className="blue" onClick={_ => goBlue(2)}>Blue 2</button>
+                <button className="blue" onClick={pvz}>Blue 3</button>
+                <button className="red" onClick={goRed}>Red</button>
+                <button className="yellow" onClick={e => goYellow(e, 1)}>Yellow 1</button>
+                <button className="yellow" onClick={e => goYellow(e, 2)}>Yellow 2</button>
             </header>
         </div>
     );
