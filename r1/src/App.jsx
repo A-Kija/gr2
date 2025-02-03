@@ -28,7 +28,9 @@ export default function App() {
         setSq(prev => [...prev, {
             digit: rand(1000, 9999),
             id: uuidv4(),
-            color: randColor()
+            color: randColor(),
+            show: true,
+            row: prev.length
         }]);
     }
 
@@ -40,10 +42,63 @@ export default function App() {
             arr.push({
                 digit: rand(1000, 9999),
                 id: uuidv4(),
-                color: randColor()
+                color: randColor(),
+                show: true,
+                row: sq.length + i
             });
         }
         setSq(prev => [...prev, ...arr]);
+    }
+
+    const sortByDigits = _ => {
+        setSq(prev => prev.toSorted((a, b) => a.digit - b.digit));
+    }
+
+    const filterMore5000 = _ => {
+        setSq(prev => prev.map(s => ({ ...s, show: s.digit > 5000 })));
+    }
+
+    const showAll = _ => {
+        setSq(prev => prev.map(s => ({ ...s, show: true })));
+    }
+
+    const sortDefault = _ => {
+        setSq(prev => prev.toSorted((a, b) => a.row - b.row));
+    }
+
+    const removeSq = id => {
+        setSq(prev => prev.filter(s => s.id !== id));
+    }
+
+    const toggleRotate = id => {
+        setSq(prev => prev.map(s => {
+            if (s.id !== id) {
+                return s;
+            }
+            if (s.rotate) {
+                delete s.rotate;
+            } else {
+                s.rotate = true;
+            }
+            return s;
+        }));
+    }
+
+
+    const rotateAll = _ => {
+        sq.forEach(s => {
+            setTimeout(() => {
+                setSq(prev => prev.map(sq => {
+                    if (sq.id !== s.id) {
+                        return sq;
+                    }
+                    s.rotate = true;
+                    return sq;
+                }))
+            }, rand(0, 5000));
+        });
+
+
     }
 
 
@@ -54,13 +109,18 @@ export default function App() {
 
                 <div className='sq-bin'>
                     {
-                        sq.map(s => <Sq key={s.id} sq={s} />)
+                        sq.map(s => s.show ? <Sq key={s.id} sq={s} removeSq={removeSq} toggleRotate={toggleRotate} /> : null)
                     }
                 </div>
                 <div className='sq-bin'>
                     <button className="green" onClick={addSq}>Add</button>
                     <button className="red" onClick={reset}>Reset</button>
                     <button className="yellow" onClick={add20Sq}>Add 20</button>
+                    <button className="blue" onClick={sortByDigits}>Sort Digits</button>
+                    <button className="green" onClick={sortDefault}>Sort Default</button>
+                    <button className="blue" onClick={filterMore5000}>Show 5000</button>
+                    <button className="green" onClick={showAll}>Show All</button>
+                    <button className="green" onClick={rotateAll}>Rotate All</button>
                 </div>
 
 
@@ -70,5 +130,7 @@ export default function App() {
         </div>
     );
 }
+
+//1. Padaryti mygtuką, kuris pradeda sukti visus kvadratus
 
 
