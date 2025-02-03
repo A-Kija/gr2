@@ -87,7 +87,7 @@ export default function App() {
 
     const rotateAll = _ => {
         sq.forEach(s => {
-            setTimeout(() => {
+            setTimeout(_ => {
                 setSq(prev => prev.map(sq => {
                     if (sq.id !== s.id) {
                         return sq;
