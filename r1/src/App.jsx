@@ -1,39 +1,74 @@
-import './app.css';
+import './app.scss';
 import './buttons.scss';
-import A from './Components/043/A';
-import B from './Components/043/B';
-import {useState} from 'react';
-import C from './Components/043/C';
+import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
+import rand from './Functions/rand';
+import randColor from './Functions/randColor';
+import Sq from './Components/044/Sq';
 
 
 export default function App() {
 
-    const [count1, setCount1] = useState(0);
-    const [count2, setCount2] = useState(0);
-    const [count3, setCount3] = useState(0);
+    const [sq, setSq] = useState([]);
 
-    
+
+    // const doWithFor = _ => {
+    //     let arr = [];
+    //     for (let i = 0; i < sq.length; i++) {
+    //         arr.push(<div key={i} className="sq"></div>);
+    //     }
+    //     console.log(arr);
+    //     return arr;
+    // }
+
+    // const el9 = doWithFor();
+
+    const addSq = _ => {
+        setSq(prev => [...prev, {
+            digit: rand(1000, 9999),
+            id: uuidv4(),
+            color: randColor()
+        }]);
+    }
+
+    const reset = _ => setSq([]);
+
+    const add20Sq = _ => {
+        let arr = [];
+        for (let i = 0; i < 20; i++) {
+            arr.push({
+                digit: rand(1000, 9999),
+                id: uuidv4(),
+                color: randColor()
+            });
+        }
+        setSq(prev => [...prev, ...arr]);
+    }
+
+
+
     return (
         <div className="App">
             <header className="App-header">
 
-                <A count1={count1}/>
-                <button className="green" onClick={_ => setCount1(c => c + 1)}>+1</button>
-                
-                <B count2={count2}/>
-                <button className="blue" onClick={_ => setCount2(c => c + 1)}>+1</button>
+                <div className='sq-bin'>
+                    {
+                        sq.map(s => <Sq key={s.id} sq={s} />)
+                    }
+                </div>
+                <div className='sq-bin'>
+                    <button className="green" onClick={addSq}>Add</button>
+                    <button className="red" onClick={reset}>Reset</button>
+                    <button className="yellow" onClick={add20Sq}>Add 20</button>
+                </div>
 
-                <h2>Count: {count3} </h2>
-                <C setCount3={setCount3} />
 
-     
+
+
             </header>
         </div>
     );
 }
 
 
-//1. Sukurti naują React komponentą A ir įdėti į APP. Sukurti mygtuką ir steitą, kuriame yra skaičius, kuris didėja vienetu. Skaičių atvaizduot komponente A.
-//2. Sukurti naują React komponentą B ir įdėti į APP. Sukurti mygtuką ir steitą, kuriame yra skaičius, kuris didėja trejetu. Skaičių atvaizduot komponente B.
-
-//3. Sukurti naują React komponentą C ir įdėti į APP. Jame pridėti mygtuką, kurį paspaudus padidėja skaičius vienetu. Skaičių atvaizduoti komponente APP.

@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+.sq-bin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80vw;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 30px;
+  .sq {
+    width: 100px;
+    height: 100px;
+    background-color: #80808060;
+    border: 1px solid #808080;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    border-radius: 10px;
+  }
+}
