@@ -99,5 +99,27 @@ fieldset {
     gap: 5px;
     margin-top: 10px;
     flex-direction: column;
+    &.checkbox {
+      flex-direction: row;
+      min-width: 280px;
+      input {
+        display: none;
+      }
+      label {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        cursor: pointer;
+        svg {
+          width: 24px;
+          height: 24px;
+        }
+      }
+      span {
+        margin-left: 15px;
+        display: block;
+      }
+
+    }
   }
 }
