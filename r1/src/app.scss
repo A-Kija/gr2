@@ -58,5 +58,46 @@
     font-size: 24px;
     border-radius: 10px;
     user-select: none;
+    &.black {
+      background-color: black;
+      flex-direction: column;
+      width: 200px;
+      height: 200px;
+    }
+  }
+}
+
+
+fieldset {
+  border: 1px solid skyblue;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px;
+  legend {
+    padding: 0 0px;
+    font-size: 20px;
+    font-family: monospace;
+    color: steelblue;
+  }
+  label {
+    font-size: 16px;
+    font-family: monospace;
+    color: steelblue;
+  }
+  input, select {
+    font-size: 22px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: darkcyan;
+    border: none;
+    outline: none;
+    color: white;
+    min-width: 280px;
+  }
+  div {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+    flex-direction: column;
   }
 }
