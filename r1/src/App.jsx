@@ -1,7 +1,7 @@
 import './buttons.scss';
 import './crud.scss';
 import Create from './Components/crud/Create';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as C from './Components/crud/constants';
 
@@ -31,7 +31,7 @@ export default function App() {
         <div className="container">
             <div className="row">
                 <div className="col-4">
-                    <Create />
+                    <Create setStoreData={setStoreData} />
                 </div>
                 <div className="col-8">
                     List
