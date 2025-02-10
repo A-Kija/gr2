@@ -9,4 +9,51 @@
 
 button {
     border-radius: 10px;
+    min-width: 110px;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 5px;
+}
+
+.sat-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    span, div {
+        font-size: 12px;
+        color:darkgoldenrod;
+        border-bottom: 1px solid lightgray;
+        padding-bottom: 5px;
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+    div {
+        border: none;
+        color: coral;
+    }
+}
+
+.planet-color span {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.planet-size {
+    font-family: monospace;
+    font-size: 14px;
+}
+
+.planet-name {
+    color: orange;
+    font-size: 20px;
+    font-weight: bold;
 }

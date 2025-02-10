@@ -30,8 +30,30 @@ con.connect(err => {
     console.log('Prisijungimas prie DB buvo sėkmingas');
 });
 
-//CREATE
+// READ
+app.get('/', (req, res) => {
 
+    setTimeout(_ => { // Simulate server delay
+        const sql = `
+        SELECT * 
+        FROM 
+        planets
+        ORDER BY id DESC
+        `;
+        con.query(sql, (err, result) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            result = result.map(planet => ({ ...planet, satellites: JSON.parse(planet.satellites) }));
+            res.json(result);
+        });
+    }, 3700);
+});
+
+
+
+// CREATE
 app.post('/', (req, res) => {
     const { name, size, color_hex, satellites } = req.body;
     const sats = JSON.stringify(satellites);
@@ -41,10 +63,10 @@ app.post('/', (req, res) => {
         VALUES (?,?,?,?)`;
     con.query(sql, [name, size, color_hex, sats], (err) => {
         if (err) {
-            res.status(500).send({ error: err.message });
+            res.status(500).json({ error: err.message });
             return;
         }
-        res.send({ success: true });
+        res.json({ success: true });
     });
 });
 
