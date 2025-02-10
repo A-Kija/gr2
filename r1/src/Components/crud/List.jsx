@@ -10,7 +10,9 @@ export default function List({ planets }) {
                     {
                         planets !== null
                             ? planets.map(planet => (
-                                <li key={planet.id} className="list-group-item">
+                                <li key={planet.id} className="list-group-item" style={{
+                                     backgroundColor: planet.temp ? '#f8d7da' : 'white'
+                                     }}>
                                     <div className="row">
                                         <div className="col-3 planet-name">{planet.name}</div>
                                         <div className="col-2 planet-size">{planet.size} km</div>
@@ -27,8 +29,8 @@ export default function List({ planets }) {
                                             }
                                         </div>
                                         <div className="col-4 actions">
-                                            <button className="red">Delete</button>
-                                            <button className="green">Edit</button>
+                                            <button className="red" disabled={!!planet.temp}>Delete</button>
+                                            <button className="green" disabled={!!planet.temp}>Edit</button>
                                         </div>
                                     </div>
                                 </li>)

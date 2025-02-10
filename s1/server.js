@@ -48,26 +48,36 @@ app.get('/', (req, res) => {
             result = result.map(planet => ({ ...planet, satellites: JSON.parse(planet.satellites) }));
             res.json(result);
         });
-    }, 3700);
+    }, 700);
 });
 
 
 
 // CREATE
 app.post('/', (req, res) => {
-    const { name, size, color_hex, satellites } = req.body;
-    const sats = JSON.stringify(satellites);
-    const sql = `
+
+    setTimeout(_ => { // Simulate server delay
+        const { name, size, color_hex, satellites } = req.body;
+
+        if (!name) {
+            res.status(422).json({ error: 'Neteisingai įvestas planetos pavadinimas' });
+            return;
+        }
+
+        const sats = JSON.stringify(satellites);
+        const sql = `
         INSERT INTO planets
         (name, size, color_hex, satellites)
         VALUES (?,?,?,?)`;
-    con.query(sql, [name, size, color_hex, sats], (err) => {
-        if (err) {
-            res.status(500).json({ error: err.message });
-            return;
-        }
-        res.json({ success: true });
-    });
+        con.query(sql, [name, size, color_hex, sats], (err, result) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            const id = result.insertId;
+            res.json({ success: true, id });
+        });
+    }, 2000);
 });
 
 

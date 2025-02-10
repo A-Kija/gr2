@@ -1,10 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as C from './constants';
 
-export default function Create({ setStoreData }) {
+export default function Create({ setStoreData, createData }) {
 
     const [satellites, setSatellites] = useState([]);
     const [planet, setPlanet] = useState(C.defaultPlanet);
+
+    useEffect(_ => {
+        if (null === createData) {
+            return;
+        }
+        setPlanet({
+            color_hex: '#' + createData.color_hex,
+            name: createData.name,
+            size: createData.size
+        });
+        setSatellites(createData.satellites);
+    }, [createData]);
 
     const handlePlanet = e => {
         console.log(e.target.name, e.target.value);
