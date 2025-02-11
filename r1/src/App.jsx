@@ -6,6 +6,7 @@ import axios from 'axios';
 import * as C from './Components/crud/constants';
 import List from './Components/crud/List';
 import { v4 as uuid4 } from 'uuid';
+import Edit from './Components/crud/Edit';
 
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
 
     const [createData, setCreateData] = useState(null);
     const [storeData, setStoreData] = useState(null);
+    const [editData, setEditData] = useState(null);
 
     useEffect(_ => {
         axios.get(C.serverUrl)
@@ -34,7 +36,7 @@ export default function App() {
         }
         const id = uuid4();
         setPlanets(p => [{ ...storeData, id, temp: true }, ...p]);
-        
+
         axios.post(C.serverUrl, storeData)
             .then(res => {
                 if (res.data.success) {
@@ -56,15 +58,18 @@ export default function App() {
     }, [storeData]);
 
     return (
-        <div className="container">
-            <div className="row">
-                <div className="col-4">
-                    <Create setStoreData={setStoreData} createData={createData} />
-                </div>
-                <div className="col-8">
-                    <List planets={planets} />
+        <>
+            <div className="container">
+                <div className="row">
+                    <div className="col-4">
+                        <Create setStoreData={setStoreData} createData={createData} />
+                    </div>
+                    <div className="col-8">
+                        <List planets={planets} setEditData={setEditData} />
+                    </div>
                 </div>
             </div>
-        </div>
+            {editData !== null && <Edit setEditData={setEditData} editData={editData} />}
+        </>
     );
 }

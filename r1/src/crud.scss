@@ -7,7 +7,7 @@
     margin-bottom: 5px;
 }
 
-button {
+button:not(.btn-close) {
     border-radius: 10px;
     min-width: 110px;
 }
@@ -56,4 +56,9 @@ button {
     color: orange;
     font-size: 20px;
     font-weight: bold;
+}
+
+.modal {
+    display: block;
+    background-color: rgba(0, 0, 0, 0.5);
 }

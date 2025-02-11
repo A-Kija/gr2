@@ -1,4 +1,4 @@
-export default function List({ planets }) {
+export default function List({ planets, setEditData }) {
 
     return (
         <div className="card mt-5">
@@ -30,7 +30,7 @@ export default function List({ planets }) {
                                         </div>
                                         <div className="col-4 actions">
                                             <button className="red" disabled={!!planet.temp}>Delete</button>
-                                            <button className="green" disabled={!!planet.temp}>Edit</button>
+                                            <button className="green" disabled={!!planet.temp} onClick={_ => setEditData(planet)}>Edit</button>
                                         </div>
                                     </div>
                                 </li>)
