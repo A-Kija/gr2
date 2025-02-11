@@ -19,7 +19,6 @@ export default function Create({ setStoreData, createData }) {
     }, [createData]);
 
     const handlePlanet = e => {
-        console.log(e.target.name, e.target.value);
         setPlanet({ ...planet, [e.target.name]: e.target.value });
     }
 

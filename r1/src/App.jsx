@@ -18,6 +18,7 @@ export default function App() {
     const [createData, setCreateData] = useState(null);
     const [storeData, setStoreData] = useState(null);
     const [editData, setEditData] = useState(null);
+    const [updateData, setUpdateData] = useState(null);
 
     useEffect(_ => {
         axios.get(C.serverUrl)
@@ -57,6 +58,48 @@ export default function App() {
 
     }, [storeData]);
 
+
+    useEffect(_ => {
+        if (null === updateData) {
+            return;
+        }
+        const id = updateData.id;
+        delete updateData.id;
+
+        setPlanets(p => p.map(planet => {
+            if (planet.id === id) {
+                return { ...planet, ...updateData, temp: true, copy: { ...planet } };
+            }
+            return planet;
+        }));
+
+        axios.put(C.serverUrl + id, { ...updateData })
+            .then(res => {
+                if (res.data.success) {
+                    setPlanets(p => p.map(planet => {
+                        if (planet.id === id) {
+                            delete planet.temp;
+                            delete planet.copy;
+                        }
+                        return planet;
+                    }));
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                setPlanets(p => p.map(planet => {
+                    if (planet.id === id) {
+                        
+                        return { ...planet.copy };
+                    }
+                    return planet;
+                }
+                ));
+                setEditData({...updateData, id});
+            });
+
+    }, [updateData]);
+
     return (
         <>
             <div className="container">
@@ -69,7 +112,7 @@ export default function App() {
                     </div>
                 </div>
             </div>
-            {editData !== null && <Edit setEditData={setEditData} editData={editData} />}
+            {editData !== null && <Edit setEditData={setEditData} editData={editData} setUpdateData={setUpdateData} />}
         </>
     );
 }

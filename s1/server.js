@@ -81,6 +81,34 @@ app.post('/', (req, res) => {
 });
 
 
+//UPDATE
+
+app.put('/:id', (req, res) => {
+    
+    setTimeout(_ => { // Simulate server delay
+        const { name, size, color_hex, satellites } = req.body;
+        const id = req.params.id;
+
+        if (!name) {
+            res.status(422).json({ error: 'Neteisingai įvestas planetos pavadinimas' });
+            return;
+        }
+
+        const sats = JSON.stringify(satellites);
+        const sql = `
+        UPDATE planets
+        SET name = ?, size = ?, color_hex = ?, satellites = ?
+        WHERE id = ?`;
+        con.query(sql, [name, size, color_hex, sats, id], (err, result) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            res.json({ success: true });
+        });
+    }, 2000);
+});
+
 
 
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as C from './constants';
 
-export default function Edit({ setEditData, editData }) {
+export default function Edit({ setEditData, editData, setUpdateData }) {
 
     const [satellites, setSatellites] = useState([]);
         const [planet, setPlanet] = useState(C.defaultPlanet);
@@ -19,7 +19,6 @@ export default function Edit({ setEditData, editData }) {
         }, [editData]);
     
         const handlePlanet = e => {
-            console.log(e.target.name, e.target.value);
             setPlanet({ ...planet, [e.target.name]: e.target.value });
         }
     
@@ -35,16 +34,16 @@ export default function Edit({ setEditData, editData }) {
             setSatellites(s => s.map((sat, i) => i === index ? e.target.value : sat));
         }
     
-        // const submit = _ => {
-        //     setStoreData({
-        //         color_hex: planet.color_hex.replace('#', ''),
-        //         name: planet.name,
-        //         size: parseInt(planet.size),
-        //         satellites
-        //     });
-        //     setPlanet(C.defaultPlanet);
-        //     setSatellites([]);
-        // }
+        const submit = _ => {
+            setUpdateData({
+                color_hex: planet.color_hex.replace('#', ''),
+                name: planet.name,
+                size: parseInt(planet.size),
+                satellites,
+                id: editData.id
+            });
+            setEditData(null);
+        }
 
     return (
         <div className="modal">
@@ -82,7 +81,7 @@ export default function Edit({ setEditData, editData }) {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="blue" onClick={_ => setEditData(null)}>Close</button>
-                        <button type="button" className="green">Save changes</button>
+                        <button type="button" className="green" onClick={submit}>Save changes</button>
                     </div>
                 </div>
             </div>
