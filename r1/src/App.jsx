@@ -7,6 +7,8 @@ import * as C from './Components/crud/constants';
 import List from './Components/crud/List';
 import { v4 as uuid4 } from 'uuid';
 import Edit from './Components/crud/Edit';
+import Delete from './Components/crud/Delete';
+import Messages from './Components/crud/Messages';
 
 
 export default function App() {
@@ -19,6 +21,9 @@ export default function App() {
     const [storeData, setStoreData] = useState(null);
     const [editData, setEditData] = useState(null);
     const [updateData, setUpdateData] = useState(null);
+    const [deleteData, setDeleteData] = useState(null);
+    const [destroyData, setDestroyData] = useState(null);
+    const [messages, setMessages] = useState([]);
 
     useEffect(_ => {
         axios.get(C.serverUrl)
@@ -89,16 +94,52 @@ export default function App() {
                 console.error(error);
                 setPlanets(p => p.map(planet => {
                     if (planet.id === id) {
-                        
+
                         return { ...planet.copy };
                     }
                     return planet;
                 }
                 ));
-                setEditData({...updateData, id});
+                setEditData({ ...updateData, id });
             });
 
     }, [updateData]);
+
+
+    useEffect(_ => {
+        if (null === destroyData) {
+            return;
+        }
+        const id = destroyData.id;
+
+        setDeleteData(null);
+
+        setPlanets(p => p.map(planet => {
+            if (planet.id === id) {
+                return { ...planet, temp: true};
+            }
+            return planet;
+        }));
+
+        axios.delete(C.serverUrl + id)
+            .then(res => {
+                if (res.data.success) {
+                    setPlanets(p => p.filter(planet => planet.id !== id));
+                }
+            })
+            .catch(error => {
+                console.error(error);
+
+                setPlanets(p => p.map(planet => {
+                    if (planet.id === id) {
+                        delete planet.temp;
+                    }
+                    return planet;
+                }));
+  
+            });
+
+    }, [destroyData]);
 
     return (
         <>
@@ -108,11 +149,13 @@ export default function App() {
                         <Create setStoreData={setStoreData} createData={createData} />
                     </div>
                     <div className="col-8">
-                        <List planets={planets} setEditData={setEditData} />
+                        <List planets={planets} setEditData={setEditData} setDeleteData={setDeleteData} />
                     </div>
                 </div>
             </div>
             {editData !== null && <Edit setEditData={setEditData} editData={editData} setUpdateData={setUpdateData} />}
+            {deleteData !== null && <Delete setDeleteData={setDeleteData} deleteData={deleteData} setDestroyData={setDestroyData} />}
+            <Messages messages={messages} />
         </>
     );
 }

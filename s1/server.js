@@ -109,6 +109,32 @@ app.put('/:id', (req, res) => {
     }, 2000);
 });
 
+// DELETE
+app.delete('/:id', (req, res) => {
+    
+    setTimeout(_ => { // Simulate server delay
+
+        const id = req.params.id;
+
+        if (parseInt(id) === 8) {
+            res.status(422).json({ error: 'Planeta yra nesunaikinama!' });
+            return;
+        }
+
+
+        const sql = `
+        DELETE FROM planets
+        WHERE id = ?`;
+        con.query(sql, [id], (err, result) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            res.json({ success: true });
+        });
+    }, 2000);
+});
+
 
 
 
