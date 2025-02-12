@@ -1,7 +1,7 @@
 import './buttons.scss';
 import './crud.scss';
 import Create from './Components/crud/Create';
-import { useCallback, useEffect, useState } from 'react';
+import { useRef, useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import * as C from './Components/crud/constants';
 import List from './Components/crud/List';
@@ -10,10 +10,12 @@ import Edit from './Components/crud/Edit';
 import Delete from './Components/crud/Delete';
 import Messages from './Components/crud/Messages';
 
-
 export default function App() {
 
     // const [refreshTime, setRefreshTime] = useState(Date.now()); // timestamp
+
+    const pageLoaded = useRef(false);
+    const sortRow = useRef(0);
 
     const [planets, setPlanets] = useState(null);
 
@@ -24,6 +26,8 @@ export default function App() {
     const [deleteData, setDeleteData] = useState(null);
     const [destroyData, setDestroyData] = useState(null);
     const [messages, setMessages] = useState([]);
+
+    const [sort, setSort] = useState(0);
 
     const addMessage = useCallback(msg => {
         const id = uuid4();
@@ -66,9 +70,24 @@ export default function App() {
     };
 
     useEffect(_ => {
+        if (!pageLoaded.current) {
+            pageLoaded.current = true;
+            return;
+        }
+
+        if (0 === sort) {
+            setPlanets(p => p.toSorted((a, b) => a.row - b.row));
+        } else if (1 === sort) {
+            setPlanets(p => p.toSorted((a, b) => a.size - b.size));
+        } else {
+            setPlanets(p => p.toSorted((a, b) => b.size - a.size));
+        }
+    }, [sort, pageLoaded]);
+
+    useEffect(_ => {
         axios.get(C.serverUrl)
             .then(res => {
-                setPlanets(res.data);
+                setPlanets(res.data.map((p, i) => ({ ...p, row: i})));
             })
             .catch(error => {
                 console.error(error);
@@ -81,7 +100,7 @@ export default function App() {
             return;
         }
         const id = uuid4();
-        setPlanets(p => [{ ...storeData, id, temp: true }, ...p]);
+        setPlanets(p => [{ ...storeData, id, temp: true, row: --sortRow.current }, ...p]);
 
         const msgId = addMessage({
             type: 'info',
@@ -210,7 +229,7 @@ export default function App() {
                         <Create setStoreData={setStoreData} createData={createData} />
                     </div>
                     <div className="col-8">
-                        <List planets={planets} setEditData={setEditData} setDeleteData={setDeleteData} />
+                        <List sort={sort} setSort={setSort} planets={planets} setEditData={setEditData} setDeleteData={setDeleteData} />
                     </div>
                 </div>
             </div>

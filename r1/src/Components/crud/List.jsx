@@ -1,4 +1,14 @@
-export default function List({ planets, setEditData, setDeleteData }) {
+const sortTexts = [
+    'sort by size 0-9', // no sort
+    'sort by size 9-0', // 0-9
+    'No sort'// 9-0
+];
+
+export default function List({ planets, setEditData, setDeleteData, setSort, sort }) {
+
+    const doSort = _ => {
+        setSort(s => s + 1 > 2 ? 0 : s + 1);
+    };
 
     return (
         <div className="card mt-5">
@@ -41,7 +51,7 @@ export default function List({ planets, setEditData, setDeleteData }) {
             </div>
 
             <div className="card-footer">
-
+                    <button className="yellow" onClick={doSort}>{sortTexts[sort]}</button>
             </div>
         </div>
     );
