@@ -1,4 +1,4 @@
-export default function Messages({ messages }) {
+export default function Messages({ messages, removeMessage }) {
 
 
     if (0 === messages.length) {
@@ -11,9 +11,9 @@ export default function Messages({ messages }) {
         <div className="msg-container">
             {
                 messages.map(msg => (
-                    <div class={`alert alert-${msg.type} alert-dismissible`}>
+                    <div key={msg.id} className={`alert alert-${msg.type} alert-dismissible`}>
                         <strong>{msg.title}</strong> {msg.text}
-                        <button type="button" class="btn-close" aria-label="Close"></button>
+                        <button type="button" onClick={_ => removeMessage(msg.id)} className="btn-close" aria-label="Close"></button>
                     </div>
                 ))
             }

@@ -1,7 +1,7 @@
 import './buttons.scss';
 import './crud.scss';
 import Create from './Components/crud/Create';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import * as C from './Components/crud/constants';
 import List from './Components/crud/List';
@@ -25,6 +25,46 @@ export default function App() {
     const [destroyData, setDestroyData] = useState(null);
     const [messages, setMessages] = useState([]);
 
+    const addMessage = useCallback(msg => {
+        const id = uuid4();
+
+        const stId = setTimeout(_ => {
+            setMessages(m => m.filter(msg => msg.id !== id));
+        }, 5000);
+
+        setMessages(m => [...m, { ...msg, id, stId }]);
+
+        return id;
+    }, []);
+
+    const updateMessage = useCallback((msg, id) => {
+        setMessages(m => {
+            let updated = false;
+            const M = m.map(message => {
+                if (message.id === id) {
+                    updated = true;
+                    clearTimeout(message.stId);
+                    setTimeout(_ => {
+                        setMessages(m => m.filter(msg => msg.id !== id));
+                    }, 5000);
+                    return { ...msg, id };
+                }
+                return message;
+            });
+            if (!updated) {
+                setTimeout(_ => {
+                    setMessages(m => m.filter(msg => msg.id !== id));
+                }, 5000);
+                return [...M, { ...msg, id }];
+            }
+            return M;
+        });
+    }, [addMessage]);
+
+    const removeMessage = id => {
+        setMessages(m => m.filter(msg => msg.id !== id));
+    };
+
     useEffect(_ => {
         axios.get(C.serverUrl)
             .then(res => {
@@ -43,6 +83,12 @@ export default function App() {
         const id = uuid4();
         setPlanets(p => [{ ...storeData, id, temp: true }, ...p]);
 
+        const msgId = addMessage({
+            type: 'info',
+            title: 'Planeta kuriasi...',
+            text: `Planeta ${storeData.name} skrenda į atvirą kosmosą...`
+        });
+
         axios.post(C.serverUrl, storeData)
             .then(res => {
                 if (res.data.success) {
@@ -53,6 +99,7 @@ export default function App() {
                         }
                         return planet;
                     }));
+                    updateMessage(res.data.message, msgId);
                 }
             })
             .catch(error => {
@@ -61,7 +108,7 @@ export default function App() {
                 setPlanets(p => p.filter(planet => planet.id !== id));
             });
 
-    }, [storeData]);
+    }, [storeData, addMessage, updateMessage]);
 
 
     useEffect(_ => {
@@ -70,6 +117,12 @@ export default function App() {
         }
         const id = updateData.id;
         delete updateData.id;
+
+        const msgId = addMessage({
+            type: 'info',
+            title: 'Planeta atnaujinama...',
+            text: `Planeta ${updateData.name} atnaujinama...`
+        });
 
         setPlanets(p => p.map(planet => {
             if (planet.id === id) {
@@ -88,6 +141,7 @@ export default function App() {
                         }
                         return planet;
                     }));
+                    updateMessage(res.data.message, msgId);
                 }
             })
             .catch(error => {
@@ -103,7 +157,7 @@ export default function App() {
                 setEditData({ ...updateData, id });
             });
 
-    }, [updateData]);
+    }, [updateData, addMessage, updateMessage]);
 
 
     useEffect(_ => {
@@ -114,9 +168,15 @@ export default function App() {
 
         setDeleteData(null);
 
+        const msgId = addMessage({
+            type: 'info',
+            title: 'Planeta sunaikinama...',
+            text: `Planeta ${destroyData.name} sunaikinama...`
+        });
+
         setPlanets(p => p.map(planet => {
             if (planet.id === id) {
-                return { ...planet, temp: true};
+                return { ...planet, temp: true };
             }
             return planet;
         }));
@@ -125,6 +185,7 @@ export default function App() {
             .then(res => {
                 if (res.data.success) {
                     setPlanets(p => p.filter(planet => planet.id !== id));
+                    updateMessage(res.data.message, msgId);
                 }
             })
             .catch(error => {
@@ -136,10 +197,10 @@ export default function App() {
                     }
                     return planet;
                 }));
-  
+
             });
 
-    }, [destroyData]);
+    }, [destroyData, addMessage, updateMessage]);
 
     return (
         <>
@@ -155,7 +216,7 @@ export default function App() {
             </div>
             {editData !== null && <Edit setEditData={setEditData} editData={editData} setUpdateData={setUpdateData} />}
             {deleteData !== null && <Delete setDeleteData={setDeleteData} deleteData={deleteData} setDestroyData={setDestroyData} />}
-            <Messages messages={messages} />
+            <Messages messages={messages} removeMessage={removeMessage} />
         </>
     );
 }

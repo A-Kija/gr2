@@ -62,3 +62,18 @@ button:not(.btn-close) {
     display: block;
     background-color: rgba(0, 0, 0, 0.5);
 }
+
+.msg-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width: 300px;
+    z-index: 1000;
+    .alert {
+        width: 100%;
+    }
+}

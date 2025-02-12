@@ -75,7 +75,11 @@ app.post('/', (req, res) => {
                 return;
             }
             const id = result.insertId;
-            res.json({ success: true, id });
+            res.json({ success: true, id, message: {
+                type: 'success',
+                title: 'Planeta sukurta',
+                text: `Planeta ${name} sėkmingai sukurta!`
+            } });
         });
     }, 2000);
 });
@@ -104,7 +108,11 @@ app.put('/:id', (req, res) => {
                 res.status(500).json({ error: err.message });
                 return;
             }
-            res.json({ success: true });
+            res.json({ success: true, message: {
+                type: 'info',
+                title: 'Planeta atnaujinta',
+                text: `Planeta ${name} sėkmingai atnaujinta!`
+            } });
         });
     }, 2000);
 });
@@ -130,7 +138,11 @@ app.delete('/:id', (req, res) => {
                 res.status(500).json({ error: err.message });
                 return;
             }
-            res.json({ success: true });
+            res.json({ success: true, message: {
+                type: 'danger',
+                title: 'Planeta sunaikinta',
+                text: `Planeta sėkmingai sunaikinta!`
+            } });
         });
     }, 2000);
 });
