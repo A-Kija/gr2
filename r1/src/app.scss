@@ -123,3 +123,15 @@ fieldset {
     }
   }
 }
+
+input[type="number"] {
+  font-size: 31px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: darkcyan;
+  border: none;
+  outline: none;
+  color: white;
+  width: 50px;
+  margin: 12px;
+}

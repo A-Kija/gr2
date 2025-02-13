@@ -1,241 +1,67 @@
+import './app.scss';
 import './buttons.scss';
-import './crud.scss';
-import Create from './Components/crud/Create';
-import { useRef, useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
-import * as C from './Components/crud/constants';
-import List from './Components/crud/List';
-import { v4 as uuid4 } from 'uuid';
-import Edit from './Components/crud/Edit';
-import Delete from './Components/crud/Delete';
-import Messages from './Components/crud/Messages';
+import { useState, useReducer } from 'react';
+import count2Reducer from './Reducers/count2Reducer';
 
 export default function App() {
 
-    // const [refreshTime, setRefreshTime] = useState(Date.now()); // timestamp
+    const [count1, setCount1] = useState(0);
 
-    const pageLoaded = useRef(false);
-    const sortRow = useRef(0);
+    const [count2, dispatchCount2] = useReducer(count2Reducer, 10);
 
-    const [planets, setPlanets] = useState(null);
+    const [inputValue, setInputValue] = useState(0);    
 
-    const [createData, setCreateData] = useState(null);
-    const [storeData, setStoreData] = useState(null);
-    const [editData, setEditData] = useState(null);
-    const [updateData, setUpdateData] = useState(null);
-    const [deleteData, setDeleteData] = useState(null);
-    const [destroyData, setDestroyData] = useState(null);
-    const [messages, setMessages] = useState([]);
+    const c1plus = _ => {
+        setCount1(c => c + 1);
+    }
 
-    const [sort, setSort] = useState(0);
+    const c1minus = _ => {
+        setCount1(c => c - 1);
+    }
 
-    const addMessage = useCallback(msg => {
-        const id = uuid4();
-
-        const stId = setTimeout(_ => {
-            setMessages(m => m.filter(msg => msg.id !== id));
-        }, 5000);
-
-        setMessages(m => [...m, { ...msg, id, stId }]);
-
-        return id;
-    }, []);
-
-    const updateMessage = useCallback((msg, id) => {
-        setMessages(m => {
-            let updated = false;
-            const M = m.map(message => {
-                if (message.id === id) {
-                    updated = true;
-                    clearTimeout(message.stId);
-                    setTimeout(_ => {
-                        setMessages(m => m.filter(msg => msg.id !== id));
-                    }, 5000);
-                    return { ...msg, id };
-                }
-                return message;
-            });
-            if (!updated) {
-                setTimeout(_ => {
-                    setMessages(m => m.filter(msg => msg.id !== id));
-                }, 5000);
-                return [...M, { ...msg, id }];
-            }
-            return M;
-        });
-    }, [addMessage]);
-
-    const removeMessage = id => {
-        setMessages(m => m.filter(msg => msg.id !== id));
-    };
-
-    useEffect(_ => {
-        if (!pageLoaded.current) {
-            pageLoaded.current = true;
-            return;
+    const c2plus = _ => {
+        const action = {
+            type: 'plus 1',
         }
+        dispatchCount2(action);
+    }
 
-        if (0 === sort) {
-            setPlanets(p => p.toSorted((a, b) => a.row - b.row));
-        } else if (1 === sort) {
-            setPlanets(p => p.toSorted((a, b) => a.size - b.size));
-        } else {
-            setPlanets(p => p.toSorted((a, b) => b.size - a.size));
+    const c2minus = _ => {
+        const action = {
+            type: '- 1',
         }
-    }, [sort, pageLoaded]);
+        dispatchCount2(action);
+    }
 
-    useEffect(_ => {
-        axios.get(C.serverUrl)
-            .then(res => {
-                setPlanets(res.data.map((p, i) => ({ ...p, row: i})));
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }, []);
-
-
-    useEffect(_ => {
-        if (null === storeData) {
-            return;
+    const c2plus5 = _ => {
+        const action = {
+            type: 'plus 5',
         }
-        const id = uuid4();
-        setPlanets(p => [{ ...storeData, id, temp: true, row: --sortRow.current }, ...p]);
-
-        const msgId = addMessage({
-            type: 'info',
-            title: 'Planeta kuriasi...',
-            text: `Planeta ${storeData.name} skrenda į atvirą kosmosą...`
-        });
-
-        axios.post(C.serverUrl, storeData)
-            .then(res => {
-                if (res.data.success) {
-                    setPlanets(p => p.map(planet => {
-                        if (planet.id === id) {
-                            delete planet.temp;
-                            planet.id = res.data.id;
-                        }
-                        return planet;
-                    }));
-                    updateMessage(res.data.message, msgId);
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                setCreateData(storeData);
-                setPlanets(p => p.filter(planet => planet.id !== id));
-            });
-
-    }, [storeData, addMessage, updateMessage]);
-
-
-    useEffect(_ => {
-        if (null === updateData) {
-            return;
-        }
-        const id = updateData.id;
-        delete updateData.id;
-
-        const msgId = addMessage({
-            type: 'info',
-            title: 'Planeta atnaujinama...',
-            text: `Planeta ${updateData.name} atnaujinama...`
-        });
-
-        setPlanets(p => p.map(planet => {
-            if (planet.id === id) {
-                return { ...planet, ...updateData, temp: true, copy: { ...planet } };
-            }
-            return planet;
-        }));
-
-        axios.put(C.serverUrl + id, { ...updateData })
-            .then(res => {
-                if (res.data.success) {
-                    setPlanets(p => p.map(planet => {
-                        if (planet.id === id) {
-                            delete planet.temp;
-                            delete planet.copy;
-                        }
-                        return planet;
-                    }));
-                    updateMessage(res.data.message, msgId);
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                setPlanets(p => p.map(planet => {
-                    if (planet.id === id) {
-
-                        return { ...planet.copy };
-                    }
-                    return planet;
-                }
-                ));
-                setEditData({ ...updateData, id });
-            });
-
-    }, [updateData, addMessage, updateMessage]);
-
-
-    useEffect(_ => {
-        if (null === destroyData) {
-            return;
-        }
-        const id = destroyData.id;
-
-        setDeleteData(null);
-
-        const msgId = addMessage({
-            type: 'info',
-            title: 'Planeta sunaikinama...',
-            text: `Planeta ${destroyData.name} sunaikinama...`
-        });
-
-        setPlanets(p => p.map(planet => {
-            if (planet.id === id) {
-                return { ...planet, temp: true };
-            }
-            return planet;
-        }));
-
-        axios.delete(C.serverUrl + id)
-            .then(res => {
-                if (res.data.success) {
-                    setPlanets(p => p.filter(planet => planet.id !== id));
-                    updateMessage(res.data.message, msgId);
-                }
-            })
-            .catch(error => {
-                console.error(error);
-
-                setPlanets(p => p.map(planet => {
-                    if (planet.id === id) {
-                        delete planet.temp;
-                    }
-                    return planet;
-                }));
-
-            });
-
-    }, [destroyData, addMessage, updateMessage]);
+        dispatchCount2(action);
+    }
 
     return (
-        <>
-            <div className="container">
-                <div className="row">
-                    <div className="col-4">
-                        <Create setStoreData={setStoreData} createData={createData} />
-                    </div>
-                    <div className="col-8">
-                        <List sort={sort} setSort={setSort} planets={planets} setEditData={setEditData} setDeleteData={setDeleteData} />
-                    </div>
+        <div className="App">
+            <header className="App-header">
+                <h1>COUNT 1: {count1}</h1>
+                <div>
+                    <button className="green" onClick={c1plus}>COUNT 1</button>
+                    <button className="yellow" onClick={c1minus}>COUNT 1</button>
                 </div>
-            </div>
-            {editData !== null && <Edit setEditData={setEditData} editData={editData} setUpdateData={setUpdateData} />}
-            {deleteData !== null && <Delete setDeleteData={setDeleteData} deleteData={deleteData} setDestroyData={setDestroyData} />}
-            <Messages messages={messages} removeMessage={removeMessage} />
-        </>
+                <h1>COUNT 2: {count2}</h1>
+                <div>
+                    <button className="green" onClick={c2plus}>COUNT 2</button>
+                    <button className="yellow" onClick={c2minus}>COUNT 2</button>
+                    <button className="blue" onClick={c2plus5}>COUNT 2</button>
+                </div>
+                <div>
+                    <button className="red" onClick={c2plus}>COUNT 2</button>
+                    <input type="number" value={inputValue} onChange={e => setInputValue(e.target.value)} />
+                </div>
+            </header>
+        </div>
     );
 }
+
+// 1. Padaryti minusavimą 1 su useReducer
+// 2. Padaryti pliusavimą 5 su useReducer
