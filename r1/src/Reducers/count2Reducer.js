@@ -11,6 +11,5 @@ export default function count2Reducer(state, action) {
     } else {
         return complexReducer(state, action);
     }
-
     
 }
