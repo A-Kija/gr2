@@ -1,15 +1,23 @@
-import './App.css'
+import './app.scss';
+import About from './Components/About';
+import Contacts from './Components/Contacts';
+import Home from './Components/Home';
+import Main from './Components/Main';
+import Nav from './Components/Nav';
+import { Router } from './Contexts/Router';
 
 function App() {
 
 
   return (
-    <>
-      <h1>Vite + React</h1>
-      <div className="card">
-
-      </div>
-    </>
+    <Router>
+      <Nav />
+      <Main>
+        <Home />
+        <About />
+        <Contacts />
+      </Main>
+    </Router>
   )
 }
 
