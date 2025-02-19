@@ -5,6 +5,7 @@ import Home from './Components/Home';
 import Main from './Components/Main';
 import Nav from './Components/Nav';
 import Products from './Components/Products';
+import Product from './Components/Product';
 import { Router } from './Contexts/Router';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <About />
         <Contacts />
         <Products />
+        <Product />
       </Main>
     </Router>
   )
