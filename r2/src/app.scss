@@ -1,8 +1,8 @@
 #root {
-  max-width: 1280px;
+  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
-  text-align: flex-start;
   flex-direction: column;
   display: flex;
   align-items: center;
@@ -10,6 +10,9 @@
 }
 
 nav {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
   ul {
     margin: 0;
     list-style: none;
@@ -18,7 +21,19 @@ nav {
     gap: 1em;
     margin-bottom: 2em;
     font-size: 30px;
+    &.right {
+      a {
+        color: white;
+        font-size: 18px;
+      }
+    }
   }
+}
+
+fieldset {
+  display: flex;
+  column-gap: 10px;
+  padding: 10px;
 }
 
 .logo {

@@ -2,19 +2,13 @@ import { useContext } from 'react';
 import RouterContext from '../Contexts/Router';
 import Page404 from './Page404';
 
-const Routes = new Map([
-    ['', { c: 'Home' }],
-    ['about', { c: 'About' }],
-    ['contact', { c: 'Contacts' }],
-    ['products', { c: 'Products' }],
-    ['product', { c: 'Product', p: ['id'] }],
-]);
 
-console.log('Routes', Routes);
+
+
 
 export default function Main({ children }) {
 
-    const { page, params } = useContext(RouterContext);
+    const { page, params, Routes  } = useContext(RouterContext);
 
     console.log('Main', page, params);
 

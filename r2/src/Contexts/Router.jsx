@@ -4,6 +4,15 @@ const RouterContext = createContext();
 
 export const Router = ({ children }) => {
 
+    const Routes = new Map([
+        ['', { c: 'Home' }],
+        ['about', { c: 'About' }],
+        ['contact', { c: 'Contacts' }],
+        ['products', { c: 'Products' }],
+        ['product', { c: 'Product', p: ['id'] }],
+        ['login', { c: 'Login', nav: false }],
+    ]);
+
     const [page, setPage] = useState(_ => {
         let hash = window.location.hash;
         hash = hash.replace(/^#/, '');
@@ -26,7 +35,8 @@ export const Router = ({ children }) => {
     return (
         <RouterContext.Provider value={{
             page: page.type,
-            params: page.params
+            params: page.params,
+            Routes
         }}>
             {children}
         </RouterContext.Provider>
