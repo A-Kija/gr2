@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import usePost from '../Hooks/usePost';
+
+const redirectAfterLogin = 'about';
 
 export default function Login() {
 
@@ -10,6 +12,21 @@ export default function Login() {
     });
 
     const { setData, response } = usePost('login');
+
+    useEffect(_ => {
+
+        if (null === response) {
+            return;
+        }
+
+        if (response.success) {
+            window
+                .location
+                .replace('#' + redirectAfterLogin);
+            return;
+        }
+
+    }, [response]);
 
     const goHome = _ => {
         setForm({ username: '', password: '' });
