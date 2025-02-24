@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import usePost from '../Hooks/usePost';
+import AuthContext from '../Contexts/Auth';
 
 const redirectAfterLogin = 'about';
 
@@ -11,6 +12,8 @@ export default function Login() {
         password: ''
     });
 
+    const { setUser } = useContext(AuthContext);
+
     const { setData, response } = usePost('login');
 
     useEffect(_ => {
@@ -20,6 +23,7 @@ export default function Login() {
         }
 
         if (response.success) {
+            setUser(response.user);
             window
                 .location
                 .replace('#' + redirectAfterLogin);

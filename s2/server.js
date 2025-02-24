@@ -45,37 +45,44 @@ app.post('/login', (req, res) => {
                 res.status(500).send('Klaida bandant prisijungti');
                 return;
             }
-            res.cookie('r2-token', token, { httpOnly: true, sameSite: 'none' });
+            res.cookie('r2-token', token, { httpOnly: true, SameSite: 'none' });
             res.status(200).json({
                 success: true,
-                message: 'Prisijungimas sėkmingas'
+                message: 'Prisijungimas sėkmingas',
+                user: {
+                    role: result[0].role,
+                    name: result[0].name,
+                    id: result[0].id
+                }
             });
         });
     });
 });
 
 app.get('/get-user', (req, res) => {
-    const token = req.cookies['r2-token'] || 'no-token';
-    const sql = 'SELECT * FROM users WHERE session_id = ?';
-    con.query(sql, [token], (err, result) => {
-        if (err) {
-            res.status(500).send('Klaida bandant prisijungti');
-            return;
-        }
-        if (result.length === 0) {
+    setTimeout(_ => {
+        const token = req.cookies['r2-token'] || 'no-token';
+        const sql = 'SELECT * FROM users WHERE session_id = ?';
+        con.query(sql, [token], (err, result) => {
+            if (err) {
+                res.status(500).send('Klaida bandant prisijungti');
+                return;
+            }
+            if (result.length === 0) {
+                res.status(200).json({
+                    role: 'guest',
+                    name: 'Guest',
+                    id: 0
+                });
+                return;
+            }
             res.status(200).json({
-                role: 'guest',
-                name: 'Guest',
-                id: 0
+                role: result[0].role,
+                name: result[0].name,
+                id: result[0].id
             });
-            return;
-        }
-        res.status(200).json({
-            role: result[0].role,
-            name: result[0].name,
-            id: result[0].id
         });
-    });
+    }, 1000);
 });
 
 con.connect(err => {

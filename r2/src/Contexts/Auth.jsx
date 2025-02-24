@@ -9,9 +9,11 @@ export const Auth = ({children}) => {
 
     const [user, setUser] = useState(null);
 
+
     useEffect(_ => {
         axios.get(server + 'get-user', { withCredentials: true })
             .then(response => {
+                console.log('get-user', response.data);
                 setUser(response.data);
             })
             .catch(err => {
@@ -20,11 +22,11 @@ export const Auth = ({children}) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{}}>
+        <AuthContext.Provider value={{user, setUser}}>
             {user ? children : 'Trying to authenticate...'}
         </AuthContext.Provider>
     );
 
 }
 
-export default Auth;
+export default AuthContext;
