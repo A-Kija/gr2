@@ -19,6 +19,16 @@ app.use(cors(
 
 app.use(express.json());
 
+const products = [
+    { id: 11, name: 'Pienas', price: 100 },
+    { id: 27, name: 'Duona', price: 200 },
+    { id: 30, name: 'Sviestas', price: 300 },
+    { id: 44, name: 'Kiaušiniai', price: 400 },
+    { id: 51, name: 'Kefyras', price: 500 },
+    { id: 67, name: 'Varškė', price: 600 },
+    { id: 77, name: 'Jogurtas', price: 700 }, 
+];
+
 const con = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -108,6 +118,13 @@ app.post('/logout', (req, res) => {
             });
         });
     }, 2000);
+});
+
+
+app.get('/products', (req, res) => {
+    setTimeout(_ => {
+        res.status(200).json(products);
+    }, 1000);
 });
 
 

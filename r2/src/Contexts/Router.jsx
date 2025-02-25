@@ -8,7 +8,7 @@ export const Router = ({ children }) => {
         ['', { c: 'Home' }],
         ['about', { c: 'About' }],
         ['contact', { c: 'Contacts' }],
-        ['products', { c: 'Products' }],
+        ['products', { c: 'Products', auth: ['admin', 'editor'] }],
         ['product', { c: 'Product', p: ['id'] }],
         ['login', { c: 'Login', nav: false }],
         ['logout', { c: 'Logout', nav: false }]

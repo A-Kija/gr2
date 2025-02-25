@@ -1,5 +1,7 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState, useContext } from 'react';
 import axios from 'axios';
+import RouterContext from './Router';
+import Page401 from '../Components/Page401';
 
 
 const AuthContext = createContext();
@@ -9,6 +11,21 @@ export const Auth = ({children}) => {
 
     const [user, setUser] = useState(null);
 
+    const { page, Routes } = useContext(RouterContext);
+
+    const doAuth = _ => {
+        if (!Routes.get(page)?.auth) {
+            return children;
+        }
+        if (user && user.role === 'guest') {
+            window.location.assign('#login');
+            return null;
+        }
+        if (user && Routes.get(page).auth.includes(user.role)) {
+            return children;
+        }
+        return <Page401 />;
+    }
 
     useEffect(_ => {
         axios.get(server + 'get-user', { withCredentials: true })
@@ -23,7 +40,7 @@ export const Auth = ({children}) => {
 
     return (
         <AuthContext.Provider value={{user, setUser}}>
-            {user ? children : 'Trying to authenticate...'}
+            {user ? doAuth() : 'Trying to authenticate...'}
         </AuthContext.Provider>
     );
 
