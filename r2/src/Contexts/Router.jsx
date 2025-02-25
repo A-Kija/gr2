@@ -11,6 +11,7 @@ export const Router = ({ children }) => {
         ['products', { c: 'Products' }],
         ['product', { c: 'Product', p: ['id'] }],
         ['login', { c: 'Login', nav: false }],
+        ['logout', { c: 'Logout', nav: false }]
     ]);
 
     const [page, setPage] = useState(_ => {

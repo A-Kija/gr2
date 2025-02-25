@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import usePost from '../Hooks/usePost';
 import AuthContext from '../Contexts/Auth';
 
@@ -12,16 +12,40 @@ export default function Login() {
         password: ''
     });
 
+    const { setData, response } = usePost('login');
+
+    const doLogin = useCallback(_ => {
+        setData({
+            name: form.username,
+            password: form.password
+        });
+    }, [form.username, form.password, setData]);
+
+    useEffect(_ => {
+        window.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                doLogin();
+            }
+        });
+        return _ => {
+            window.removeEventListener('keydown', e => {
+                if (e.key === 'Enter') {
+                    doLogin();
+                }
+            });
+        }
+    }, [doLogin]);
+
     const { setUser } = useContext(AuthContext);
 
-    const { setData, response } = usePost('login');
+   
 
     useEffect(_ => {
 
         if (null === response) {
             return;
         }
-
+        
         if (response.success) {
             setUser(response.user);
             window
@@ -39,13 +63,7 @@ export default function Login() {
         return false;
     }
 
-    const doLogin = _ => {
-        setData({
-            name: form.username,
-            password: form.password
-        });
 
-    }
 
     const doForm = e => {
         setForm(f => ({ ...f, [e.target.name]: e.target.value }));

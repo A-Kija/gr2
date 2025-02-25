@@ -9,6 +9,7 @@ import Product from './Components/Product';
 import { Router } from './Contexts/Router';
 import Login from './Components/Login';
 import { Auth } from './Contexts/Auth';
+import Logout from './Components/Logout';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
           <Products />
           <Product />
           <Login />
+          <Logout />
         </Main>
       </Auth>
     </Router>
