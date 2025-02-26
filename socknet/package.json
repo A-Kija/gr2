@@ -1,0 +1,21 @@
+{
+  "name": "socknet",
+  "version": "0.0.1",
+  "description": "Nice and bold social network",
+  "main": "index.js",
+  "scripts": {
+    "seed": "node ./seeder/index.js"
+  },
+  "keywords": [
+    "sock",
+    "net",
+    "bold",
+    "nice",
+    "beaver"
+  ],
+  "author": "United team",
+  "license": "ISC",
+  "dependencies": {
+    "@faker-js/faker": "^9.5.0"
+  }
+}
