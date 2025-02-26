@@ -17,7 +17,10 @@ export default function Products() {
                 setProducts(response.data);
             })
             .catch(err => {
-                console.log(err);
+                console.log(err.status);
+                if (err.response.status === 401) {
+                    window.location.hash = '#401';
+                }
             });
     }, []);
 

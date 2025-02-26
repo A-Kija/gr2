@@ -10,6 +10,7 @@ import { Router } from './Contexts/Router';
 import Login from './Components/Login';
 import { Auth } from './Contexts/Auth';
 import Logout from './Components/Logout';
+import Page401 from './Components/Page401';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           <Product />
           <Login />
           <Logout />
+          <Page401 />
         </Main>
       </Auth>
     </Router>

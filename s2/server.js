@@ -5,6 +5,7 @@ const cors = require('cors');
 const md5 = require('md5');
 const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
+const fs = require('fs');
 
 const URL = 'http://localhost:5173';
 
@@ -19,22 +20,42 @@ app.use(cors(
 
 app.use(express.json());
 
-const products = [
-    { id: 11, name: 'Pienas', price: 100 },
-    { id: 27, name: 'Duona', price: 200 },
-    { id: 30, name: 'Sviestas', price: 300 },
-    { id: 44, name: 'Kiaušiniai', price: 400 },
-    { id: 51, name: 'Kefyras', price: 500 },
-    { id: 67, name: 'Varškė', price: 600 },
-    { id: 77, name: 'Jogurtas', price: 700 }, 
-];
-
 const con = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'users_db'
 });
+
+//auth middleware
+app.use((req, res, next) => {
+    const token = req.cookies['r2-token'] || 'no-token';
+    const sql = 'SELECT * FROM users WHERE session_id = ?';
+    con.query(sql, [token], (err, result) => {
+        if (err) {
+            res.status(500).send('Klaida bandant prisijungti');
+            return;
+        }
+        if (result.length === 0) {
+            req.user = {
+                role: 'guest',
+                name: 'Guest',
+                id: 0
+            }
+        } else {
+            req.user = {
+                role: result[0].role,
+                name: result[0].name,
+                id: result[0].id
+            }
+        }
+        next();
+    });
+});
+
+
+
+
 
 app.post('/login', (req, res) => {
     const { name, password } = req.body;
@@ -122,8 +143,17 @@ app.post('/logout', (req, res) => {
 
 
 app.get('/products', (req, res) => {
+    let products = fs.readFileSync('products.json', 'utf-8');
+    products = JSON.parse(products);
+
     setTimeout(_ => {
-        res.status(200).json(products);
+        if (req.user.role === 'admin') {
+            res.status(200).json(products);
+            return;
+        }
+        res.status(401).json({
+            message: 'Unauthorized'
+        });
     }, 1000);
 });
 
