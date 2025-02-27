@@ -16,6 +16,8 @@
   "author": "United team",
   "license": "ISC",
   "dependencies": {
-    "@faker-js/faker": "^9.5.0"
+    "@faker-js/faker": "^9.5.0",
+    "md5": "^2.3.0",
+    "mysql": "^2.18.1"
   }
 }

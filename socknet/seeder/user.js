@@ -14,16 +14,17 @@ CREATE TABLE `users` (
 
 
 import { faker } from '@faker-js/faker';
+import md5 from 'md5';
 
 export function createUser() {
     return {
-        name: faker.internet.userName(),
+        name: faker.internet.username(),
         email: faker.internet.email(),
-        password: faker.internet.password(),
+        password: md5('123'),
         role: faker.helpers.arrayElement(['user', 'admin', 'gold', 'bot']),
-        avatar: null,
+        avatar: faker.image.avatar(),
         created_at: faker.date.recent(),
-        status: faker.helpers.arrayElement(['banned', 'verified', 'registered']),
+        status: faker.helpers.arrayElement(['banned', 'verified', 'registered', 'verified', 'registered', 'verified', 'registered', 'verified', 'registered', 'verified', 'registered', 'verified', 'registered', 'verified', 'registered', 'verified', 'registered']),
         online: faker.number.int({ min: 0, max: 1 })
 
     };
