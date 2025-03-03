@@ -7,23 +7,42 @@ likes: {
 
 import { faker } from '@faker-js/faker';
 
+// 5
+
+// 2
+
+// 5 - 2 = 3
+
+export const makeMessagesUsers = (notUserId, usersCount) => {
+    const conCount = faker.number.int({ min: 0, max: usersCount / 20 });
+    const users = new Set();
+    while (users.size < conCount) {
+        const id = faker.number.int({ min: 1, max: usersCount });
+        if (id !== notUserId) {
+            users.add(id);
+        }
+    }
+    return [...users];
+
+}
+
 
 export const makeLikes = count => {
-    const lCount = faker.number.int({ min: 0, max: count })
-    const dCount = faker.number.int({ min: 0, max: count - lCount })
+    const lCount = faker.number.int({ min: 0, max: count });
+    const dCount = faker.number.int({ min: 0, max: count - lCount });
 
     const lSet = new Set();
-    do {
+    while (lSet.size < lCount) {
         lSet.add(faker.number.int({ min: 1, max: count }));
-    } while (lSet.size < lCount);
+    };
 
     const dSet = new Set();
-    do {
+    while (dSet.size < dCount) {
         const id = faker.number.int({ min: 1, max: count });
         if (!lSet.has(id)) {
             dSet.add(id);
         }
-    } while (dSet.size < dCount);
+    };
 
     return { 
         l: [...lSet], 
