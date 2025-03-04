@@ -5,6 +5,7 @@ import { createPost } from './post.js';
 import { makeLikes, makeMessagesUsers } from './functions.js';
 import { createImage } from './image.js';
 import { createMessage } from './message.js';
+import { createComment } from './comment.js';
 import mysql from 'mysql';
 
 
@@ -22,6 +23,7 @@ const posts = faker.helpers.multiple(createPost, {
 
 const images = [];
 const messages = [];
+const comments = [];
 
 users.forEach((_, key) => {
     const toUserId = key + 1;
@@ -90,6 +92,20 @@ posts.forEach((p, key) => {
             main: !i ? 1 : 0
         });
     }
+
+    // add comments
+    let commentTime = p.created_at;
+    const commentsCount = faker.number.int({ min: 0, max: 30 });
+    for (let i = 0; i < commentsCount; i++) {
+        commentTime = commentTime.setMinutes(commentTime.getMinutes() + faker.number.int({ min: 1, max: 100 }));
+        commentTime = new Date(commentTime);
+        comments.push({
+            ...createComment(),
+            postId: key + 1,
+            userId: faker.number.int({ min: 1, max: usersCount }),
+            created_at: commentTime
+        });
+    }
 });
 
 
@@ -107,6 +123,24 @@ con.connect(function (err) {
 });
 
 let sql;
+
+sql = 'DROP TABLE IF EXISTS sessions;'
+con.query(sql, (err) => {
+    if (err) {
+        console.log('Sessions table drop error', err);
+    } else {
+        console.log('Sessions table was dropped');
+    }
+});
+
+sql = 'DROP TABLE IF EXISTS comments;'
+con.query(sql, (err) => {
+    if (err) {
+        console.log('Comments table drop error', err);
+    } else {
+        console.log('Comments table was dropped');
+    }
+});
 
 sql = 'DROP TABLE IF EXISTS messages;'
 con.query(sql, (err) => {
@@ -225,6 +259,39 @@ con.query(sql, (err) => {
 });
 
 
+sql = `
+    CREATE TABLE comments (
+    id int(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    user_id int(10) UNSIGNED DEFAULT NULL,
+    post_id int(10) UNSIGNED NOT NULL,
+    content text NOT NULL,
+    created_at date NOT NULL DEFAULT current_timestamp()
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+`;
+con.query(sql, (err) => {
+    if (err) {
+        console.log('Comments table create error', err);
+    } else {
+        console.log('Comments table was created');
+    }
+});
+
+sql = `
+    CREATE TABLE sessions (
+    id int(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    user_id int(10) UNSIGNED NOT NULL,
+    token char(32) NOT NULL,
+    valid_until date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+`;
+con.query(sql, (err) => {
+    if (err) {
+        console.log('Sessions table create error', err);
+    } else {
+        console.log('Sessions table was created');
+    }
+});
+
 
 sql = `
     INSERT INTO users
@@ -279,6 +346,20 @@ con.query(sql, [messages.map(message => [message.fromUserId, message.toUserId, m
         console.log('Messages table seed error', err);
     } else {
         console.log('Messages table was seeded');
+    }
+});
+
+
+sql = `
+    INSERT INTO comments
+    (post_id, user_id, content, created_at)
+    VALUES ?
+`;
+con.query(sql, [comments.map(comment => [comment.postId, comment.userId, comment.content, comment.created_at])], (err) => {
+    if (err) {
+        console.log('Comments table seed error', err);
+    } else {
+        console.log('Comments table was seeded');
     }
 });
 
