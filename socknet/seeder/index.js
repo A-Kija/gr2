@@ -8,7 +8,7 @@ import { createMessage } from './message.js';
 import mysql from 'mysql';
 
 
-const usersCount = 10;
+const usersCount = 30;
 const postsCount = 50;
 
 
@@ -34,14 +34,9 @@ users.forEach((_, key) => {
                 (msg.toUserId === fromUserId && msg.fromUserId === toUserId)
         })
         ) {
-            const endTime = faker.date.recent({ days: 5 });
-            const replies = faker.number.int({ min: 1, max: 50 });
-            let seenTo = true;
-            let seenFrom = !faker.number.int({ min: 0, max: 1 });
-            const seen = [];
-            seenTo && seen.push(toUserId);
-            seenFrom && seen.push(fromUserId);
-            // d1.setMinutes(d1.getMinutes() - 879);
+            let endTime = faker.date.recent({ days: 5 });
+            const replies = faker.number.int({ min: 1, max: 30 });
+            let seen = false;
             messages.push({
                 ...createMessage(),
                 toUserId,
@@ -49,13 +44,37 @@ users.forEach((_, key) => {
                 seen,
                 created_at: endTime
             });
+            let sameUserReply = 0;
+            let owner = 'to';
             for (let i = 0; i < replies; i++) {
-                //
+                if (sameUserReply === 0) {
+                    sameUserReply = faker.number.int({ min: 1, max: 10 });
+                    sameUserReply > 6 && (sameUserReply = 1);
+                    owner = owner === 'to' ? 'from' : 'to';
+                }
+
+                if (!seen) {
+                    seen = owner === 'from' ? !faker.number.int({ min: 0, max: 1 }) : true;
+                }
+
+                endTime = endTime.setMinutes(endTime.getMinutes() - faker.number.int({ min: 1, max: 100 }));
+
+                endTime = new Date(endTime);
+            
+                messages.push({
+                    ...createMessage(),
+                    toUserId: owner === 'to' ? toUserId : fromUserId,
+                    fromUserId: owner === 'to' ? fromUserId : toUserId,
+                    seen,
+                    created_at: endTime
+                });
+
+                sameUserReply--;
+
             }
         }
     });
 });
-
 
 
 posts.forEach((p, key) => {
@@ -89,6 +108,16 @@ con.connect(function (err) {
 
 let sql;
 
+sql = 'DROP TABLE IF EXISTS messages;'
+con.query(sql, (err) => {
+    if (err) {
+        console.log('Messages table drop error', err);
+    } else {
+        console.log('Messages table was dropped');
+    }
+});
+
+
 sql = 'DROP TABLE IF EXISTS images;'
 con.query(sql, (err) => {
     if (err) {
@@ -97,6 +126,7 @@ con.query(sql, (err) => {
         console.log('Images table was dropped');
     }
 });
+
 
 sql = 'DROP TABLE IF EXISTS posts;'
 con.query(sql, (err) => {
@@ -107,6 +137,7 @@ con.query(sql, (err) => {
     }
 });
 
+
 sql = 'DROP TABLE IF EXISTS users;'
 con.query(sql, (err) => {
     if (err) {
@@ -115,6 +146,7 @@ con.query(sql, (err) => {
         console.log('User table was dropped');
     }
 });
+
 
 sql = `
     CREATE TABLE users (
@@ -137,6 +169,7 @@ con.query(sql, (err) => {
     }
 });
 
+
 sql = `
 CREATE TABLE posts (
     id int(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -155,6 +188,7 @@ con.query(sql, (err) => {
     }
 });
 
+
 sql = `
 CREATE TABLE images (
   id int(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -163,7 +197,6 @@ CREATE TABLE images (
   main tinyint(1) UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 `;
-
 con.query(sql, (err) => {
     if (err) {
         console.log('Images table create error', err);
@@ -171,6 +204,26 @@ con.query(sql, (err) => {
         console.log('Images table was created');
     }
 });
+
+
+sql = `
+    CREATE TABLE messages (
+        id int(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+        from_user_id int(10) UNSIGNED NOT NULL,
+        to_user_id int(10) UNSIGNED NOT NULL,
+        content text NOT NULL,
+        created_at date NOT NULL DEFAULT current_timestamp(),
+        seen tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+`;
+con.query(sql, (err) => {
+    if (err) {
+        console.log('Messages table create error', err);
+    } else {
+        console.log('Messages table was created');
+    }
+});
+
 
 
 sql = `
@@ -185,6 +238,7 @@ con.query(sql, [users.map(user => [user.name, user.email, user.password, user.ro
         console.log('Users table was seeded');
     }
 });
+
 
 sql = `
     INSERT INTO posts
@@ -211,6 +265,20 @@ con.query(sql, [images.map(image => [image.url, image.post_id, image.main])], (e
         console.log('Images table seed error', err);
     } else {
         console.log('Images table was seeded');
+    }
+});
+
+
+sql = `
+    INSERT INTO messages
+    (from_user_id, to_user_id, content, created_at, seen)
+    VALUES ?
+`;
+con.query(sql, [messages.map(message => [message.fromUserId, message.toUserId, message.content, message.created_at, message.seen])], (err) => {
+    if (err) {
+        console.log('Messages table seed error', err);
+    } else {
+        console.log('Messages table was seeded');
     }
 });
 
