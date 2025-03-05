@@ -62,7 +62,7 @@ users.forEach((_, key) => {
                 endTime = endTime.setMinutes(endTime.getMinutes() - faker.number.int({ min: 1, max: 100 }));
 
                 endTime = new Date(endTime);
-            
+
                 messages.push({
                     ...createMessage(),
                     toUserId: owner === 'to' ? toUserId : fromUserId,
@@ -364,7 +364,67 @@ con.query(sql, [comments.map(comment => [comment.postId, comment.userId, comment
 });
 
 
+sql = `
+    ALTER TABLE comments
+    ADD CONSTRAINT comments_ibfk_1 FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE,
+    ADD CONSTRAINT comments_ibfk_2 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL;
+`;
+con.query(sql, (err) => {
+    if (err) {
+        console.log('Comments table alter error', err);
+    } else {
+        console.log('Comments table was altered');
+    }
+});
 
+sql = `
+    ALTER TABLE images
+    ADD CONSTRAINT images_ibfk_1 FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE;
+`;
+con.query(sql, (err) => {
+    if (err) {
+        console.log('Images table alter error', err);
+    } else {
+        console.log('Images table was altered');
+    }
+});
+
+sql = `
+    ALTER TABLE messages
+    ADD CONSTRAINT messages_ibfk_1 FOREIGN KEY (from_user_id) REFERENCES users (id) ON DELETE CASCADE,
+    ADD CONSTRAINT messages_ibfk_2 FOREIGN KEY (to_user_id) REFERENCES users (id) ON DELETE CASCADE;
+`;
+con.query(sql, (err) => {
+    if (err) {
+        console.log('Messages table alter error', err);
+    } else {
+        console.log('Messages table was altered');
+    }
+});
+
+sql = `
+ALTER TABLE posts
+  ADD CONSTRAINT posts_ibfk_1 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL;
+`;
+con.query(sql, (err) => {
+    if (err) {
+        console.log('Posts table alter error', err);
+    } else {
+        console.log('Posts table was altered');
+    }
+});
+
+sql = `
+ALTER TABLE sessions
+  ADD CONSTRAINT sessions_ibfk_1 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
+`;
+con.query(sql, (err) => {
+    if (err) {
+        console.log('Sessions table alter error', err);
+    } else {
+        console.log('Sessions table was altered');
+    }
+});
 
 
 con.end();
