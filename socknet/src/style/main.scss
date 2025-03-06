@@ -1,0 +1,60 @@
+@use 'var' as v;
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    color: v.$black;
+    background-color: v.$white;
+    font-family: v.$pt;
+    font-size: 16px;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 100vh;
+}
+
+section.main {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 0 20px;
+    max-width: v.$xl;
+}
+
+.bin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    &.bin-20 {
+        width: 20%;
+    }
+    &.bin-30 {
+        width: 30%;
+    }
+    &.bin-40 {
+        width: 40%;
+    }
+    &.bin-50 {
+        width: 50%;
+    }
+    &.bin-60 {
+        width: 60%;
+    }
+    &.bin-70 {
+        width: 70%;
+    }
+    &.bin-80 {
+        width: 80%;
+    }
+}
