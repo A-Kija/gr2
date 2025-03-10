@@ -37,6 +37,8 @@ con.connect(err => {
     console.log('Prisijungimas prie DB buvo sėkmingas');
 });
 
+const error500 = (res, err) => res.status(500).json(err);
+
 //auth middleware
 // app.use((req, res, next) => {
 //     const token = req.cookies['r2-token'] || 'no-token';
@@ -157,8 +159,19 @@ app.post('/logout', (req, res) => {
 
 app.get('/users/active-list', (req, res) => {
 
-    res.send('OK');
+    const sql = `
+        SELECT id, name, avatar
+        FROM users
+        WHERE online = 1
+    `;
 
+    con.query(sql, (err, result) => {
+        if (err) return error500(res, err);
+        res.json({
+            success: true,
+            db: result
+        });
+    });
 });
 
 
