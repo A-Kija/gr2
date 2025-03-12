@@ -14,14 +14,14 @@ export default function PostsList() {
         );
     }
 
-        return (
-            <div className="bin bin-30">
-                <h1>Sock-Net</h1>
-                <ul className="posts-list">
-                    {
-                        posts.map(p => <PostInList key={p.id} post={p} />)
-                    }
-                </ul>
-            </div>
-        );
+    return (
+        <div className="bin bin-70">
+            <h1>Sock-Net</h1>
+            <ul className="posts-list">
+                {
+                    posts.map(p => <PostInList key={p.id} post={p} />)
+                }
+            </ul>
+        </div>
+    );
 }

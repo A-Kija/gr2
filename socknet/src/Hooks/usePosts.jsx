@@ -9,7 +9,7 @@ export default function usePosts() {
     const [posts, dispatchPosts] = useReducer(postsReducer, null); // aprasytas steitas
 
     useEffect(_ => {
-        axios.get(C.SERVER_URL + 'posts/load-posts/1')
+        axios.get(C.SERVER_URL + 'posts/load-posts/2')
             .then(res => {
                 console.log(res.data.db); // is serverio gauti users duomenys
                 // action yra OBJEKTAS dispatch viduje

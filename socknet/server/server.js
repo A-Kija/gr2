@@ -183,7 +183,7 @@ app.get('/posts/load-posts/:page', (req, res) => {
     const page = parseInt(req.params.page);
 
     const sql = `
-        SELECT p.id, p.content, p.created_at AS postDate, p.votes, u.name, u.avatar, i.url
+        SELECT p.id, p.content, p.created_at AS postDate, p.votes, u.name, u.avatar, i.url AS mainImage
         FROM posts AS p
         INNER JOIN users AS u
         ON u.id = p.user_id
@@ -193,8 +193,12 @@ app.get('/posts/load-posts/:page', (req, res) => {
         LIMIT ? OFFSET ?
     `;
 
+
     con.query(sql, [postsPerPage, (page - 1) * postsPerPage], (err, result) => {
         if (err) return error500(res, err);
+
+        result = result.map(r => ({...r, votes: JSON.parse(r.votes)}));
+
         res.json({
             success: true,
             db: result
