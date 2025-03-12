@@ -1,4 +1,4 @@
-import PostsList from '../Components/PostsList';
+import PostsList from '../Components/Posts/PostsList';
 import UsersList from '../Components/Users/UsersList';
 
 export default function Home() {

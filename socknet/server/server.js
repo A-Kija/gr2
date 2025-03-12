@@ -5,6 +5,8 @@ import md5 from 'md5';
 import cookieParser from 'cookie-parser';
 import {v4 as uuidv4} from 'uuid';
 
+const postsPerPage = 11;
+
 const app = express();
 const port = 3333;
 const frontURL = 'http://localhost:5173';
@@ -172,6 +174,33 @@ app.get('/users/active-list', (req, res) => {
             db: result
         });
     });
+});
+
+
+// POSTS/***** */
+
+app.get('/posts/load-posts/:page', (req, res) => {
+    const page = parseInt(req.params.page);
+
+    const sql = `
+        SELECT p.id, p.content, p.created_at AS postDate, p.votes, u.name, u.avatar, i.url
+        FROM posts AS p
+        INNER JOIN users AS u
+        ON u.id = p.user_id
+        INNER JOIN images AS i
+        ON p.id = i.post_id AND i.main = 1
+        ORDER BY p.created_at DESC
+        LIMIT ? OFFSET ?
+    `;
+
+    con.query(sql, [postsPerPage, (page - 1) * postsPerPage], (err, result) => {
+        if (err) return error500(res, err);
+        res.json({
+            success: true,
+            db: result
+        });
+    });
+
 });
 
 
