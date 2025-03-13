@@ -4,6 +4,8 @@ export default function postsReducer(state, action) {
 
     let newState;
 
+    console.log('Posts reducer change state');
+
     switch (action.type) {
 
         case A.LOAD_POSTS_FROM_SERVER:

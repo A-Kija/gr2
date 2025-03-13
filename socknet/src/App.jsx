@@ -7,7 +7,7 @@ import Body from './Components/Body';
 import { DataProvider } from './Contexts/Data';
 
 function App() {
-
+    console.log('--------APP---------');
   return (
     <DataProvider>
       <Body>

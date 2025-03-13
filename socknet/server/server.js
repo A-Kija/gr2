@@ -3,7 +3,7 @@ import mysql from 'mysql';
 import cors from 'cors';
 import md5 from 'md5';
 import cookieParser from 'cookie-parser';
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 const postsPerPage = 11;
 
@@ -161,19 +161,24 @@ app.post('/logout', (req, res) => {
 
 app.get('/users/active-list', (req, res) => {
 
-    const sql = `
-        SELECT id, name, avatar
+    setTimeout(_ => {
+
+        const sql = `
+        SELECT id, name, avatar, role AS userRole, online
         FROM users
-        WHERE online = 1
+        WHERE role <> 'bot'
+        ORDER BY online DESC, name
     `;
 
-    con.query(sql, (err, result) => {
-        if (err) return error500(res, err);
-        res.json({
-            success: true,
-            db: result
+        con.query(sql, (err, result) => {
+            if (err) return error500(res, err);
+            res.json({
+                success: true,
+                db: result
+            });
         });
-    });
+
+    }, 2000);
 });
 
 
@@ -181,6 +186,8 @@ app.get('/users/active-list', (req, res) => {
 
 app.get('/posts/load-posts/:page', (req, res) => {
     const page = parseInt(req.params.page);
+
+    setTimeout(_ => {
 
     const sql = `
         SELECT p.id, p.content, p.created_at AS postDate, p.votes, u.name, u.avatar, i.url AS mainImage
@@ -193,18 +200,19 @@ app.get('/posts/load-posts/:page', (req, res) => {
         LIMIT ? OFFSET ?
     `;
 
-
     con.query(sql, [postsPerPage, (page - 1) * postsPerPage], (err, result) => {
         if (err) return error500(res, err);
 
-        result = result.map(r => ({...r, votes: JSON.parse(r.votes)}));
+        result = result.map(r => ({ ...r, votes: JSON.parse(r.votes) }));
 
         res.json({
             success: true,
             db: result
         });
+
     });
 
+    }, 1500);
 });
 
 

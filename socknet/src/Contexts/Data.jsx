@@ -7,8 +7,12 @@ const Data = createContext();
 
 export const DataProvider = ({ children }) => {
 
+    console.log('-------Data Contex-------');
+
     const { users, dispatchUsers } = useUsers();
     const { posts, dispatchPosts } = usePosts();
+
+    console.log('Data Contex <--- useUsers, usePost', users?.length, posts?.length);
 
     return (
         <Data.Provider value={{

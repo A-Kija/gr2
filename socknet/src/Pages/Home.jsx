@@ -7,6 +7,7 @@ export default function Home() {
         <section className="main">
            <UsersList />
            <PostsList />
+           {console.log('HOME List rendered')}
         </section>
     );
 }

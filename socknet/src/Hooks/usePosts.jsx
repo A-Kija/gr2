@@ -8,10 +8,19 @@ export default function usePosts() {
 
     const [posts, dispatchPosts] = useReducer(postsReducer, null); // aprasytas steitas
 
+    console.log('usePosts', 'user:', posts?.length);
+
     useEffect(_ => {
+        console.log('usePosts UseEffect start - request to server');
+        let s = 0;
+        const timer = setInterval(_ => {
+            s += 400;
+            console.log('waiting posts ms...', s);
+        }, 400);
         axios.get(C.SERVER_URL + 'posts/load-posts/2')
             .then(res => {
-                console.log(res.data.db); // is serverio gauti users duomenys
+                clearTimeout(timer);
+                // console.log(res.data.db); // is serverio gauti users duomenys
                 // action yra OBJEKTAS dispatch viduje
                 dispatchPosts({
                     type: A.LOAD_POSTS_FROM_SERVER, // tipas ka daryt
