@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import Data from '../../Contexts/Data';
 import UserInList from './UserInList';
+// import '../../style/users.scss';
 
 export default function UsersList() {
 
@@ -23,7 +24,10 @@ export default function UsersList() {
             <h1>Sock-Net prisijungę nariai</h1>
             <ul className="users-list">
                 {
-                    users.map(u => <UserInList key={u.id} user={u} />)
+                    users.map(u => u.userRole !== 'bot' ? <UserInList key={u.id} user={u} /> : null)
+                }
+                {
+                    users.map(u => u.userRole === 'bot' ? <UserInList key={u.id} user={u} /> : null)
                 }
             </ul>
             {console.log('USER List rendered')}

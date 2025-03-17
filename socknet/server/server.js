@@ -166,7 +166,7 @@ app.get('/users/active-list', (req, res) => {
         const sql = `
         SELECT id, name, avatar, role AS userRole, online
         FROM users
-        WHERE role <> 'bot'
+        -- WHERE role = 'gold'
         ORDER BY online DESC, name
     `;
 

@@ -1,0 +1,28 @@
+@use 'var' as v;
+
+nav {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    max-width: v.$xl;
+    padding: 0 20px;
+    height: 100px;
+    align-items: center;
+    background-color: v.$yellow;
+
+    ul {
+        padding: 0;
+        margin: 0;
+        display: flex;
+        list-style: none;
+        column-gap: 20px;
+        li {
+            a {
+                text-decoration: none;
+                color: v.$black;
+                font-size: 24px;
+                font-family: v.$ibm;
+            }
+        }
+    }
+}

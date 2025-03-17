@@ -1,6 +1,8 @@
 @use 'var' as v;
-@use 'users' as u;
-@use 'posts' as p;
+@use 'users';
+@use 'posts';
+@use 'nav';
+
 
 * {
     box-sizing: border-box;
