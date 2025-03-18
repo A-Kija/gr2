@@ -6,21 +6,24 @@ import Nav from './Components/Nav';
 import Page404 from './Pages/page404';
 import Body from './Components/Body';
 import { DataProvider } from './Contexts/Data';
+import { AuthProvider } from './Contexts/Auth';
 
 function App() {
-    console.log('--------APP---------');
+  console.log('--------APP---------');
   return (
-    <DataProvider>
-      <Body>
-        <Nav />
-        <Routes>
-          <Route index element={<Home />} />
-          <Route path="chat" element={<Chat />} />
-          <Route path="login" element={<Login />} />
-          <Route path="*" element={<Page404 />} />
-        </Routes>
-      </Body>
-    </DataProvider>
+    <AuthProvider>
+      <DataProvider>
+        <Body>
+          <Nav />
+          <Routes>
+            <Route index element={<Home />} />
+            <Route path="chat" element={<Chat />} />
+            <Route path="login" element={<Login />} />
+            <Route path="*" element={<Page404 />} />
+          </Routes>
+        </Body>
+      </DataProvider>
+    </AuthProvider>
   )
 }
 

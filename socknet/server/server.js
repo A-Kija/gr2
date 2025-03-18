@@ -3,7 +3,7 @@ import mysql from 'mysql';
 import cors from 'cors';
 import md5 from 'md5';
 import cookieParser from 'cookie-parser';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 } from 'uuid';
 
 const postsPerPage = 11;
 
@@ -41,56 +41,70 @@ con.connect(err => {
 
 const error500 = (res, err) => res.status(500).json(err);
 
-//auth middleware
-// app.use((req, res, next) => {
-//     const token = req.cookies['r2-token'] || 'no-token';
-//     const sql = 'SELECT * FROM users WHERE session_id = ?'; // TODO pataisyt
-//     con.query(sql, [token], (err, result) => {
-//         if (err) {
-//             res.status(500).send('Klaida bandant prisijungti');
-//             return;
-//         }
-//         if (result.length === 0) {
-//             req.user = {
-//                 role: 'guest',
-//                 name: 'Guest',
-//                 id: 0
-//             }
-//         } else {
-//             req.user = {
-//                 role: result[0].role,
-//                 name: result[0].name,
-//                 id: result[0].id
-//             }
-//         }
-//         next();
-//     });
-// });
+// Identifikacija - pagal numatytą ID identifikuojam vartototoją pvz Ragana-su-šluota
+// Autorizacija - pagal vartotojo identifikuotą ID, vartotojui suteikiamos teisės pvz gali balsuoti, pirkti cigaretes
+// Autentifikacija - pagal numatytą ID autentifikuojam vartotoją pvz Arvydas Kijakauskas a/k 55555555555
+
+
+
+// auth middleware
+app.use((req, res, next) => {
+    const token = req.cookies['sock-net-token'] || 'no-token';
+    const sql = `
+        SELECT u.id, u.role, u.name
+        FROM sessions AS s
+        INNER JOIN users AS u
+        ON s.user_id = u.id
+        WHERE token = ?
+    `;
+    con.query(sql, [token], (err, result) => {
+        if (err) return error500(res, err);
+        if (result.length === 0) {
+            req.user = {
+                role: 'guest',
+                name: 'Guest',
+                id: 0
+            }
+        } else {
+            req.user = {
+                role: result[0].role,
+                name: result[0].name,
+                id: result[0].id
+            }
+        }
+        next();
+    });
+});
 
 
 app.post('/login', (req, res) => {
     const { name, password } = req.body;
     const sql = 'SELECT * FROM users WHERE name = ? AND password = ?';
     con.query(sql, [name, md5(password)], (err, result) => {
-        if (err) {
-            res.status(500).send('Klaida bandant prisijungti');
-            return;
-        }
+        if (err) return error500(res, err);
         if (result.length === 0) {
-            res.status(401).send('Neteisingi prisijungimo duomenys');
+            res.status(401).send({
+                msg: {type: 'error', text: 'Invalid user name or password'}
+            });
             return;
         }
-        const token = uuid.v4();
-        const updateSql = 'UPDATE users SET session_id = ? WHERE name = ?';
-        con.query(updateSql, [token, name], (err) => {
-            if (err) {
-                res.status(500).send('Klaida bandant prisijungti');
-                return;
-            }
-            res.cookie('r2-token', token, { httpOnly: true, SameSite: 'none' });
+        
+        const token = md5(v4());
+        const userId = result[0].id;
+        let time = new Date();
+        time = time.setMinutes(time.getMinutes() + (60 * 24));
+        time = new Date(time);
+
+        const insertSql = `
+            INSERT INTO sessions
+            (user_id, token, valid_until)
+            VALUES (?, ?, ?)
+        `;
+        con.query(insertSql, [userId, token, time], (err) => {
+            if (err) return error500(res, err);
+            res.cookie('sock-net-token', token, { httpOnly: true, SameSite: 'none' });
             res.status(200).json({
-                success: true,
-                message: 'Prisijungimas sėkmingas',
+                msg: {type: 'success', text: `Hello, ${result[0].name}! How are you?`},
                 user: {
                     role: result[0].role,
                     name: result[0].name,
