@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 import * as C from '../Constants/main';
 
-export default function useAuth() {
+export default function useAuth(setUser) {
 
     const [loginForm, setLoginForm] = useState(null);
-    const [responseOkUser, setResponseOkUser] = useState(null);
-    const [responseOkLogin, setResponseOkLogin] = useState(null);
+    const navigate = useNavigate();
+
 
 
     const getUser = _ => {
         axios.get(C.SERVER_URL + 'auth-user', { withCredentials: true })
         .then(res => {
-            console.log(res);
-            setResponseOkUser(res.data);
+            setUser(res.data);
         })
         .catch(err => {
             console.log(err);
@@ -27,7 +27,8 @@ export default function useAuth() {
         }
         axios.post(C.SERVER_URL + 'login', loginForm, { withCredentials: true })
             .then(res => {
-                console.log(res);
+                setUser(res.data.user);
+                navigate(C.GO_AFTER_LOGIN);
             })
             .catch(err => {
                 console.log(err)
@@ -40,6 +41,6 @@ export default function useAuth() {
 
 
 
-    return { setLoginForm, getUser, responseOkUser, responseOkLogin }
+    return { setLoginForm, getUser }
 
 }

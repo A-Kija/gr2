@@ -1,9 +1,13 @@
 import { NavLink, useLocation } from 'react-router';
 import { HIDE_NAV_PATHS } from '../Constants/main';
+import { useContext } from 'react';
+import Auth from '../Contexts/Auth';
 
 export default function Nav() {
 
     const { pathname } = useLocation();
+
+    const { user } = useContext(Auth);
 
     if (HIDE_NAV_PATHS.includes(pathname)) {
         return null;
@@ -18,7 +22,16 @@ export default function Nav() {
                 </ul>
             </div>
             <div className="nav-right">
-                <NavLink to="/login" end>Login</NavLink>
+                {
+                    user.role === 'guest' && <NavLink to="/login" end>Login</NavLink>
+                }
+                {
+                    user.role !== 'guest' &&
+                    <>
+                        <div className="nav-right__username">{user.name}</div>
+                        <NavLink to="/logout" end>Logout</NavLink>
+                    </>
+                }
             </div>
         </nav>
     );

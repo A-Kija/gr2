@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { NavLink } from 'react-router';
 import useAuth from '../Hooks/useAuth';
+import Auth from '../Contexts/Auth';
 
 const defForm = { name: '', password: '' };
 
 export default function Login() {
 
     const [form, setForm] = useState(defForm);
+    const { setUser } = useContext(Auth);
 
-    const { setLoginForm } = useAuth();
+    const { setLoginForm } = useAuth(setUser);
 
     const handleChange = e => {
         setForm(f => {
@@ -18,7 +20,7 @@ export default function Login() {
 
     const login = _ => {
         setLoginForm(form);
-        
+
     }
 
     return (

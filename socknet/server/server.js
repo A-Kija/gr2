@@ -76,7 +76,6 @@ app.use((req, res, next) => {
     });
 });
 
-
 app.post('/login', (req, res) => {
     const { name, password } = req.body;
     const sql = 'SELECT * FROM users WHERE name = ? AND password = ?';
@@ -117,47 +116,26 @@ app.post('/login', (req, res) => {
 
 
 //TODO paimti is middleware
-app.get('/get-user', (req, res) => {
+app.get('/auth-user', (req, res) => {
     setTimeout(_ => {
-        const token = req.cookies['r2-token'] || 'no-token';
-        const sql = 'SELECT * FROM users WHERE session_id = ?';
-        con.query(sql, [token], (err, result) => {
-            if (err) {
-                res.status(500).send('Klaida bandant prisijungti');
-                return;
-            }
-            if (result.length === 0) {
-                res.status(200).json({
-                    role: 'guest',
-                    name: 'Guest',
-                    id: 0
-                });
-                return;
-            }
-            res.status(200).json({
-                role: result[0].role,
-                name: result[0].name,
-                id: result[0].id
-            });
-        });
+        res.json(req.user);
     }, 1000);
 });
 
 
 app.post('/logout', (req, res) => {
     setTimeout(_ => {
-        const token = req.cookies['r2-token'] || 'no-token';
-        console.log('logout', token);
-        const sql = 'UPDATE users SET session_id = ? WHERE session_id = ?';
-        con.query(sql, [null, token], (err) => {
-            if (err) {
-                res.status(500).send('Klaida bandant atsijungti');
-                return;
-            }
-            res.clearCookie('r2-token');
+        const token = req.cookies['sock-net-token'] || 'no-token';
+
+        const sql = `
+            DELETE FROM sessions
+            WHERE token = ?
+        `
+        con.query(sql, [token], (err) => {
+            if (err) return error500(res, err);
+            res.clearCookie('sock-net-token');
             res.status(200).json({
-                success: true,
-                message: 'Atsijungimas sėkmingas',
+                msg: {type: 'success', text: `Bye bye!`},
                 user: {
                     role: 'guest',
                     name: 'Guest',
