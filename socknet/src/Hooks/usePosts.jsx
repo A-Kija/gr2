@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, useState } from 'react';
 import * as C from '../Constants/main';
 import * as A from '../Constants/actions';
 import axios from 'axios';
@@ -8,7 +8,27 @@ export default function usePosts() {
 
     const [posts, dispatchPosts] = useReducer(postsReducer, null); // aprasytas steitas
 
+    const [postUpdate, setPostUpdate] = useState(null);
+
     console.log('usePosts', 'user:', posts?.length);
+
+
+    useEffect(_ => {
+        if (null === postUpdate) {
+            return;
+        }
+        axios.post(C.SERVER_URL + 'posts/update/' + postUpdate.id, {
+            type: postUpdate.type,
+            payload: postUpdate.payload ?? null
+        }, { withCredentials: true })
+            .then(res => {
+                console.log(res.data)
+            })
+            .catch(error => {
+                console.log(error)
+            });
+    }, [postUpdate]);
+
 
     useEffect(_ => {
         console.log('usePosts UseEffect start - request to server');
@@ -34,5 +54,5 @@ export default function usePosts() {
 
 
 
-    return { posts, dispatchPosts }
+    return { posts, dispatchPosts, setPostUpdate }
 }

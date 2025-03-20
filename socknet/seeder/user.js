@@ -26,6 +26,18 @@ export function createUser() {
         created_at: faker.date.recent(),
         status: faker.helpers.arrayElement(['banned', 'verified', 'registered', 'verified', 'registered', 'verified', 'registered', 'verified', 'registered', 'verified', 'registered', 'verified', 'registered', 'verified', 'registered', 'verified', 'registered']),
         online: faker.number.int({ min: 0, max: 1 })
-
     };
+}
+
+export function createSome(name, role) {
+  return {
+      name: name,
+      email: name + '@gmail.com',
+      password: md5('123'),
+      role: role,
+      avatar: faker.image.avatar(),
+      created_at: faker.date.recent(),
+      status: 'verified',
+      online: 1
+  };
 }

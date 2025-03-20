@@ -1,6 +1,6 @@
 console.log('start seeding');
 import { faker } from '@faker-js/faker';
-import { createUser } from './user.js';
+import { createUser, createSome } from './user.js';
 import { createPost } from './post.js';
 import { makeLikes, makeMessagesUsers } from './functions.js';
 import { createImage } from './image.js';
@@ -14,8 +14,14 @@ const postsCount = 50;
 
 
 const users = faker.helpers.multiple(createUser, {
-    count: usersCount,
+    count: usersCount - 3,
 });
+
+users.push(
+    createSome('Bebras', 'gold'),
+    createSome('Briedis', 'admin'),
+    createSome('Barsukas', 'user')
+);
 
 const posts = faker.helpers.multiple(createPost, {
     count: postsCount,
