@@ -66,6 +66,7 @@ app.use((req, res, next) => {
     `;
     con.query(sql, [token], (err, result) => {
         if (err) return error500(res, err);
+
         if (result.length === 0) {
             req.user = {
                 role: 'guest',
@@ -220,20 +221,86 @@ app.post('/posts/update/:id', (req, res) => {
         return;
     }
 
-    const id = parseInt(req.params.id);
+    const postID = parseInt(req.params.id); // postID
     const { type, payload } = req.body;
 
     const sql1 = 'SELECT * FROM posts WHERE id = ?';
-    con.query(sql1, [id], (err, result1) => {
+    con.query(sql1, [postID], (err, result1) => {
         if (err) return error500(res, err);
         if (!result1.length) return error400(res, 554); // 554 is lubu paimtas
 
-        if ('up_vote' === type) {
+        if ('up_vote' === type || 'down_vote' === type) {
 
+            const votes = JSON.parse(result1[0].votes);
+            const up = new Set(votes.l);
+            const down = new Set(votes.d);
+            const userID = req.user.id; //userID
+
+            if ('up_vote' === type) {
+                if (up.has(userID)) {
+                    up.delete(userID);
+                } else if (down.has(userID)) {
+                    down.delete(userID);
+                    up.add(userID);
+                } else {
+                    up.add(userID);
+                }
+            }
+            if ('down_vote' === type) {
+                if (down.has(userID)) {
+                    down.delete(userID);
+                } else if (up.has(userID)) {
+                    up.delete(userID);
+                    down.add(userID);
+                } else {
+                    down.add(userID);
+                }
+            }
+            let newVotes = { l: [...up], d: [...down] };
+            newVotes = JSON.stringify(newVotes);
+            const sql2 = `
+                UPDATE posts
+                SET votes = ?
+                WHERE id = ?
+            `;
+            con.query(sql2, [newVotes, postID], (err) => {
+                if (err) return error500(res, err);
+                res.status(200).json({
+                    msg: { type: 'success', text: `Thank you for your vote. You are the best!` },
+                });
+                return;
+            });
         }
 
     });
 });
+
+
+// COMMENTS/***** */
+
+app.get('/comments/for-post/:id', (req, res) => {
+
+    const postID = req.params.id;
+
+    const sql = `
+        SELECT *
+        FROM comments
+        WHERE post_id = ?
+    `;
+
+    con.query(sql, [postID], (err, result) => {
+        if (err) return error500(res, err);
+
+        res.json({
+            success: true,
+            c: result
+        });
+
+    });
+
+});
+
+
 
 // Start server
 
