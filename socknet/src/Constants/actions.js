@@ -17,3 +17,8 @@ export const DOWN_VOTE_POST = 2102;
 // comments 3000 - 3999
 
 export const LOAD_POST_COMMENTS = 3000;
+
+export const HIDE_POST_COMMENTS = 3001;
+export const SHOW_POST_COMMENTS = 3002;
+
+export const ADD_POST_COMMENT = 3003;

@@ -1,12 +1,16 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Data from '../../Contexts/Data';
 import Auth from '../../Contexts/Auth';
 import * as A from '../../Constants/actions';
+import * as C from '../../Constants/main';
+import CommentInPostList from './CommentInPostList';
 
 export default function PostInList({ post }) {
 
-    const { dispatchPosts, setPostUpdate, getPostCommentsFromServer } = useContext(Data);
+    const { dispatchPosts, setPostUpdate, getPostCommentsFromServer, comments, dispatchComments } = useContext(Data);
     const { user } = useContext(Auth);
+    const [showComents, setShowComments] = useState(false);
+    const [comment, setComment] = useState('');
 
     const voteCounter = _ => {
         return post.votes.l.length - post.votes.d.length;
@@ -51,7 +55,36 @@ export default function PostInList({ post }) {
     }
 
     const getComments = _ => {
-        getPostCommentsFromServer(post.id);
+        if (!showComents) {
+            if (!comments.some(c => c.id === post.id)) {
+                getPostCommentsFromServer(post.id);
+            } else {
+                dispatchComments({
+                    type: A.SHOW_POST_COMMENTS,
+                    payload: {
+                        postID: post.id
+                    }
+                });
+            }
+            setShowComments(s => !s);
+        } else {
+            dispatchComments({
+                type: A.HIDE_POST_COMMENTS,
+                payload: {
+                    postID: post.id
+                }
+            });
+            setShowComments(s => !s);
+        }
+        
+    }
+
+    const handleComment = e => {
+        let value = e.target.value;
+        C.smiles.forEach(s => {
+            value = value.replace(s[0], s[1]);
+        });
+        setComment(value);
     }
 
 
@@ -77,9 +110,22 @@ export default function PostInList({ post }) {
                     <div className="down" onClick={downVote} style={{ color: userVote('down') }}>▼</div>
                 </div>
                 <div className="posts-list__post__bottom__show-comments">
-                    <span onClick={getComments}>Show comments</span>
+                    <span onClick={getComments}>{showComents ? 'Hide comments' : 'Show comments'}</span>
                 </div>
             </div>
+            <div className="posts-list__post__write-comment">
+                <textarea onChange={handleComment} value={comment}></textarea>
+                <button type="button">Send</button>
+            </div>
+            {
+                comments.some(p => p.id === post.id && p.show) &&
+                <div className="posts-list__post__comments">
+                    {
+                        comments.find(p => p.id === post.id).c
+                            .map(comment => <CommentInPostList key={comment.id} comment={comment} />)
+                    }
+                </div>
+            }
         </li>
     );
 }

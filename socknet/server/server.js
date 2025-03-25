@@ -283,9 +283,11 @@ app.get('/comments/for-post/:id', (req, res) => {
     const postID = req.params.id;
 
     const sql = `
-        SELECT *
-        FROM comments
-        WHERE post_id = ?
+        SELECT c.id, c.created_at, c.content, u.name
+        FROM comments AS c
+        INNER JOIN users AS u
+        ON c.user_id = u.id
+        WHERE c.post_id = ?
     `;
 
     con.query(sql, [postID], (err, result) => {
