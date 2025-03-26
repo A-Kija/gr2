@@ -56,7 +56,7 @@ export default function PostInList({ post }) {
 
     const getComments = _ => {
         if (!showComents) {
-            if (!comments.some(c => c.id === post.id)) {
+            if (!comments.some(c => c.id === post.id && c.type === 'server')) {
                 getPostCommentsFromServer(post.id);
             } else {
                 dispatchComments({
@@ -87,6 +87,19 @@ export default function PostInList({ post }) {
         setComment(value);
     }
 
+    const addNewComment = _ => {
+        dispatchComments({
+            type: A.ADD_POST_COMMENT,
+            payload: {
+                postID: post.id,
+                userName: user.name,
+                content: comment
+            }
+        });
+        setComment('');
+        setShowComments(s => !s);
+    }
+
 
     return (
         <li className="posts-list__post">
@@ -115,7 +128,7 @@ export default function PostInList({ post }) {
             </div>
             <div className="posts-list__post__write-comment">
                 <textarea onChange={handleComment} value={comment}></textarea>
-                <button type="button">Send</button>
+                <button type="button" onClick={addNewComment}>Send</button>
             </div>
             {
                 comments.some(p => p.id === post.id && p.show) &&

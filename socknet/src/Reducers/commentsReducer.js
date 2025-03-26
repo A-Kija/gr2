@@ -1,4 +1,5 @@
 import * as A from '../Constants/actions';
+import { v4 } from 'uuid';
 
 export default function commentsReducer(state, action) {
 
@@ -22,6 +23,7 @@ export default function commentsReducer(state, action) {
                 } else {
                     postComments.c = action.payload.comments;
                     postComments.show = true;
+                    postComments.type = 'server';
                 }
                 break;
             }
@@ -47,12 +49,40 @@ export default function commentsReducer(state, action) {
                 break;
             }
 
-        case A.ADD_POST_COMMENT: 
-        {
+        case A.ADD_POST_COMMENT:
+            {
+                const postID = action.payload.postID;
+                const userName = action.payload.userName;
+                const content = action.payload.content;
+                const today = new Date();
+                const dd = String(today.getDate()).padStart(2, '0');
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const yyyy = today.getFullYear();
+                const date = yyyy + '/' + mm + '/' + dd;
+                newState = structuredClone(state);
+                let postComments = newState.find(p => p.id === postID); // {id, c[]}
 
+                const comment = {
+                    id: v4(),
+                    name: userName,
+                    created_at: date,
+                    content
+                }
 
-            break;
-        }
+                if (!postComments) {
+                    postComments = {
+                        id: postID,
+                        c: [comment],
+                        show: true,
+                        type: 'client'
+                    };
+                    newState.push(postComments);
+                } else {
+                    postComments.c.unshift(comment)
+                }
+
+                break;
+            }
 
         default: newState = state;
     }
