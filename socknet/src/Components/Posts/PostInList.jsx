@@ -7,7 +7,7 @@ import CommentInPostList from './CommentInPostList';
 
 export default function PostInList({ post }) {
 
-    const { dispatchPosts, setPostUpdate, getPostCommentsFromServer, comments, dispatchComments } = useContext(Data);
+    const { dispatchPosts, setPostUpdate, getPostCommentsFromServer, comments, dispatchComments, setCom } = useContext(Data);
     const { user } = useContext(Auth);
     const [showComents, setShowComments] = useState(false);
     const [comment, setComment] = useState('');
@@ -97,7 +97,10 @@ export default function PostInList({ post }) {
             }
         });
         setComment('');
-        setShowComments(s => !s);
+        setCom({
+            postID: post.id,
+            content: comment
+        });
     }
 
 
@@ -131,11 +134,21 @@ export default function PostInList({ post }) {
                 <button type="button" onClick={addNewComment}>Send</button>
             </div>
             {
+                comments.some(p => p.id === post.id) &&
+                <div className="posts-list__post__comments">
+                    {
+                        comments.find(p => p.id === post.id).c
+                            .map(comment => typeof comment.id === 'number' ? null : <CommentInPostList key={comment.id} comment={comment} />)
+                    }
+                </div>
+            }
+
+            {
                 comments.some(p => p.id === post.id && p.show) &&
                 <div className="posts-list__post__comments">
                     {
                         comments.find(p => p.id === post.id).c
-                            .map(comment => <CommentInPostList key={comment.id} comment={comment} />)
+                            .map(comment => typeof comment.id === 'string' ? null : <CommentInPostList key={comment.id} comment={comment} />)
                     }
                 </div>
             }

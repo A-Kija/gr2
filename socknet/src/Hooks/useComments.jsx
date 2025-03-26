@@ -20,7 +20,14 @@ export default function useComments() {
 
     const revertSmiles = content => {
         C.smiles.forEach(s => {
-            content = value.replace(s[1], s[0]);
+            content = content.replace(s[1], s[0]);
+        });
+        return content;
+    }
+
+    const createSmiles = content => {
+        C.smiles.forEach(s => {
+            content = content.replace(s[0], s[1]);
         });
         return content;
     }
@@ -48,7 +55,7 @@ export default function useComments() {
                     type: A.LOAD_POST_COMMENTS,
                     payload: {
                         postID,
-                        comments: res.data.c
+                        comments: res.data.c.map(s => ({...s, content: createSmiles(s.content)}))
                     }
                 });
             })

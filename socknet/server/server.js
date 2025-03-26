@@ -288,6 +288,7 @@ app.get('/comments/for-post/:id', (req, res) => {
         INNER JOIN users AS u
         ON c.user_id = u.id
         WHERE c.post_id = ?
+        ORDER BY c.id DESC
     `;
 
     con.query(sql, [postID], (err, result) => {
@@ -299,6 +300,36 @@ app.get('/comments/for-post/:id', (req, res) => {
         });
 
     });
+
+});
+
+app.post('/comments/create/:id', (req, res) => {
+
+    if (!req.user.id) {
+        error401(res, 'Please login first.');
+        return;
+    }
+
+    const postID = req.params.id;
+    const userID = req.user.id;
+    const content = req.body.content; // maybe validate
+
+    const sql = `
+        INSERT INTO comments
+        (post_id, user_id, content)
+        VALUES (?, ?, ?)
+    `;
+
+    con.query(sql, [postID, userID, content], (err, result) => {
+        if (err) return error500(res, err);
+
+        res.json({
+            success: true,
+            id: result.insertId
+        });
+
+    });
+
 
 });
 
