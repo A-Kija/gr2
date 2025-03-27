@@ -18,6 +18,7 @@ export default function Nav() {
             <div className="nav-left">
                 <ul>
                     <li><NavLink to="/" end>Home</NavLink></li>
+                    <li><NavLink to="/new-post" end>Create new post</NavLink></li>
                     <li><NavLink to="/chat" end>Chat</NavLink></li>
                 </ul>
             </div>

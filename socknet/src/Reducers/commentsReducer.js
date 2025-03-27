@@ -53,6 +53,7 @@ export default function commentsReducer(state, action) {
             {
                 const postID = action.payload.postID;
                 const userName = action.payload.userName;
+                const userID = action.payload.userID;
                 const content = action.payload.content;
                 const today = new Date();
                 const dd = String(today.getDate()).padStart(2, '0');
@@ -66,7 +67,8 @@ export default function commentsReducer(state, action) {
                     id: v4(),
                     name: userName,
                     created_at: date,
-                    content
+                    content,
+                    userID
                 }
 
                 if (!postComments) {
@@ -81,6 +83,17 @@ export default function commentsReducer(state, action) {
                     postComments.c.unshift(comment)
                 }
 
+                break;
+            }
+
+            case A.DELETE_POST_COMMENT: 
+            {
+                newState = structuredClone(state);
+                const postComments = newState.find(p => p.id === action.payload.postID);
+                if (!postComments) {
+                    break;
+                }
+                postComments.c = postComments.c.filter(c => c.id !== action.payload.commentID);
                 break;
             }
 

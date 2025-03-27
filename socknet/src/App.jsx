@@ -8,6 +8,7 @@ import Page404 from './Pages/page404';
 import Body from './Components/Body';
 import { DataProvider } from './Contexts/Data';
 import { AuthProvider } from './Contexts/Auth';
+import NewPost from './Pages/NewPost';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Nav />
           <Routes>
             <Route index element={<Home />} />
+            <Route path="new-post" element={<NewPost />} />
             <Route path="chat" element={<Chat />} />
             <Route path="login" element={<Login />} />
             <Route path="logout" element={<Logout />} />

@@ -22,6 +22,12 @@ nav {
                 color: v.$black;
                 font-size: 24px;
                 font-family: v.$ibm;
+                transition: all 0.3s;
+
+                &:hover {
+                    color: v.$blue;
+
+                }
             }
         }
     }

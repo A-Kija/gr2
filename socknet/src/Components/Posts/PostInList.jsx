@@ -93,7 +93,8 @@ export default function PostInList({ post }) {
             payload: {
                 postID: post.id,
                 userName: user.name,
-                content: comment
+                content: comment,
+                userID: user.id
             }
         });
         setComment('');
@@ -138,7 +139,7 @@ export default function PostInList({ post }) {
                 <div className="posts-list__post__comments">
                     {
                         comments.find(p => p.id === post.id).c
-                            .map(comment => typeof comment.id === 'number' ? null : <CommentInPostList key={comment.id} comment={comment} />)
+                            .map(comment => typeof comment.id === 'number' ? null : <CommentInPostList key={comment.id} comment={comment} post={post} />)
                     }
                 </div>
             }
@@ -148,7 +149,7 @@ export default function PostInList({ post }) {
                 <div className="posts-list__post__comments">
                     {
                         comments.find(p => p.id === post.id).c
-                            .map(comment => typeof comment.id === 'string' ? null : <CommentInPostList key={comment.id} comment={comment} />)
+                            .map(comment => typeof comment.id === 'string' ? null : <CommentInPostList key={comment.id} comment={comment} post={post} />)
                     }
                 </div>
             }

@@ -22,3 +22,5 @@ export const HIDE_POST_COMMENTS = 3001;
 export const SHOW_POST_COMMENTS = 3002;
 
 export const ADD_POST_COMMENT = 3003;
+
+export const DELETE_POST_COMMENT = 3004;
