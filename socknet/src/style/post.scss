@@ -1,0 +1,83 @@
+@use 'var' as v;
+
+.post-form {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+    h1 {
+        font-family: v.$audio;
+        font-size: 45px;
+    }
+
+    &__content {
+        display: flex;
+        width: 100%;
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            border: 1px solid v.$violet;
+            outline: none;
+            font-size: 20px;
+            font-family: v.$ibm;
+            padding: 10px;
+
+            &:focus {
+                border: 1px solid v.$blue;
+            }
+        }
+    }
+
+    &__images {
+        margin-top: 50px;
+        display: flex;
+        flex-wrap: wrap;
+        width: 200px;
+        column-gap: 20px;
+
+        &__col {
+
+            &__buttons {
+                margin-bottom: 20px;
+                display: flex;
+                column-gap: 20px;
+
+                input {
+                    display: none;
+                }
+
+                label.add {
+                    font-size: 40px;
+                    color: v.$white;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 50px;
+                    height: 50px;
+                    background-color: v.$blue;
+                    border-radius: 50%;
+                    cursor: pointer;
+                }
+            }
+
+            &__image {
+                width: 200px;
+                height: 200px;
+                border: 1px solid v.$gray;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+            }
+
+            &__no-image {
+                width: 200px;
+                height: 200px;
+                border: 1px solid v.$gray;
+            }
+        }
+    }
+}
