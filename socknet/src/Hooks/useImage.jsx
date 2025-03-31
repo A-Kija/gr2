@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { v4 } from 'uuid';
+
 
 export default function useImage() {
 
-    const [image, setImage] = useState(null);
+    const [images, setImage] = useState([]);
 
     const imageReader = img => {
         return new Promise((resolve, reject) => {
@@ -13,14 +15,26 @@ export default function useImage() {
         });
     }
 
-    const readFile = e => {
+    const readFile = (e, id) => {
         const img = e.target.files[0];
         console.log(img);
         imageReader(img)
-        .then(res => setImage(res))
-        .catch(_ => setImage(null))
+            .then(res => setImage(imgs => imgs.map(img => img.id === id ? {...img, src: res} : img)))
+            .catch(_ => setImage(imgs => imgs.map(img => img.id === id ? {...img, src: null} : img)))
     }
 
-    return { image, setImage, readFile }
+    const addImage = _ => {
+        setImage(imgs => [{ id: v4(), src: null, main: imgs.length === 0 ? true : false }, ...imgs]);
+    }
+
+    const remImage = id => {
+        setImage(imgs => imgs.filter(img => img.id !== id));
+    }
+
+    const mainImage = id => {
+        setImage(imgs => imgs.map(img => img.id === id ? {...img, main: true} : {...img, main: false}))
+    }
+
+    return { images, addImage, readFile, remImage, mainImage }
 
 }
