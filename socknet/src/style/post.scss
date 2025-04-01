@@ -136,4 +136,16 @@
         }
 
     }
+
+    &__submit {
+        button {
+            padding: 7px 20px;
+            background-color: v.$yellow;
+            border: none;
+            margin-top: 40px;
+            cursor: pointer;
+            font-size: 35px;
+            font-family: v.$audio;
+        }
+    }
 }

@@ -11,7 +11,7 @@ export const DataProvider = ({ children }) => {
     console.log('-------Data Contex-------');
 
     const { users, dispatchUsers } = useUsers();
-    const { posts, dispatchPosts, setPostUpdate } = usePosts();
+    const { posts, dispatchPosts, setPostUpdate, setStorePost } = usePosts();
     const { comments, dispatchComments, getPostCommentsFromServer, setCom, deletePostCommentsFromServer } = useComments();
 
     console.log('Data Contex <--- useUsers, usePost', users?.length, posts?.length);
@@ -21,7 +21,7 @@ export const DataProvider = ({ children }) => {
     return (
         <Data.Provider value={{
             users, dispatchUsers,
-            posts, dispatchPosts, setPostUpdate,
+            posts, dispatchPosts, setPostUpdate, setStorePost,
             comments, dispatchComments, getPostCommentsFromServer, setCom, deletePostCommentsFromServer
         }}>
             {children}

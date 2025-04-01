@@ -1,9 +1,26 @@
+import { useContext, useState } from 'react';
 import useImage from '../Hooks/useImage';
+import Data from '../Contexts/Data';
 
 
 export default function NewPost() {
 
     const { images, addImage, readFile, remImage, mainImage } = useImage();
+    const [text, setText] = useState('');
+    const { setStorePost } = useContext(Data);
+
+    const handleText = e => {
+        const value = e.target.value;
+        // gal validuoti ?
+        setText(value);
+    }
+
+    const submit = _ => {
+        setStorePost({
+            text,
+            images
+        });
+    }
 
 
     return (
@@ -13,7 +30,7 @@ export default function NewPost() {
                     <h1>Create new POST</h1>
                 </div>
                 <div className="post-form__content">
-                    <textarea></textarea>
+                    <textarea value={text} onChange={handleText}></textarea>
                 </div>
                 <div className="post-form__images">
 
@@ -46,6 +63,10 @@ export default function NewPost() {
                 </div>
                 <div className="post-form__add">
                     <div className="post-form__add__button" onClick={addImage}>+</div>
+                </div>
+
+                <div className="post-form__submit">
+                    <button type="submit" onClick={submit}>Post It</button>
                 </div>
             </div>
         </section>

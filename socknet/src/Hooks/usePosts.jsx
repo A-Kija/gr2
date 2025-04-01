@@ -10,7 +10,25 @@ export default function usePosts() {
 
     const [postUpdate, setPostUpdate] = useState(null);
 
+    const [storePost, setStorePost] = useState(null);
+
     console.log('usePosts', 'user:', posts?.length);
+
+    useEffect(_ => {
+
+        if (null === storePost) {
+            return;
+        }
+
+        axios.post(C.SERVER_URL + 'posts/new', storePost, { withCredentials: true })
+        .then(res => {
+            console.log(res.data);
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+    });
 
 
     useEffect(_ => {
@@ -37,7 +55,7 @@ export default function usePosts() {
             s += 400;
             console.log('waiting posts ms...', s);
         }, 400);
-        axios.get(C.SERVER_URL + 'posts/load-posts/2')
+        axios.get(C.SERVER_URL + 'posts/load-posts/1')
             .then(res => {
                 clearTimeout(timer);
                 // console.log(res.data.db); // is serverio gauti users duomenys
@@ -54,5 +72,5 @@ export default function usePosts() {
 
 
 
-    return { posts, dispatchPosts, setPostUpdate }
+    return { posts, dispatchPosts, setPostUpdate, setStorePost }
 }

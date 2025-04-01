@@ -4,6 +4,7 @@ import cors from 'cors';
 import md5 from 'md5';
 import cookieParser from 'cookie-parser';
 import { v4 } from 'uuid';
+import fs from 'node:fs';
 
 const postsPerPage = 11;
 
@@ -11,6 +12,9 @@ const app = express();
 const port = 3333;
 const frontURL = 'http://localhost:5173';
 const serverUrl = `http://localhost:${port}/`;
+
+app.use(express.json({ limit: '50mb' }));
+app.use(express.static('public'));
 
 app.use(cookieParser());
 
@@ -53,6 +57,34 @@ const error401 = (res, message) => res.status(401).json({
 // Autentifikacija - pagal numatytą ID autentifikuojam vartotoją pvz Arvydas Kijakauskas a/k 55555555555
 
 
+const saveImageAsFile = imageBase64String => {
+
+    if (!imageBase64String) {
+        return null;
+    }
+
+    let type, image;
+
+    if (imageBase64String.indexOf('data:image/png;base64,') === 0) {
+        type = 'png';
+        image = Buffer.from(imageBase64String.replace(/^data:image\/png;base64,/, ''), 'base64');
+    } else if (imageBase64String.indexOf('data:image/jpeg;base64,') === 0) {
+        type = 'jpg';
+        image = Buffer.from(imageBase64String.replace(/^data:image\/jpeg;base64,/, ''), 'base64');
+    } else {
+        error400(res, 'Bad image format 1255');
+        return;
+    }
+
+    const fileName = md5(v4()) + '.' + type;
+
+    fs.writeFileSync('public/upload/' + fileName, image);
+
+    return fileName;
+
+}
+
+
 
 // auth middleware
 app.use((req, res, next) => {
@@ -90,7 +122,7 @@ app.use((req, res, next) => {
             }
         }
 
-        
+
         next();
     });
 });
@@ -205,15 +237,20 @@ app.get('/posts/load-posts/:page', (req, res) => {
         ON u.id = p.user_id
         INNER JOIN images AS i
         ON p.id = i.post_id AND i.main = 1
-        ORDER BY p.created_at DESC
+        ORDER BY p.id DESC
         LIMIT ? OFFSET ?
     `;
 
         con.query(sql, [postsPerPage, (page - 1) * postsPerPage], (err, result) => {
             if (err) return error500(res, err);
 
-            result = result.map(r => ({ ...r, votes: JSON.parse(r.votes) }));
-
+            result = result.map(r => (
+                {
+                    ...r,
+                    votes: JSON.parse(r.votes),
+                    mainImage: r.mainImage.indexOf('http') === 0 ? r.mainImage : frontURL + '/upload/' + r.mainImage
+                }
+            ));
             res.json({
                 success: true,
                 db: result
@@ -222,6 +259,55 @@ app.get('/posts/load-posts/:page', (req, res) => {
         });
 
     }, 1500);
+});
+
+app.post('/posts/new', (req, res) => {
+
+    const content = req.body.text;
+    const created_at = new Date();
+    const updated_at = new Date();
+    const votes = JSON.stringify({ l: [], d: [] });
+    const user_id = req.user.id;
+
+    const sql1 = `
+        INSERT INTO posts
+        (content, created_at, updated_at, votes, user_id)
+        VALUES (?, ?, ?, ?, ?)
+    `;
+    con.query(sql1, [content, created_at, updated_at, votes, user_id], (err, result) => {
+        if (err) return error500(res, err);
+        const postID = result.insertId;
+
+        const dbImages = [];
+
+        req.body.images.forEach(img => {
+            const fileName = saveImageAsFile(img.src);
+            const dbImage = {
+                url: fileName,
+                post_id: postID,
+                main: img.main ? 1 : 0
+            }
+            dbImages.push(dbImage);
+        });
+
+        const sql2 = `
+            INSERT INTO images
+            (url, post_id, main)
+            VALUES ?
+        `;
+        con.query(sql2, [dbImages.map(i => [i.url, i.post_id, i.main])], (err, result) => {
+            if (err) return error500(res, err);
+
+            res.json({
+                id: postID,
+                success: true,
+                msg: {
+                    type: 'success',
+                    text: `You are nice`
+                }
+            });
+        });
+    });
 });
 
 
