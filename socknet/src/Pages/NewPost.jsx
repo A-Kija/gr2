@@ -1,13 +1,20 @@
 import { useContext, useState } from 'react';
 import useImage from '../Hooks/useImage';
 import Data from '../Contexts/Data';
+import Auth from '../Contexts/Auth';
+import * as A from '../Constants/actions';
+import * as C from '../Constants/main';
+import { useNavigate } from 'react-router';
+import { v4 } from 'uuid';
 
 
 export default function NewPost() {
 
     const { images, addImage, readFile, remImage, mainImage } = useImage();
     const [text, setText] = useState('');
-    const { setStorePost } = useContext(Data);
+    const { setStorePost, dispatchPosts } = useContext(Data);
+    const { user } = useContext(Auth);
+    const navigate = useNavigate();
 
     const handleText = e => {
         const value = e.target.value;
@@ -16,10 +23,23 @@ export default function NewPost() {
     }
 
     const submit = _ => {
+        const uuid = v4();
         setStorePost({
             text,
-            images
+            images,
+            uuid
         });
+        const image = images.find(img => img.main === true);
+        dispatchPosts({
+            type: A.ADD_NEW_POST,
+            payload: {
+                user,
+                image,
+                text,
+                postID: uuid
+            }
+        });
+        navigate(C.GO_AFTER_NEW_POST);
     }
 
 

@@ -23,6 +23,13 @@ export default function usePosts() {
         axios.post(C.SERVER_URL + 'posts/new', storePost, { withCredentials: true })
         .then(res => {
             console.log(res.data);
+            dispatchPosts({
+                type: A.POST_UUID_TO_ID,
+                payload: {
+                    id: res.data.id,
+                    uuid: res.data.uuid
+                }
+            })
         })
         .catch(error => {
             console.log(error)

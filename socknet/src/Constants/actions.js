@@ -13,6 +13,10 @@ export const LOAD_POSTS_FROM_SERVER = 2000;
 export const UP_VOTE_POST = 2101;
 export const DOWN_VOTE_POST = 2102;
 
+export const ADD_NEW_POST = 2103;
+
+export const POST_UUID_TO_ID = 2104;
+
 
 // comments 3000 - 3999
 
