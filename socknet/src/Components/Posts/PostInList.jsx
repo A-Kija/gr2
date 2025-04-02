@@ -76,7 +76,7 @@ export default function PostInList({ post }) {
             });
             setShowComments(s => !s);
         }
-        
+
     }
 
     const handleComment = e => {
@@ -120,39 +120,46 @@ export default function PostInList({ post }) {
             <div className="posts-list__post__content">
                 {post.content}
             </div>
-            <div className="posts-list__post__bottom">
-                <div className="posts-list__post__bottom__counter">
-                    <div className="up" onClick={upVote} style={{ color: userVote('up') }}>▲</div>
-                    <div className="count">{voteCounter()}</div>
-                    <div className="down" onClick={downVote} style={{ color: userVote('down') }}>▼</div>
-                </div>
-                <div className="posts-list__post__bottom__show-comments">
-                    <span onClick={getComments}>{showComents ? 'Hide comments' : 'Show comments'}</span>
-                </div>
-            </div>
-            <div className="posts-list__post__write-comment">
-                <textarea onChange={handleComment} value={comment}></textarea>
-                <button type="button" onClick={addNewComment}>Send</button>
-            </div>
-            {
-                comments.some(p => p.id === post.id) &&
-                <div className="posts-list__post__comments">
-                    {
-                        comments.find(p => p.id === post.id).c
-                            .map(comment => typeof comment.id === 'number' ? null : <CommentInPostList key={comment.id} comment={comment} post={post} />)
-                    }
-                </div>
-            }
 
             {
-                comments.some(p => p.id === post.id && p.show) &&
-                <div className="posts-list__post__comments">
-                    {
-                        comments.find(p => p.id === post.id).c
-                            .map(comment => typeof comment.id === 'string' ? null : <CommentInPostList key={comment.id} comment={comment} post={post} />)
-                    }
+                typeof post.id  === 'number' &&
+            <>
+                <div className="posts-list__post__bottom">
+                    <div className="posts-list__post__bottom__counter">
+                        <div className="up" onClick={upVote} style={{ color: userVote('up') }}>▲</div>
+                        <div className="count">{voteCounter()}</div>
+                        <div className="down" onClick={downVote} style={{ color: userVote('down') }}>▼</div>
+                    </div>
+                    <div className="posts-list__post__bottom__show-comments">
+                        <span onClick={getComments}>{showComents ? 'Hide comments' : 'Show comments'}</span>
+                    </div>
                 </div>
-            }
+                <div className="posts-list__post__write-comment">
+                    <textarea onChange={handleComment} value={comment}></textarea>
+                    <button type="button" onClick={addNewComment}>Send</button>
+                </div>
+                {
+                    comments.some(p => p.id === post.id) &&
+                    <div className="posts-list__post__comments">
+                        {
+                            comments.find(p => p.id === post.id).c
+                                .map(comment => typeof comment.id === 'number' ? null : <CommentInPostList key={comment.id} comment={comment} post={post} />)
+                        }
+                    </div>
+                }
+
+                {
+                    comments.some(p => p.id === post.id && p.show) &&
+                    <div className="posts-list__post__comments">
+                        {
+                            comments.find(p => p.id === post.id).c
+                                .map(comment => typeof comment.id === 'string' ? null : <CommentInPostList key={comment.id} comment={comment} post={post} />)
+                        }
+                    </div>
+                }
+            </>
+                }
+
         </li>
     );
 }

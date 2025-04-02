@@ -29,13 +29,13 @@ export default function usePosts() {
                     id: res.data.id,
                     uuid: res.data.uuid
                 }
-            })
+            });
         })
         .catch(error => {
-            console.log(error)
+            console.log(error);
         })
 
-    });
+    }, [storePost]);
 
 
     useEffect(_ => {

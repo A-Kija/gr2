@@ -267,53 +267,57 @@ app.get('/posts/load-posts/:page', (req, res) => {
 
 app.post('/posts/new', (req, res) => {
 
-    const content = req.body.text;
-    const created_at = new Date();
-    const updated_at = new Date();
-    const votes = JSON.stringify({ l: [], d: [] });
-    const user_id = req.user.id;
-    const uuid = req.body.uuid;
+    setTimeout(_ => {
 
-    const sql1 = `
+        const content = req.body.text;
+        const created_at = new Date();
+        const updated_at = new Date();
+        const votes = JSON.stringify({ l: [], d: [] });
+        const user_id = req.user.id;
+        const uuid = req.body.uuid;
+
+        const sql1 = `
         INSERT INTO posts
         (content, created_at, updated_at, votes, user_id)
         VALUES (?, ?, ?, ?, ?)
     `;
-    con.query(sql1, [content, created_at, updated_at, votes, user_id], (err, result) => {
-        if (err) return error500(res, err);
-        const postID = result.insertId;
+        con.query(sql1, [content, created_at, updated_at, votes, user_id], (err, result) => {
+            if (err) return error500(res, err);
+            const postID = result.insertId;
 
-        const dbImages = [];
+            const dbImages = [];
 
-        req.body.images.forEach(img => {
-            const fileName = saveImageAsFile(img.src);
-            const dbImage = {
-                url: fileName,
-                post_id: postID,
-                main: img.main ? 1 : 0
-            }
-            dbImages.push(dbImage);
-        });
+            req.body.images.forEach(img => {
+                const fileName = saveImageAsFile(img.src);
+                const dbImage = {
+                    url: fileName,
+                    post_id: postID,
+                    main: img.main ? 1 : 0
+                }
+                dbImages.push(dbImage);
+            });
 
-        const sql2 = `
+            const sql2 = `
             INSERT INTO images
             (url, post_id, main)
             VALUES ?
         `;
-        con.query(sql2, [dbImages.map(i => [i.url, i.post_id, i.main])], (err, result) => {
-            if (err) return error500(res, err);
+            con.query(sql2, [dbImages.map(i => [i.url, i.post_id, i.main])], (err, result) => {
+                if (err) return error500(res, err);
 
-            res.json({
-                id: postID,
-                uuid,
-                success: true,
-                msg: {
-                    type: 'success',
-                    text: `You are nice`
-                }
+                res.json({
+                    id: postID,
+                    uuid,
+                    success: true,
+                    msg: {
+                        type: 'success',
+                        text: `You are nice`
+                    }
+                });
             });
         });
-    });
+
+    }, 3000);
 });
 
 
@@ -329,8 +333,8 @@ app.post('/posts/update/:id', (req, res) => {
         error400(res, '5788 Invalid Post ID');
         return;
     }
-    
-    
+
+
     const { type, payload } = req.body;
 
     const sql1 = 'SELECT * FROM posts WHERE id = ?';
