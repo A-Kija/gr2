@@ -476,6 +476,41 @@ app.post('/comments/delete/:id', (req, res) => {
 
 });
 
+// CHAT/***** */
+
+app.get('/chat/list', (req, res) => {
+
+    const userID = req.user.id;
+
+    const sql1 = `
+        SELECT DISTINCT from_user_id AS id
+        FROM messages
+        WHERE to_user_id = ?
+    `;
+
+    con.query(sql1, [userID], (err, result1) => {
+        if (err) return error500(res, err);
+
+        const sql2 = `
+            SELECT id, name, avatar, online
+            FROM users
+            WHERE id IN (?)
+        `;
+
+        con.query(sql2, [result1.map(r => r.id)], (err, result2) => {
+            if (err) return error500(res, err);
+
+            res.json({
+                status: 'success',
+                users: result2
+            });
+
+        });
+
+    });
+
+
+});
 
 // BACK OFFICE/***** */
 

@@ -28,3 +28,8 @@ export const SHOW_POST_COMMENTS = 3002;
 export const ADD_POST_COMMENT = 3003;
 
 export const DELETE_POST_COMMENT = 3004;
+
+
+// chat 4000 - 4999
+
+export const LOAD_CHAT_USERS = 4000;

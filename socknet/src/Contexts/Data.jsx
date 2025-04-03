@@ -3,6 +3,7 @@ import useUsers from '../Hooks/useUsers';
 import usePosts from '../Hooks/usePosts';
 import useComments from '../Hooks/useComments';
 
+
 const Data = createContext();
 
 
@@ -14,6 +15,8 @@ export const DataProvider = ({ children }) => {
     const { posts, dispatchPosts, setPostUpdate, setStorePost } = usePosts();
     const { comments, dispatchComments, getPostCommentsFromServer, setCom, deletePostCommentsFromServer } = useComments();
 
+   
+
     console.log('Data Contex <--- useUsers, usePost', users?.length, posts?.length);
 
     
@@ -22,7 +25,7 @@ export const DataProvider = ({ children }) => {
         <Data.Provider value={{
             users, dispatchUsers,
             posts, dispatchPosts, setPostUpdate, setStorePost,
-            comments, dispatchComments, getPostCommentsFromServer, setCom, deletePostCommentsFromServer
+            comments, dispatchComments, getPostCommentsFromServer, setCom, deletePostCommentsFromServer,
         }}>
             {children}
         </Data.Provider>
