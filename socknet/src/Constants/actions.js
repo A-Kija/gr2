@@ -33,3 +33,5 @@ export const DELETE_POST_COMMENT = 3004;
 // chat 4000 - 4999
 
 export const LOAD_CHAT_USERS = 4000;
+
+export const LOAD_CHAT_MESSAGES = 4001;

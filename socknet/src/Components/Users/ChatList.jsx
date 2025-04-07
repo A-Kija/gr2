@@ -1,10 +1,9 @@
 import { useContext } from 'react';
-import Data from '../../Contexts/Data';
 import { ChatData } from '../../Pages/Chat';
 
 export default function ChatList() {
 
-    const { chat, dispatchChat } = useContext(ChatData);
+    const { chat, dispatchChat, setShowChat } = useContext(ChatData);
 
     return (
         <div className="bin bin-30">
@@ -16,7 +15,7 @@ export default function ChatList() {
                             <div className="chat-list__user__avatar">
                                 <img src={user.avatar} alt={user.name} />
                             </div>
-                            <div className="chat-list__user__name">
+                            <div className="chat-list__user__name" onClick={_ => setShowChat(user)}>
                                 {user.name}
                             </div>
                         </li>

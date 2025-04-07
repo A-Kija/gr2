@@ -15,7 +15,13 @@ export default function useChat() {
             {id, name, avatar}
         ],
         messages: [
-            {id}
+            {id, m: [
+                {text, time, id, type:"read"|"write" },
+                {text, time, id, type:"read"|"write" },
+                {text, time, id, type:"read"|"write" }
+            ]}
+            {id, [{messages}]}
+            {id, [{messages}]}
         ]
     }
 
@@ -23,6 +29,24 @@ export default function useChat() {
 
 
     const [chat, dispatchChat] = useReducer(chatReducer, null);
+
+
+    const getChatMessages = userID => {
+        axios.get(C.SERVER_URL + 'chat/chat-with/' + userID, { withCredentials: true })
+        .then(res => {
+            console.log(res.data);
+            dispatchChat({
+                type: A.LOAD_CHAT_MESSAGES,
+                payload: {
+                    chatWith: userID,
+                    messages: res.data.messages
+                }
+            })
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
 
 
     useEffect(_ => {
@@ -42,5 +66,5 @@ export default function useChat() {
     }, []);
 
 
-    return { chat, dispatchChat }
+    return { chat, dispatchChat, getChatMessages }
 }

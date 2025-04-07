@@ -497,6 +497,7 @@ app.get('/chat/list', (req, res) => {
             WHERE id IN (?)
         `;
 
+
         con.query(sql2, [result1.map(r => r.id)], (err, result2) => {
             if (err) return error500(res, err);
 
@@ -509,6 +510,30 @@ app.get('/chat/list', (req, res) => {
 
     });
 
+
+});
+
+app.get('/chat/chat-with/:id', (req, res) => {
+
+    const from_user_id = req.params.id;
+    const to_user_id = req.user.id;
+
+    const sql = `
+        SELECT from_user_id AS fromID, to_user_id AS toID, content AS message, created_at AS time, seen, id
+        FROM messages
+        WHERE (from_user_id = ? AND to_user_id = ?) OR (from_user_id = ? AND to_user_id = ?)
+        ORDER BY id DESC
+    `;
+
+    con.query(sql, [from_user_id, to_user_id, to_user_id, from_user_id], (err, result) => {
+        if (err) return error500(res, err);
+
+        res.json({
+            status: 'success',
+            messages: result
+        });
+
+    });
 
 });
 
