@@ -48,6 +48,16 @@ export default function useChat() {
         })
     }
 
+    const postChatMessage = idAndMessage => {
+        axios.post(C.SERVER_URL + 'chat/new-message/', idAndMessage,  { withCredentials: true })
+        .then(res => {
+            console.log(res.data);
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+
 
     useEffect(_ => {
 
@@ -66,5 +76,5 @@ export default function useChat() {
     }, []);
 
 
-    return { chat, dispatchChat, getChatMessages }
+    return { chat, dispatchChat, getChatMessages, postChatMessage }
 }

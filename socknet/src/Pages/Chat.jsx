@@ -8,7 +8,7 @@ export const ChatData = createContext();
 
 export default function Chat() {
 
-    const { chat, dispatchChat, getChatMessages } = useChat();
+    const { chat, dispatchChat, getChatMessages, postChatMessage } = useChat();
 
     const [showChat, setShowChat] = useState(null); // su kuo sneka ID
 
@@ -22,7 +22,7 @@ export default function Chat() {
 
     return (
         <ChatData.Provider value={{
-            chat, dispatchChat, showChat, setShowChat
+            chat, dispatchChat, showChat, setShowChat, postChatMessage
         }}>
             <section className="main">
                 <ChatList />
